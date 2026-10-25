@@ -1,0 +1,517 @@
+
+CAPTURE OPEN 2026-10-25 16:18:25
+ets Jun  8 2016 00:22:57
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7172
+load:0x40078000,len:15532
+load:0x40080400,len:4
+load:0x40080404,len:3904
+entry 0x40080640
+I (29) boot: ESP-IDF v5.2-dirty 2nd stage bootloader
+I (29) boot: compile time Oct 25 2026 15:28:28
+I (29) boot: Multicore bootloader
+I (33) boot: chip revision: v1.0
+I (37) boot.esp32: SPI Speed      : 40MHz
+I (42) boot.esp32: SPI Mode       : DIO
+I (46) boot.esp32: SPI Flash Size : 4MB
+I (51) boot: Enabling RNG early entropy source...
+I (56) boot: Partition Table:
+I (60) boot: ## Label            Usage          Type ST Offset   Length
+I (67) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (75) boot:  1 otadata          OTA data         01 00 0000f000 00002000
+I (82) boot:  2 phy_init         RF data          01 01 00011000 00001000
+I (90) boot:  3 ota_0            OTA app          00 10 00020000 00180000
+I (97) boot:  4 ota_1            OTA app          00 11 001a0000 00180000
+I (105) boot:  5 storage          Unknown data     01 82 00320000 000e0000
+I (112) boot: End of partition table
+I (117) esp_image: segment 0: paddr=00020020 vaddr=3f400020 size=36bdch (224220) map
+I (202) esp_image: segment 1: paddr=00056c04 vaddr=3ffb0000 size=024f4h (  9460) load
+I (206) esp_image: segment 2: paddr=00059100 vaddr=40080000 size=06f18h ( 28440) load
+I (219) esp_image: segment 3: paddr=00060020 vaddr=400d0020 size=550b8h (348344) map
+I (338) esp_image: segment 4: paddr=000b50e0 vaddr=40086f18 size=08d24h ( 36132) load
+I (361) boot: Loaded app from partition at offset 0x20000
+I (361) boot: Disabling RNG early entropy source...
+I (372) cpu_start: Multicore app
+I (381) cpu_start: Pro cpu start user code
+I (381) cpu_start: cpu freq: 160000000 Hz
+I (381) cpu_start: Application information:
+I (384) cpu_start: Project name:     bionx_c3_supermini
+I (390) cpu_start: App version:      27858fc-dirty
+I (396) cpu_start: Compile time:     Oct 25 2026 16:17:07
+I (402) cpu_start: ELF file SHA256:  8a8a81a7a...
+I (407) cpu_start: ESP-IDF:          v5.2-dirty
+I (412) cpu_start: Min chip rev:     v0.0
+I (417) cpu_start: Max chip rev:     v3.99 
+I (422) cpu_start: Chip rev:         v1.0
+I (427) heap_init: Initializing. RAM available for dynamic allocation:
+I (434) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (440) heap_init: At 3FFBBCF0 len 00024310 (144 KiB): DRAM
+I (446) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (452) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (459) heap_init: At 4008FC3C len 000103C4 (64 KiB): IRAM
+I (466) spi_flash: detected chip: gd
+I (469) spi_flash: flash io: dio
+I (474) main_task: Started on CPU0
+I (478) main_task: Calling app_main()
+W (481) master: PEDAL BENCH CONTROL: inspect DRY RUN / TX permission; external wake button
+I (491) board_spi: LCD SPI2 MOSI=18 SCK=5; MCP SPI3 SI=23 SCK=4 SO=19
+I (498) gpio: GPIO[27]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 
+I (507) gc9a01: LCD panel create success, version: 2.0.4
+I (636) LVGL: Starting LVGL task
+I (646) display: GC9A01 240x240 RGB565, SPI 20 MHz DMA, LVGL 9.2.2
+I (647) display: DMA buffers=9600 B; heap free=240688, minimum=240688, largest DMA block=110592
+I (773) dashboard: Dashboard ready (partial render, target 30 FPS); heap=240688, min=240688
+I (787) gpio: GPIO[34]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:2 
+I (788) mcp2515: NORMAL one-shot 125 kbit/s, osc=8 MHz, RX queue=64
+I (792) gpio: GPIO[22]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 
+W (801) assist: V1 raw gain x2 cap8; auto zero/arm at boot, press stop; wheel-up bench only
+I (810) master: Auto WAIT_WAKE: battery query every 1s; external wake starts neutral init. Short/s=rearm, hold 2s/q=stop.
+I (823) master: OFF fault=OK step=0 wait=0 00/00 TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=00
+I (839) bench: V1 WAIT ZERO OK zero0 ped0 want0 cmd0
+I (849) assist_diag: healthy=0 auto=1 cal=0 zero=0 tq=0 age=357ms speed=0 age=357ms want=0 wire=0 TX=0 P14=0 Wvalid=0 W=0.000 I=0.0000 UI=ESP_ERR_TIMEOUT
+I (859) power_diag: src=BAT_SHUNT_1E1F U=0/0 valid=0/0 age=357/357ms I=0/0 valid=0/0 age=357/357ms Uskew=0ms Iskew=0ms UIskew=0ms
+I (1076) master: OFF fault=OK step=0 wait=0 00/00 TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=00
+I (1082) bench: V1 WAIT ZERO OK zero0 ped0 want0 cmd0
+I (1326) master: OFF fault=OK step=0 wait=0 00/00 TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=00
+I (1332) bench: V1 WAIT ZERO OK zero0 ped0 want0 cmd0
+I (1579) master: OFF fault=OK step=0 wait=0 00/00 TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=00
+I (1585) bench: V1 WAIT ZERO OK zero0 ped0 want0 cmd0
+I (1831) master: STARTING fault=OK step=1 wait=0 00/00 TX=2 RX=1 age=16ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (1838) bench: V1 WAIT ZERO OK zero0 ped0 want0 cmd0
+I (1850) assist_diag: healthy=0 auto=1 cal=0 zero=0 tq=0 age=1366ms speed=0 age=1366ms want=0 wire=0 TX=0 P14=0 Wvalid=0 W=0.000 I=0.0000 UI=ESP_OK
+I (1857) power_diag: src=BAT_SHUNT_1E1F U=0/0 valid=0/0 age=1366/1366ms I=0/0 valid=0/0 age=1366/1366ms Uskew=0ms Iskew=0ms UIskew=0ms
+I (2081) master: STARTING fault=OK step=11 wait=0 20/6c TX=12 RX=6 age=13ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (2088) bench: V1 WAIT ZERO OK zero0 ped0 want0 cmd0
+I (2334) master: NEUTRAL fault=OK step=21 wait=0 10/fc TX=24 RX=11 age=140ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (2341) bench: V1 WAIT ZERO OK zero0 ped0 want0 cmd0
+I (2372) pedal_rx: raw=0 sample_us=1903180 age_ms=3
+I (2589) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=55 RX=33 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (2597) bench: V1 ZERO PEDALS OK zero0 ped0 want0 cmd0
+I (2843) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=83 RX=50 age=40ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (2851) bench: V1 ZERO PEDALS OK zero0 ped0 want0 cmd0
+I (2866) assist_diag: healthy=1 auto=1 cal=8 zero=0 tq=0 age=40ms speed=0 age=46ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (2873) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=74/69ms I=255/255 valid=1/1 age=63/57ms Uskew=5ms Iskew=6ms UIskew=11ms
+I (3097) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=109 RX=67 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (3105) bench: V1 ZERO PEDALS OK zero0 ped0 want0 cmd0
+I (3348) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=137 RX=84 age=41ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (3357) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (3598) master: NEUTRAL fault=OK step=21 wait=0 10/1f TX=167 RX=105 age=8ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (3606) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (3848) master: NEUTRAL fault=OK step=21 wait=0 10/1f TX=195 RX=122 age=18ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (3856) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (3871) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=36ms speed=0 age=43ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (3876) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=71/65ms I=255/255 valid=1/1 age=45/18ms Uskew=5ms Iskew=26ms UIskew=47ms
+I (4100) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=221 RX=139 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (4108) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (4355) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=250 RX=157 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (4364) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (4608) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=281 RX=178 age=34ms pack=39.17 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (4616) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (4862) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=309 RX=196 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (4871) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (4886) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=51ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (4892) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=99/81ms I=255/255 valid=1/1 age=75/69ms Uskew=18ms Iskew=5ms UIskew=12ms
+I (5114) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=336 RX=214 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (5122) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (5370) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=364 RX=231 age=41ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (5378) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (5625) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=394 RX=252 age=8ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (5634) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (5875) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=422 RX=270 age=29ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (5884) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (5898) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=35ms speed=0 age=41ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (5905) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=5ms UIskew=12ms
+I (6127) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=449 RX=287 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (6135) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (6378) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=476 RX=304 age=24ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (6386) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (6631) master: NEUTRAL fault=OK step=21 wait=1 10/a6 TX=508 RX=326 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (6640) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (6886) master: NEUTRAL fault=OK step=21 wait=1 20/14 TX=539 RX=346 age=16ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (6895) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (6910) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=40ms speed=0 age=46ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (6917) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=34/28ms I=255/255 valid=1/1 age=22/16ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (7140) master: NEUTRAL fault=OK step=21 wait=1 20/14 TX=565 RX=363 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (7149) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (7394) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=592 RX=380 age=39ms pack=39.17 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (7402) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (7647) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=623 RX=401 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (7656) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (7898) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=651 RX=419 age=34ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (7906) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (7921) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=34ms speed=0 age=40ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (7928) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=76/70ms I=255/255 valid=1/1 age=64/46ms Uskew=6ms Iskew=18ms UIskew=23ms
+I (8152) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=678 RX=436 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (8160) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (8402) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=706 RX=453 age=41ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (8411) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (8657) master: NEUTRAL fault=OK step=21 wait=0 20/11 TX=737 RX=474 age=39ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (8665) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (8907) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=765 RX=492 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (8916) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (8931) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=51ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (8937) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=86/80ms I=255/255 valid=1/1 age=74/68ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (9160) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=792 RX=510 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (9168) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (9415) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=820 RX=527 age=40ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (9423) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (9670) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=850 RX=548 age=8ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (9679) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (9920) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=878 RX=566 age=29ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (9929) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (9943) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=35ms speed=0 age=41ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (9950) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=5ms UIskew=12ms
+I (10172) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=905 RX=583 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (10180) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (10423) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=932 RX=600 age=24ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (10432) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (10676) master: NEUTRAL fault=OK step=21 wait=1 10/a6 TX=964 RX=622 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (10685) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (10931) master: NEUTRAL fault=OK step=21 wait=1 20/14 TX=995 RX=642 age=16ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (10940) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (10955) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=40ms speed=0 age=46ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (10962) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=34/28ms I=255/255 valid=1/1 age=22/16ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (11185) master: NEUTRAL fault=OK step=21 wait=1 20/14 TX=1021 RX=659 age=13ms pack=39.17 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (11194) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (11439) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1048 RX=676 age=39ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (11448) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (11692) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=1079 RX=697 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (11701) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (11943) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1107 RX=715 age=34ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (11952) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (11967) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=34ms speed=0 age=40ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (11973) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=76/70ms I=255/255 valid=1/1 age=64/46ms Uskew=6ms Iskew=18ms UIskew=23ms
+I (12197) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1134 RX=732 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (12205) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (12452) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1162 RX=749 age=40ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (12461) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (12705) master: NEUTRAL fault=OK step=21 wait=0 20/11 TX=1192 RX=770 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (12714) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (12961) master: NEUTRAL fault=OK step=21 wait=1 10/a6 TX=1221 RX=788 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (12970) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (12985) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=3ms speed=0 age=29ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (12992) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=104/86ms I=255/255 valid=1/1 age=74/68ms Uskew=18ms Iskew=6ms UIskew=17ms
+I (13212) master: NEUTRAL fault=OK step=21 wait=0 10/1f TX=1251 RX=809 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (13220) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (13467) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1279 RX=826 age=40ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (13476) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (13717) master: NEUTRAL fault=OK step=21 wait=0 20/11 TX=1309 RX=847 age=8ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (13725) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (13968) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1337 RX=864 age=35ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (13976) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (13991) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=35ms speed=0 age=47ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (13998) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=83/77ms I=255/255 valid=1/1 age=71/53ms Uskew=6ms Iskew=17ms UIskew=24ms
+I (14221) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1363 RX=881 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (14229) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (14476) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=1391 RX=898 age=20ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (14485) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (14728) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1422 RX=920 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (14737) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (14984) master: NEUTRAL fault=OK step=21 wait=1 10/a6 TX=1451 RX=938 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (14993) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (15008) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=43ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (15015) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=101/77ms I=255/255 valid=1/1 age=71/65ms Uskew=24ms Iskew=6ms UIskew=12ms
+I (15236) master: NEUTRAL fault=OK step=21 wait=1 20/14 TX=1480 RX=958 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (15245) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (15491) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1507 RX=975 age=40ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (15500) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (15745) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=1538 RX=996 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (15754) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (16001) master: NEUTRAL fault=OK step=21 wait=1 10/a6 TX=1567 RX=1014 age=35ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (16010) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (16025) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=35ms speed=0 age=46ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (16032) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=104/92ms I=255/255 valid=1/1 age=80/74ms Uskew=12ms Iskew=6ms UIskew=18ms
+I (16252) master: NEUTRAL fault=OK step=21 wait=1 10/1e TX=1595 RX=1033 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (16261) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (16503) master: NEUTRAL fault=OK step=21 wait=0 10/1f TX=1624 RX=1052 age=14ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (16512) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (16756) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=1654 RX=1072 age=33ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (16765) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (17006) master: NEUTRAL fault=OK step=21 wait=0 20/11 TX=1681 RX=1090 age=33ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (17015) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (17030) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=39ms speed=0 age=33ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (17037) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=80/74ms I=255/255 valid=1/1 age=68/62ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (17256) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1709 RX=1107 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (17264) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (17509) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1736 RX=1124 age=39ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (17518) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (17760) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=1766 RX=1144 age=28ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (17769) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (18016) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=1795 RX=1162 age=30ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (18025) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (18040) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=36ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (18047) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=94/82ms I=255/255 valid=1/1 age=76/70ms Uskew=12ms Iskew=5ms UIskew=12ms
+I (18265) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=1822 RX=1180 age=8ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (18273) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (18521) master: NEUTRAL fault=OK step=21 wait=1 20/14 TX=1849 RX=1196 age=40ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (18530) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (18775) master: NEUTRAL fault=OK step=21 wait=0 20/11 TX=1879 RX=1217 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (18784) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (19026) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=1907 RX=1234 age=46ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (19035) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (19050) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=52ms speed=0 age=46ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (19057) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=76/70ms I=255/255 valid=1/1 age=64/58ms Uskew=5ms Iskew=6ms UIskew=11ms
+I (19279) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1934 RX=1252 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (19287) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (19529) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1962 RX=1269 age=35ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (19538) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (19781) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=1992 RX=1290 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (19790) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (20032) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2020 RX=1308 age=39ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (20041) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (20056) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=39ms speed=0 age=45ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (20063) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=86/80ms I=255/255 valid=1/1 age=74/68ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (20284) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2047 RX=1325 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (20292) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (20541) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=2075 RX=1342 age=41ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (20550) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (20795) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2106 RX=1364 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (20804) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (21051) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=2135 RX=1382 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (21060) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (21075) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (21082) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=6ms UIskew=11ms
+I (21305) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2162 RX=1400 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (21313) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (21557) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=2190 RX=1417 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (21566) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (21811) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2221 RX=1439 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (21820) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (22063) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=2250 RX=1457 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (22072) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (22087) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=48ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (22094) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=83/77ms I=255/255 valid=1/1 age=71/65ms Uskew=5ms Iskew=5ms UIskew=12ms
+I (22316) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2277 RX=1475 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (22324) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (22571) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=2305 RX=1492 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (22580) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (22825) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2336 RX=1514 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (22834) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (23081) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=2365 RX=1532 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (23090) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (23105) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (23112) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=6ms UIskew=11ms
+I (23335) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2392 RX=1550 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (23343) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (23586) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=2420 RX=1567 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (23595) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (23840) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=2450 RX=1588 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (23849) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (24095) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=2479 RX=1606 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (24104) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (24119) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=41ms speed=0 age=47ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (24124) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=88/82ms I=255/255 valid=1/1 age=76/70ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (24346) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2506 RX=1624 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (24354) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (24601) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=2534 RX=1641 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (24610) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (24855) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2565 RX=1663 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (24864) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (25111) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=2594 RX=1681 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (25120) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (25135) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (25142) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=6ms UIskew=11ms
+I (25365) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2621 RX=1699 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (25373) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (25616) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=2649 RX=1716 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (25625) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (25870) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=2679 RX=1737 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (25879) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (26125) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=2708 RX=1755 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (26134) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (26149) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=41ms speed=0 age=47ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (26156) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=88/82ms I=255/255 valid=1/1 age=76/70ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (26374) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2735 RX=1773 age=8ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (26382) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (26624) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=2763 RX=1790 age=20ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (26632) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (26876) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=2793 RX=1811 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (26885) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (27132) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=2822 RX=1829 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (27141) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (27156) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=41ms speed=0 age=47ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (27163) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=88/82ms I=255/255 valid=1/1 age=76/70ms Uskew=6ms Iskew=5ms UIskew=11ms
+I (27385) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2849 RX=1847 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (27393) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (27635) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=2877 RX=1864 age=15ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (27644) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (27890) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2908 RX=1886 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (27899) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (28146) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=2937 RX=1904 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (28155) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (28170) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (28177) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=6ms UIskew=11ms
+I (28399) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=2964 RX=1922 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (28407) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (28656) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=2992 RX=1939 age=21ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (28665) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (28910) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3023 RX=1961 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (28919) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (29166) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=3052 RX=1979 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (29175) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (29190) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (29197) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=6ms UIskew=11ms
+I (29420) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3079 RX=1997 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (29428) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (29671) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=3107 RX=2014 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (29680) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (29925) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=3137 RX=2035 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (29934) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (30180) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=3166 RX=2053 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (30189) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (30204) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=41ms speed=0 age=47ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (30211) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=88/82ms I=255/255 valid=1/1 age=76/70ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (30429) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3193 RX=2071 age=8ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (30437) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (30686) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=3221 RX=2088 age=26ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (30695) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (30940) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3252 RX=2110 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (30949) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (31196) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=3281 RX=2128 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (31205) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (31220) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (31227) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=6ms UIskew=11ms
+I (31450) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3308 RX=2146 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (31458) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (31701) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=3336 RX=2163 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (31710) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (31955) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=3366 RX=2184 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (31964) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (32210) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=3395 RX=2202 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (32219) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (32234) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=41ms speed=0 age=47ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (32241) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=88/82ms I=255/255 valid=1/1 age=76/70ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (32459) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3422 RX=2220 age=8ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (32467) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (32716) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=3450 RX=2237 age=26ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (32725) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (32970) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3481 RX=2259 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (32979) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (33226) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=3510 RX=2277 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (33235) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (33250) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (33257) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=6ms UIskew=11ms
+I (33480) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3537 RX=2295 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (33488) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (33731) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=3565 RX=2312 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (33740) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (33985) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=3595 RX=2333 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (33994) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (34240) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=3624 RX=2351 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (34249) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (34264) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=41ms speed=0 age=47ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (34271) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=88/82ms I=255/255 valid=1/1 age=76/70ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (34489) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3651 RX=2369 age=8ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (34497) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (34746) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=3679 RX=2386 age=26ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (34755) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (35001) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3710 RX=2408 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (35010) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (35253) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=3739 RX=2426 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (35262) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (35277) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=48ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (35284) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=83/77ms I=255/255 valid=1/1 age=71/65ms Uskew=5ms Iskew=5ms UIskew=12ms
+I (35506) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3766 RX=2444 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (35514) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (35761) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=3794 RX=2461 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (35770) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (36015) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=3824 RX=2482 age=28ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (36024) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (36265) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=3852 RX=2499 age=23ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (36274) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (36289) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=41ms speed=0 age=52ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (36294) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=76/70ms I=255/255 valid=1/1 age=64/58ms Uskew=6ms Iskew=6ms UIskew=11ms
+I (36516) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3879 RX=2517 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (36524) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (36771) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=3907 RX=2534 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (36780) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (37025) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3938 RX=2556 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (37034) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (37281) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=3967 RX=2574 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (37290) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (37305) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (37312) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=6ms UIskew=11ms
+I (37535) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=3994 RX=2592 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (37543) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (37786) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=4022 RX=2609 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (37795) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (38040) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=4051 RX=2629 age=28ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (38049) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (38290) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=4079 RX=2647 age=24ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (38299) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (38314) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=41ms speed=0 age=35ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (38321) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=5ms UIskew=12ms
+I (38539) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=4106 RX=2664 age=8ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (38547) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (38796) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=4134 RX=2681 age=21ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (38805) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (39051) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=4166 RX=2703 age=10ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (39060) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (39301) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=4194 RX=2721 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (39310) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (39325) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (39332) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=5ms UIskew=11ms
+I (39555) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=4221 RX=2739 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (39563) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (39806) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=4249 RX=2756 age=15ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (39815) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (40059) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=4278 RX=2776 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (40068) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (40315) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=4307 RX=2794 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (40324) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (40339) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=48ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (40346) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=83/77ms I=255/255 valid=1/1 age=71/65ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (40569) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=4334 RX=2812 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (40577) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (40826) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=4362 RX=2829 age=21ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (40835) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (41080) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=4393 RX=2851 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (41089) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (41336) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=4422 RX=2869 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (41345) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (41360) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (41367) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=6ms UIskew=11ms
+I (41590) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=4449 RX=2887 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (41598) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (41841) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=4477 RX=2904 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (41850) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (42095) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=4507 RX=2925 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (42104) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (42350) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=4536 RX=2943 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (42359) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (42374) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=41ms speed=0 age=47ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (42381) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=88/82ms I=255/255 valid=1/1 age=76/70ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (42599) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=4563 RX=2961 age=8ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (42607) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (42856) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=4591 RX=2978 age=26ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (42865) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (43110) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=4622 RX=3000 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (43119) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (43366) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=4651 RX=3018 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (43375) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (43390) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (43397) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=6ms UIskew=11ms
+I (43620) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=4678 RX=3036 age=13ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (43628) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (43871) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=4706 RX=3053 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (43880) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (44125) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=4736 RX=3074 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (44134) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (44380) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=4765 RX=3092 age=25ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (44389) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (44404) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=41ms speed=0 age=47ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (44411) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=88/82ms I=255/255 valid=1/1 age=76/70ms Uskew=6ms Iskew=6ms UIskew=12ms
+I (44629) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=4792 RX=3110 age=8ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (44637) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (44886) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=4820 RX=3127 age=26ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (44895) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (45140) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=4851 RX=3149 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (45149) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (45396) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=4880 RX=3167 age=3ms pack=39.15 V? temp=38 C? SOC=70 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=401us TXCTRL=00 TXINTF=04
+I (45405) bench: V1 ASSIST X2 OK zero0 ped0 want0 cmd0
+I (45420) assist_diag: healthy=1 auto=0 cal=16 zero=0 tq=0 age=47ms speed=0 age=3ms want=0 wire=0 TX=0 P14=0 Wvalid=1 W=-0.039 I=-0.0010 UI=ESP_OK
+I (45427) power_diag: src=BAT_SHUNT_1E1F U=152/235 valid=1/1 age=82/76ms I=255/255 valid=1/1 age=70/64ms Uskew=6ms Iskew=6ms UIskew=11ms

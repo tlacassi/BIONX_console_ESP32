@@ -140,3 +140,21 @@ const char *bv_reason_name(bv_reason_t r)
         "TORQUE JUMP","STOPPED","BRAKE","NO MOTION"};
     return (unsigned)r<9?n[r]:"UNKNOWN";
 }
+
+void bv_button_step(bv_control_t *c,bv_button_t *b,const bb_input_t *i,int64_t now)
+{
+    if(i->deadman && (c->state!=BV_IDLE || c->boot_pending)) {
+        bv_stop(c);b->stopped_this_press=true;
+    }
+    bx_button_event_t event=bx_button_tick(&b->button,i->deadman,now);
+    if(event==BX_BUTTON_START) {
+        if(!b->stopped_this_press && c->state==BV_IDLE && c->reason==BV_STOPPED)
+            bv_calibrate(c,i,now);
+        b->stopped_this_press=false;
+    }
+    if(!i->deadman && !b->button.stable) b->stopped_this_press=false;
+}
+const char *bv_status_name(const bv_control_t *c)
+{
+    return c->state==BV_IDLE && !c->boot_pending ? "STOPPED: CLICK":bv_state_name(c->state);
+}

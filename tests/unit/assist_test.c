@@ -97,5 +97,25 @@ int main(void)
     t=ready(&c);i=input(t+5000,14,0);bv_step(&c,&i,t+5000);
     i=input(t+55000,1,1);bv_step(&c,&i,t+55000);
     i.deadman=true;assert(!bv_step(&c,&i,t+55001) && !c.pulse_peak);
+    t=ready(&c);bv_button_t button={.button={.armed=true}};
+    i=input(t+1,1,0);i.deadman=true;bv_button_step(&c,&button,&i,t+1);
+    assert(c.state==BV_IDLE && !c.boot_pending);
+    i=input(t+30001,1,0);i.deadman=true;bv_button_step(&c,&button,&i,t+30001);
+    i=input(t+60001,1,0);bv_button_step(&c,&button,&i,t+60001);
+    i=input(t+90001,1,0);bv_button_step(&c,&button,&i,t+90001);
+    assert(c.state==BV_IDLE && !c.boot_pending); /* release does not restart */
+    bv_control_t moving=c;bv_button_t refused=button;
+    for(int n=0;n<4;n++) {
+        int64_t now=t+120001+n*30000;i=input(now,1,1);i.deadman=n<2;
+        bv_button_step(&moving,&refused,&i,now);
+    }
+    assert(moving.state==BV_IDLE && !moving.boot_pending);
+    i=input(t+240001,1,0);bv_button_step(&moving,&refused,&i,t+240001);
+    assert(moving.state==BV_IDLE && !moving.boot_pending); /* no deferred resume */
+    i=input(t+120001,1,0);i.deadman=true;bv_button_step(&c,&button,&i,t+120001);
+    i=input(t+150001,1,0);i.deadman=true;bv_button_step(&c,&button,&i,t+150001);
+    i=input(t+180001,1,0);bv_button_step(&c,&button,&i,t+180001);
+    i=input(t+210001,1,0);bv_button_step(&c,&button,&i,t+210001);
+    assert(c.state==BV_CALIBRATING && c.boot_pending && !c.output);
     return 0;
 }

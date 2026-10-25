@@ -1459,3 +1459,29 @@ GG ; le firmware chargé reste celui sans limite avec source shunt par défaut.
 Build principal courant au choix réussi sans warning ; branche applicative
 CONFIG_BIONX_CURRENT_GAS compilée séparément avec le compilateur ESP32 et-Werror.
 Pas de flash supplémentaire ; port de capture conservé ouvert.
+
+
+## 2026-10-25 — WAIT ZERO affichait un arrêt mémorisé
+
+Utilisateur signale WAIT ZERO bloqué. Capture existante sans réouverture :
+maître NEUTRAL/OK,8/8 fraîches, healthy1, cal16, auto0, tq0/speed0,
+contrôle WAIT ZERO/STOPPED. Le zéro est déjà réalisé ; arrêt mémorisé,
+origine non attribuée (bouton ou inhibition finale peuvent désarmer).
+
+Correction : libellé dépendant de l'état complet, STOPPED: CLICK si IDLE
+sans boot_pending. Gestion bouton via décodeur existant25 ms : appui brut
+coupe, relâchement de ce même geste ne réarme pas ; nouveau clic court peut
+relancer calibration puis auto-armement à l'arrêt/données saines. Refus sans
+reprise différée si conditions absentes ; défaut verrouillé non effacé,
+maintien2 s conserve extinction.
+
+Tests9/9 : même geste ne réarme pas, clic suivant lance calibration sans sortie,
+roue mobile refuse et retour immobile ne déclenche aucune reprise différée.
+LVGL2/2, dont géométrie du libellé STOPPED: CLICK. Build ESP32 sans warning.
+Flash live646704 octets/hash vérifiés, SHA256
+`202a8ec4afb5974707d358e33757dc40a12f06f1094695e30941d71b52e81cb6`.
+Source courant shunt inchangée, gas gauge non activée.
+Capture rouverte/laissée ouverte, pas de commande positive de test envoyée.
+Boot atteint ASSIST X2/OK,8/8 fraîches,~39,15 V/38 C/SOC70, pertes0 et
+TXerr/timeout0 ; couple/vitesse/commande0, UI ESP_OK. Validation physique
+clic/reprise encore attendue. [Snapshot](logs/2026-10-25-v1-resume-boot-snapshot.txt).

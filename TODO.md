@@ -531,3 +531,10 @@ sur une impulsion courte.
 - [x] Conversions distinctes, même cohérence U/I et pas de bascule implicite ; tests.
 - [x] Compiler le build principal et la branche alternative avec-Werror ; documenter limites avant essai.
 - [ ] Tester physiquement D3/D4 et vérifier signe/calibration avant sélection définitive.
+
+## WAIT ZERO après arrêt — correction
+
+Logs : cal16, healthy1, speed0, tq0, auto0 et STOPPED : pas une calibration
+bloquée, mais libellé ambigu d'un arrêt mémorisé.
+- [x] Afficher STOPPED et permettre reprise par nouveau clic court stationnaire.
+- [x] Garantir qu'un seul geste ne puisse pas couper puis réarmer ; tests et build/flash.

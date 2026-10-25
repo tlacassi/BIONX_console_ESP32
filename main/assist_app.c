@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 static bv_control_t control;
+static bv_button_t resume_button;
 static bb_input_t input;
 static int64_t wire_deadline,power_deadline;
 static uint8_t wire;
@@ -67,7 +68,7 @@ void bench_app_tick(bx_master_t *m,const mcp2515_transport_stats_t *s,int64_t no
             (long long)input.torque.timestamp_us,(long)((now-input.torque.timestamp_us)/1000));
         last_torque=input.torque.raw;
     }
-    if(input.deadman) bv_stop(&control);
+    bv_button_step(&control,&resume_button,&input,now);
     uint8_t wanted=bv_auto_step(&control,&input,now);
 #ifdef CONFIG_BIONX_V1_TX
     wire=wanted;
@@ -93,14 +94,14 @@ bool bench_app_tx_allowed(const can_frame_t *f,int64_t now)
 }
 void bench_app_status(char *text,size_t size)
 {
-    snprintf(text,size,"V1 %s %s zero%u ped%u want%u cmd%u",bv_state_name(control.state),
+    snprintf(text,size,"V1 %s %s zero%u ped%u want%u cmd%u",bv_status_name(&control),
         bv_reason_name(control.reason),control.baseline,input.torque.raw,control.target,wire);
 }
 void assist_app_dashboard(const bx_master_t *m,int64_t now,const char *master_status,uint8_t confirmed_command)
 {
     dashboard_live_t d={.status=master_status,.command=confirmed_command,.command_valid=m->state==BX_NEUTRAL,
         .fault=m->state==BX_FAULT || control.state==BV_FAULT};
-    if(m->state==BX_NEUTRAL) d.status=control.state==BV_FAULT ? bv_reason_name(control.reason):bv_state_name(control.state);
+    if(m->state==BX_NEUTRAL) d.status=control.state==BV_FAULT ? bv_reason_name(control.reason):bv_status_name(&control);
 #ifndef CONFIG_BIONX_V1_TX
     if(m->state==BX_NEUTRAL && control.state==BV_ACTIVE) d.status="DRY RUN TX OFF";
 #endif

@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-only */
 #pragma once
 #include "bionx_bench.h"
+#include "bionx_button.h"
 /* Experimental V1, raw sensor gain, not a calibrated torque ratio. */
 #define BV_MAX_DRIVE 8
 #define BV_TORQUE_TTL 150000
@@ -29,3 +30,7 @@ bool bv_authorizes(const bv_control_t *c,const bb_input_t *i,uint8_t raw,int64_t
 uint32_t bv_speed_millikmh(uint16_t raw);
 const char *bv_state_name(bv_state_t s);
 const char *bv_reason_name(bv_reason_t r);
+
+typedef struct { bx_button_t button; bool stopped_this_press; } bv_button_t;
+void bv_button_step(bv_control_t *c,bv_button_t *b,const bb_input_t *i,int64_t now);
+const char *bv_status_name(const bv_control_t *c);

@@ -5,6 +5,16 @@ MCP2515 à deux SPI. C'est une V1 expérimentale pour essais supervisés roue
 levée. Le câblage reste celui de [HARDWARE.md](HARDWARE.md).
 Le profil jog précédemment chargé n'est pas remplacé sans flash explicite.
 
+## Arrêt mémorisé et reprise
+
+Un appui coupe immédiatement, puis l'écran indique `STOPPED: CLICK`. Le
+relâchement de ce même appui ne réarme pas. Un **nouveau clic court**, roue
+immobile, pédales déchargées et données saines, relance le zéro puis l'armement
+automatique. Si ces conditions ne sont pas réunies, le clic est refusé sans
+reprise différée. Maintien2 s conserve l'extinction. Un défaut verrouillé n'est
+pas effacé par ce clic. Le libellé WAIT ZERO de l'ancienne version pouvait
+masquer cet état STOPPED ; les logs cal16/auto0/STOPPED le distinguent.
+
 ## Choix explicite de la mesure de courant
 
 Deux sources batterie sont disponibles dans la configuration V1 :

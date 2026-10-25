@@ -14,7 +14,21 @@ Lire [README](README.md), [procédure V1](docs/ASSIST_V1.md),
 Les procédures/analyses sont maintenant dans `docs/`, les captures originales
 inchangées dans `captures/`. Profils et entrypoints restent à la racine.
 
-## Dernier état — sans limite vitesse, choix courant préparé
+## Dernier état — WAIT ZERO trompeur corrigé et reprise au clic
+
+Image flashée V1 live646704 octets, SHA256
+`202a8ec4afb5974707d358e33757dc40a12f06f1094695e30941d71b52e81cb6`.
+Source shunt inchangée, pas de limite vitesse, enveloppe≤400 ms/cap8 conservés.
+L'ancien WAIT ZERO était en fait STOPPED (cal16, auto0, healthy1, speed0/tq0).
+Affichage désormais STOPPED: CLICK. Un nouveau clic court stationnaire/sain
+relance le zéro, puis auto-armement ; le geste qui coupe ne réarme pas à son
+relâchement. Clic refusé sans reprise différée si roue mobile ; défaut non effacé.
+Tests9/9 et2/2 UI, build sans warning, flash/hash vérifiés ; nouveau boot
+ASSIST X2/OK et mesures8/8 fraîches observés, commande0 sans effort assistant.
+Capture laissée ouverte session exec53908, `/tmp/bionx-v1-resume.log`,
+processus `/tmp/bionx-live-diagnostic.py`. Lire le fichier sans rouvrir le port.
+
+## Historique — sans limite vitesse, choix courant préparé
 
 Image flashée V1 live sans défaut25 ni réduction20–25 :646128 octets,
 SHA256 `051790b62c00cbf54eaaea222ba34843c18e305ad35e8d6923ece4e439f83ffe`.
