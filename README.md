@@ -73,3 +73,7 @@ pas le [handoff](HANDOFF.md).
 `main` conserve la base importée du banc. `feature/assist-v1` contient les
 incréments V1 et le rangement, avec commits documentés et publiés sur
 [le dépôt](https://github.com/tlacassi/BIONX_console_ESP32).
+
+Dernier diagnostic : [réponse au coup de pédale](docs/ASSIST_V1.md), montée50 ms
+et décroissance≤400 ms, sans maintien sur donnée périmée. Traces de couple,
+TX effectif, courant brut et watts exacts disponibles pendant les essais.

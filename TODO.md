@@ -503,7 +503,7 @@ et rapport ×2 à poursuivre par l'utilisateur ; aucun armement envoyé par l'as
 Utilisateur ne perçoit pas d'assistance et watts absents. Demande de capture
 série continue pendant son pédalage ; port ouvert sans reset volontaire,
 mais boot effectivement relancé à l'ouverture.
-- [ ] Capturer pédale/demande/commande et défauts, conserver le premier motif.
+- [x] Capturer pédale/demande/commande et défauts, conserver le premier motif.
 - [x] Identifier le zéro affiché : FF/FF courant→-1 mA→-0,039 W, UI ESP_OK ; diagnostics détaillés flashés.
   Validité physique de ce registre de courant à confirmer sous commande effective.
 - [ ] Corriger seulement les causes établies, tester et documenter avant reflash.
@@ -512,6 +512,7 @@ mais boot effectivement relancé à l'ouverture.
 
 Utilisateur confirme absence d'entraînement et demande accélération/décélération
 sur une impulsion courte.
-- [ ] Enveloppe décroissante bornée400 ms et attaque50 ms, plafond8 conservé.
-- [ ] Arrêt immédiat sur bouton/frein/données périmées/survitesse et filtre TX cohérent.
-- [ ] Tests impulsion, expiration, coupure et limites ; build/flash puis capture ouverte.
+- [x] Enveloppe décroissante bornée400 ms et attaque50 ms, plafond8 conservé.
+- [x] Arrêt immédiat sur bouton/frein/données périmées/survitesse et filtre TX cohérent.
+- [x] Tests impulsion, expiration, coupure et limites ; build/flash puis capture ouverte.
+- [ ] Retour physique utilisateur sur la réponse au petit coup de pédale.

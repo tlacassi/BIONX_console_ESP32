@@ -14,7 +14,28 @@ Lire [README](README.md), [procédure V1](docs/ASSIST_V1.md),
 Les procédures/analyses sont maintenant dans `docs/`, les captures originales
 inchangées dans `captures/`. Profils et entrypoints restent à la racine.
 
-## Firmware actuellement chargé : V1 live automatique
+## État courant : diagnostic et réponse au coup de pédale
+
+Port série **laissé ouvert à la demande utilisateur** par le processus
+`/tmp/bionx-live-diagnostic.py`, session exec7907. Lire d'abord
+`/tmp/bionx-v1-pedal-pulse.log` ; ne pas rouvrir le port ni flasher pendant
+son essai. Capture initialement armée/NEUTRAL/OK, cmd0 sans effort assistant.
+
+Firmware chargé : `build-assist-v1-live/sdkconfig`, V1_TX=y,646240 octets,
+SHA256 `e486babc7231c16f0ad05f6bcef68b8b06d14e51f9b47ac23a0d462bc06f7d3f`.
+Flash/hash vérifiés. Réponse demandée à l'impulsion : montée1/50 ms, enveloppe
+qui décroît1/50 ms et expire≤400 ms, cap8, défaut/frein/bouton/péremption
+coupent immédiatement. Le filtre TX autorise la même enveloppe. Tests9/9 et
+2/2 UI, build sans warning. Essai utilisateur de cette nouvelle réponse attendu.
+
+Cause du dernier essai sans moteur : vitesse dépassant25 km/h candidats avant
+les pics de couple (jusqu'à14) ; RANGE verrouillé, aucune commande positive
+confirmée. Les watts affichés-0 W viennent de FF/FF→-1 mA→-0,039 W, UI ESP_OK.
+Mesure physique shunt non validée. La batterie a aussi cessé de répondre à
+une lecture, NO REPLY ; récupération CAN ne réarme pas le contrôleur.
+Traces bornées : `pedal_rx`, `drive_tx`, `assist_diag`, `power_diag`.
+
+## Historique : V1 live automatique
 
 Demande explicite utilisateur après confirmation du rendu, SOC et vitesse :
 suppression des clics, anneau moteur, barre couple et émission d'assistance.

@@ -1358,3 +1358,49 @@ Aucun seuil ni gain augmenté. Instrumentation suivante : changements de couple,
 commande CAN confirmée, validité U/I, octets/âges/skews, watts/courant exacts et
 code retour dashboard1 Hz. Le test LVGL vérifie aussi qu'un zéro valide donne
 +0 W. Logs supplémentaires bornés, pas d'impression de toutes les trames en RX.
+
+
+## 2026-10-25 — Capture détaillée, puis réponse impulsionnelle demandée
+
+Firmware diagnostic intermédiaire flashé/hash vérifié, SHA256
+f4888761331acd1e77f7ed0bd61847c8870d719f715e06f1d614ceeab78f30b4.
+Capture rouverte sans reset volontaire (boot redémarré à l'ouverture).
+Zéro/armement atteints vers3,3 s. Batterie39,2 V, courant FF/FF signé-1 mA,
+Pbat=-0,039 W, paires fraîches/cohérentes, dashboard ESP_OK : affichage-0 W
+expliqué sans inventer une mesure de puissance mécanique. Ce registre de
+courant n'est toujours pas validé physiquement sur ce montage.
+
+Pendant rotation : vitesse brute1→23, couple0, demande/émission0. Contrôle
+FAULT RANGE à28,597 s, après passage du seuil candidat25 km/h. Ensuite,
+changements couple2/6/4/0 puis7/10/7/0 et jusqu'à14 vers41 s : capteur réactif,
+mais défaut déjà verrouillé. Aucune ligne drive_tx positive dans cet essai.
+NO REPLY ultérieur sur batterieA6 vers56 s, sans erreur TX ni perte RX.
+[Capture détaillée](logs/2026-10-25-v1-pedal-detailed-diagnostic.txt).
+La cause de l'arrêt des réponses batterie n'est pas établie.
+
+Utilisateur confirme absence d'entraînement et demande réponse à un court coup
+de pédale avec accélération puis décélération. Implémentation : enveloppe
+positive décroissante1 point/50 ms, maximum8 points, expiration≤400 ms après
+pic ; montée1 point/50 ms au lieu de200 ms. Une nouvelle demande réellement
+mesurée peut renouveler l'enveloppe. Une baisse à zéro mesurée peut conserver
+cette queue brève, mais **donnée périmée, frein/bouton, horloge, survitesse et
+transport coupent immédiatement**. Pas de queue sans télémétrie valide.
+Même enveloppe dans l'autorisation finale TX ; aucun boost constant ni régène.
+
+Tests9/9 : impulsion brève suivie de mesures zéro fraîches, réponse positive
+puis zéro dans400 ms, plafond8, autorisation finale pendant la queue et coupure
+immédiate sur invalidité/bouton. Tests existants adaptés à la décroissance
+souhaitée. LVGL2/2, dont zéro valide effectivement affiché. Build live ESP32
+sans warning et image_info checksum/hash valides. Commit c1841b3 publié.
+Validation physique de la nouvelle réponse encore à effectuer.
+
+
+Flash réponse impulsionnelle :646240 octets, SHA256
+`e486babc7231c16f0ad05f6bcef68b8b06d14e51f9b47ac23a0d462bc06f7d3f`,
+ESP32-D0WDQ6 rev1.0, port HUZZAH32 /dev/cu.usbserial-016138BC à115200.
+Empreintes application/bootloader/partitions/ota_data vérifiées. Capture rouverte
+et laissée ouverte à la demande utilisateur, sans commande de contrôle ni reset
+volontaire. Boot/init puis auto-calibration16 et ASSIST X2/OK observés ;
+~39,18 V, courant-1 mA, watts-0,039, UI ESP_OK, vitesse/couple/commande0,
+pertes0/TEC0/REC0/txerr0/timeout0. Pas d'effort initié par l'assistant.
+Log en cours `/tmp/bionx-v1-pedal-pulse.log`. Essai utilisateur en attente.
