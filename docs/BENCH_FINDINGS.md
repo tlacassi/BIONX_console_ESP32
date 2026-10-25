@@ -177,3 +177,10 @@ mécanique indépendante. Nouveau RANGE après accélération de roue, verrouill
 Courant reste FF/FF malgré P14 non nul et baisse de tension : ne plus traiter
 -0,039 W comme puissance réelle représentative du moteur. Source de courant
 et trajet à travers shunt BionX à vérifier ; aucun remplacement par estimation.
+
+## Réglage utilisateur renforcé et35 km/h
+
+V1 testée/compilée/flashée avec bande morte1, gain×2, cap12/64, montée25 ms,
+queue≤800 ms et coupure d'assistance35 km/h estimés sans verrouillage.
+Pas de mesure physique de la nouvelle réponse ni de calibration de vitesse.
+Capture ouverte ; roue initialement encore mobile, attente zéro légitime.

@@ -3,7 +3,12 @@
 #include "bionx_bench.h"
 #include "bionx_button.h"
 /* Experimental V1, raw sensor gain, not a calibrated torque ratio. */
-#define BV_MAX_DRIVE 8
+#define BV_MAX_DRIVE 12
+#define BV_DEADBAND 1
+#define BV_ATTACK_US 25000
+#define BV_DECAY_US 66667
+#define BV_PULSE_US 800000
+#define BV_MAX_SPEED_KMH 35
 #define BV_TORQUE_TTL 150000
 #define BV_SPEED_TTL 150000
 #define BV_COMMAND_TTL 100000
@@ -15,7 +20,7 @@ typedef enum { BV_OK, BV_DATA, BV_RANGE, BV_CLOCK, BV_CAL_LOAD, BV_TORQUE_JUMP,
 typedef struct {
     bv_state_t state;
     bv_reason_t reason;
-    bool calibrated, boot_pending;
+    bool calibrated, boot_pending, speed_limited;
     uint8_t baseline, cal_min, cal_max, last_torque, output, target, pulse_peak;
     unsigned cal_count;
     int64_t last_us, torque_us, ramp_us, stalled_since, pulse_us;

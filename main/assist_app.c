@@ -25,7 +25,7 @@ bool bench_app_init(void)
         .pull_up_en=GPIO_PULLUP_DISABLE,.intr_type=GPIO_INTR_DISABLE};
     if(gpio_config(&pin)!=ESP_OK) return false;
 #endif
-    ESP_LOGW("assist","V1 raw gain x2 cap8; auto zero/arm at boot, press stop; wheel-up bench only");
+    ESP_LOGW("assist","V1 raw gain x2 deadband1 cap12, pulse800ms, limit35km/h; auto zero/arm at boot, press stop; wheel-up bench only");
     return true;
 }
 bool bench_app_command(const char *cmd,int64_t now)

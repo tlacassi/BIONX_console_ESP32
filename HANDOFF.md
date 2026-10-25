@@ -14,7 +14,27 @@ Lire [README](README.md), [procédure V1](docs/ASSIST_V1.md),
 Les procédures/analyses sont maintenant dans `docs/`, les captures originales
 inchangées dans `captures/`. Profils et entrypoints restent à la racine.
 
-## Dernier état — WAIT ZERO trompeur corrigé et reprise au clic
+## Dernier état — seuil1, plafond12, impulsion800 ms et limite35
+
+Demande utilisateur : sensibilité accrue, impulsion plus forte/longue et35 km/h.
+V1 active dans `bionx_assist.[ch]` ; ne pas modifier le max_speed du contrôleur
+historique `bionx_control.c` pour régler ce firmware.
+Paramètres : bande morte1, gain×2, plafond12/64 (maître aussi12, jog reste8),
+montée1/25 ms, décroissance1/66,667 ms, queue≤800 ms. Commande et enveloppe
+vidées dès35 km/h estimés, sans défaut verrouillé. Aucun freinage ni garantie
+de vitesse mécanique exacte ; conversion/circonférence encore candidates.
+Arrêt bouton/frein/défaut/péremption immédiat ; reprise au clic séparé conservée.
+
+Image flashée646848 octets, SHA256
+`8b2075874ec7abafb6859e61845cffb3de04489719c42e8957275b6096d9e04b`.
+Flash/hash vérifiés. Tests9/9 et2/2 UI, build sans warning. Source courant shunt
+inchangée (GG non activée). Capture ouverte session exec22445, fichier
+`/tmp/bionx-v1-tuned.log`, processus `/tmp/bionx-live-diagnostic.py`.
+Au début de la capture WAIT ZERO réel : auto1/cal0, roue encore en mouvement
+(brut13), données saines, commande0. Attendre roue immobile/pédales déchargées.
+Ne pas rouvrir le port pendant l'essai ; réponse physique de ce réglage à valider.
+
+## Historique — WAIT ZERO trompeur corrigé et reprise au clic
 
 Image flashée V1 live646704 octets, SHA256
 `202a8ec4afb5974707d358e33757dc40a12f06f1094695e30941d71b52e81cb6`.

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-only */
 #pragma once
-#define BX_MAX_BENCH_ASSIST 8
+#define BX_MAX_BENCH_ASSIST 12
 #include <stddef.h>
 #include "bionx_protocol.h"
 
@@ -11,7 +11,7 @@ typedef struct {
     int64_t reply_us, write_gap_us, frame_gap_us, control_us, battery_us, sample_ttl_us;
     uint16_t max_charge_raw, max_discharge_raw;
     bool fast_poll, measure_power, pedal_control, current_gas;
-    uint8_t assist_cap; /* 0 in the normal neutral profile; bench maximum 8. */
+    uint8_t assist_cap; /* 0 in the normal neutral profile; bench maximum12 (profiles can impose a lower cap). */
     uint8_t battery_hw, battery_sw, motor_sw;
 } bx_config_t;
 typedef struct { uint16_t raw; int64_t timestamp_us; bool valid; } bx_sample_t;

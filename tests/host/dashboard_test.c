@@ -129,13 +129,14 @@ int main(void)
         lv_tick_inc(50);lv_timer_handler();lv_obj_update_layout(lv_screen_active());
         check_labels(lv_screen_active());
     }
-    const char *states[]={"STOPPED: CLICK","WAIT ZERO","ZERO PEDALS","WAIT NEUTRAL","ASSIST X2",
+    const char *states[]={"35 KM/H LIMIT","STOPPED: CLICK","WAIT ZERO","ZERO PEDALS","WAIT NEUTRAL","ASSIST X2",
         "DRY RUN TX OFF","DATA OLD/LINK","PEDALS LOADED","CAN INIT FAIL"};
     for(unsigned k=0;k<sizeof(states)/sizeof(states[0]);k++) {
         real.status=states[k];assert(dashboard_live_update(&real)==ESP_OK);
         lv_tick_inc(50);lv_timer_handler();lv_obj_update_layout(lv_screen_active());
         check_labels(lv_screen_active());
     }
+    real.command=12;assert(dashboard_live_update(&real)==ESP_OK);
     real.fault=true;real.status="CAN INIT FAIL";
     assert(dashboard_live_update(&real)==ESP_OK);
     lv_tick_inc(600);lv_timer_handler();

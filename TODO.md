@@ -538,3 +538,10 @@ Logs : cal16, healthy1, speed0, tq0, auto0 et STOPPED : pas une calibration
 bloquée, mais libellé ambigu d'un arrêt mémorisé.
 - [x] Afficher STOPPED et permettre reprise par nouveau clic court stationnaire.
 - [x] Garantir qu'un seul geste ne puisse pas couper puis réarmer ; tests et build/flash.
+
+## Sensibilité, impulsion renforcée et35 km/h — demande utilisateur
+
+- [x] V1 active : bande morte1, gain×2, plafond12/64, montée25 ms, queue≤800 ms.
+- [x] Limiter assistance à35 km/h estimés sans verrouillage ; vider l'impulsion à la limite.
+- [x] Vérifier maître/filtre TX/UI et régressions, compiler et flasher le profil de banc.
+  Tests9/9 et2/2 UI, build sans warning, flash/hash vérifiés ; réponse physique à valider.

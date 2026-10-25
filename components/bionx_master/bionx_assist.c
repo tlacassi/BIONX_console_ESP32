@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-only */
 #include "bionx_assist.h"
+_Static_assert(BV_MAX_DRIVE<=BX_MAX_BENCH_ASSIST,"V1 cap must fit master cap");
 uint32_t bv_speed_millikmh(uint16_t raw)
 { return ((uint64_t)raw*9091*BV_WHEEL_MM*6+99999)/100000; }
 static bv_reason_t check(const bb_input_t *i,int64_t now)
@@ -34,24 +35,24 @@ bool bv_calibrate(bv_control_t *c,const bb_input_t *i,int64_t now)
 bool bv_arm(bv_control_t *c,const bb_input_t *i,int64_t now)
 {
     if(c->state!=BV_READY || !c->calibrated || check(i,now)!=BV_OK || i->deadman ||
-       i->speed.raw || i->torque.raw>c->baseline+2) return false;
+       i->speed.raw || i->torque.raw>c->baseline+BV_DEADBAND) return false;
     c->boot_pending=false;c->state=BV_ACTIVE;c->reason=BV_OK;c->last_us=c->ramp_us=now;
     c->torque_us=i->torque.timestamp_us;c->last_torque=i->torque.raw;c->stalled_since=-1;
     c->output=c->target=c->pulse_peak=0;c->pulse_us=now;return true;
 }
 static unsigned demand(const bv_control_t *c,const bb_input_t *i)
 {
-    unsigned effort=i->torque.raw>c->baseline+2 ? i->torque.raw-c->baseline-2 : 0;
+    unsigned effort=i->torque.raw>c->baseline+BV_DEADBAND ? i->torque.raw-c->baseline-BV_DEADBAND : 0;
     unsigned target=2*effort;
     return target>BV_MAX_DRIVE ? BV_MAX_DRIVE : target;
 }
-/* A fresh pedal impulse decays by one raw point per 50ms, at most400ms
+/* A fresh pedal impulse decays by one raw point per BV_DECAY_US, at most800ms
  * from its peak. Only live, valid telemetry permits this short tail. */
 static unsigned pulse_demand(const bv_control_t *c,const bb_input_t *i,int64_t now)
 {
     unsigned current=demand(c,i),tail=0;
-    if(now>=c->pulse_us && now-c->pulse_us<400000) {
-        unsigned fall=(unsigned)((now-c->pulse_us)/50000);
+    if(now>=c->pulse_us && now-c->pulse_us<BV_PULSE_US) {
+        unsigned fall=(unsigned)((now-c->pulse_us)/BV_DECAY_US);
         tail=c->pulse_peak>fall ? c->pulse_peak-fall:0;
     }
     return current>tail ? current:tail;
@@ -79,9 +80,14 @@ uint8_t bv_step(bv_control_t *c,const bb_input_t *i,int64_t now)
     if(i->deadman) { bv_stop(c);return 0; }
     if(i->torque.timestamp_us!=c->torque_us) {
         int delta=(int)i->torque.raw-c->last_torque;
-        /* Falling torque always cuts immediately, including a rapid release. */
+        /* A rapid release is valid; the bounded envelope handles its decay. */
         if(delta>16) return trip(c,BV_TORQUE_JUMP);
         c->last_torque=i->torque.raw;c->torque_us=i->torque.timestamp_us;
+    }
+    c->speed_limited=bv_speed_millikmh(i->speed.raw)>=BV_MAX_SPEED_KMH*1000U;
+    if(c->speed_limited) {
+        c->output=c->target=c->pulse_peak=0;c->stalled_since=-1;c->ramp_us=now;
+        return 0; /* Coast, without latching a fault or retaining an old pulse. */
     }
     if(!i->speed.raw && c->output>=4) {
         if(c->stalled_since<0) c->stalled_since=now;
@@ -92,9 +98,9 @@ uint8_t bv_step(bv_control_t *c,const bb_input_t *i,int64_t now)
         c->pulse_peak=demand(c,i);c->pulse_us=now;
     }
     c->target=target;
-    /* Wheel-up V1: no speed cutoff/taper, per explicit bench request. */
+    /* Speed limit coasts; no regen and no latched overspeed fault. */
     if(c->target<c->output) c->output=c->target;
-    if(now-c->ramp_us>=50000) {
+    if(now-c->ramp_us>=BV_ATTACK_US) {
         if(c->target>c->output) ++c->output;
         c->ramp_us=now;
     }
@@ -125,7 +131,8 @@ bool bv_authorizes(const bv_control_t *c,const bb_input_t *i,uint8_t raw,int64_t
 {
     if(c->state!=BV_ACTIVE || !raw || raw>BV_MAX_DRIVE || raw!=c->output ||
        now<c->last_us || now-c->last_us>=BV_COMMAND_TTL || check(i,now)!=BV_OK ||
-       i->deadman || raw>pulse_demand(c,i,now)) return false;
+       i->deadman || bv_speed_millikmh(i->speed.raw)>=BV_MAX_SPEED_KMH*1000U ||
+       raw>pulse_demand(c,i,now)) return false;
     if(!i->speed.raw && c->stalled_since>=0 && now-c->stalled_since>=2000000) return false;
     return true;
 }
@@ -156,5 +163,6 @@ void bv_button_step(bv_control_t *c,bv_button_t *b,const bb_input_t *i,int64_t n
 }
 const char *bv_status_name(const bv_control_t *c)
 {
+    if(c->state==BV_ACTIVE && c->speed_limited) return "35 KM/H LIMIT";
     return c->state==BV_IDLE && !c->boot_pending ? "STOPPED: CLICK":bv_state_name(c->state);
 }

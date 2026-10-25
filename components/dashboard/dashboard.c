@@ -208,7 +208,7 @@ esp_err_t dashboard_live_update(const dashboard_live_t *d)
        (d->power_valid && (!isfinite(d->battery_power_w) || fabsf(d->battery_power_w)>20000)) ||
        (d->motor_level_valid && d->motor_level>64) ||
        (d->torque_valid && d->torque>64) ||
-       (d->command_valid && d->command>8)) return ESP_ERR_INVALID_ARG;
+       (d->command_valid && d->command>64)) return ESP_ERR_INVALID_ARG;
     if(!initialized) return ESP_ERR_INVALID_STATE;
     if(!lvgl_port_lock(5)) return ESP_ERR_TIMEOUT;
     live=true;live_fault=d->fault;live_tick=lv_tick_get();

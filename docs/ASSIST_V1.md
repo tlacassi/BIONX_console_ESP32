@@ -5,6 +5,28 @@ MCP2515 à deux SPI. C'est une V1 expérimentale pour essais supervisés roue
 levée. Le câblage reste celui de [HARDWARE.md](HARDWARE.md).
 Le profil jog précédemment chargé n'est pas remplacé sans flash explicite.
 
+## Réglage sensible, impulsion renforcée et35 km/h — 25 octobre2026
+
+Paramètres actifs dans `components/bionx_master/bionx_assist.h` (le contrôleur
+historique `bionx_control.c` n'est pas l'application V1 utilisée) :
+
+- `BV_DEADBAND=1` au lieu de2 ; gain×2 inchangé.
+- `BV_MAX_DRIVE=12` au lieu de8, plafond partagé avec la capacité du maître ;
+  anciens profils jog8 et banc pédale4 conservent leur propre plafond.
+- `BV_ATTACK_US=25000` : montée1 point/25 ms au lieu de50 ms.
+- `BV_DECAY_US=66667`, `BV_PULSE_US=800000` : pic diminué1 point/66,667 ms,
+  queue bornée800 ms ; une petite impulsion peut durer moins longtemps.
+- `BV_MAX_SPEED_KMH=35` : commande et enveloppe mises à zéro dès vitesse
+  estimée≥35, sans défaut verrouillé ni régène. Sous le seuil, un nouvel effort
+  peut produire de l'assistance ; aucune vieille impulsion conservée.
+
+Bouton, frein, défauts et données périmées coupent immédiatement malgré la
+queue plus longue. Le filtre final applique les mêmes plafonds/enveloppe/vitesse.
+La limite est une coupure logicielle sur mesure candidate, pas un freinage ni
+une garantie mécanique de35 km/h : circonférence et conversion non calibrées,
+quantification et inertie. Le format courant reste choisi séparément.
+Les valeurs8/400 ms et l'absence de limite citées plus bas sont historiques.
+
 ## Arrêt mémorisé et reprise
 
 Un appui coupe immédiatement, puis l'écran indique `STOPPED: CLICK`. Le

@@ -1485,3 +1485,37 @@ Capture rouverte/laissée ouverte, pas de commande positive de test envoyée.
 Boot atteint ASSIST X2/OK,8/8 fraîches,~39,15 V/38 C/SOC70, pertes0 et
 TXerr/timeout0 ; couple/vitesse/commande0, UI ESP_OK. Validation physique
 clic/reprise encore attendue. [Snapshot](logs/2026-10-25-v1-resume-boot-snapshot.txt).
+
+
+## 2026-10-25 — Sensibilité accrue, impulsion renforcée et limite35
+
+Demande explicite : capteur plus sensible, impulsion moteur plus longue/forte,
+max speed35. Paramètres de la V1 réellement active modifiés, pas ceux du
+contrôleur historique ouvert dans l'IDE. Bande morte2→1, gain×2 conservé,
+plafond8→12/64 ; montée1/50→1/25 ms ; décroissance1/66,667 ms et expiration
+800 ms au lieu de400. Le plafond maître autorise12, avec assert de cohérence
+V1 ; profils jog8 et ancien banc4 gardent leurs plafonds propres. UI accepte
+la plage brute d'affichage0–64, sans pouvoir commander le moteur.
+
+Limite logicielle35 km/h candidats : sortie/demande/enveloppe0 dès le premier
+échantillon au-dessus du seuil, état ACTIVE conservé, libellé35 KM/H LIMIT.
+Retour sous le seuil sans impulsion conservée ; nouvel effort possible.
+Filtre TX vérifie aussi le seuil. Pas de régène, pas de freinage. À2136 mm,
+brut30≈34,95 km/h et31≈36,12 : vitesse non calibrée/quantifiée et inertie,
+pas de garantie mécanique exacte35. Autres coupures immédiates conservées.
+
+Tests9/9 : gain/bande morte (deux points au-dessus du zéro suffisent), plafond12
+et rejet13 par le maître, expiration800 ms avec mesures zéro fraîches, réponse
+encore présente après400 ms, protections et reprise au clic. Àbrut30 sortie
+permise,31 coupure sans fault/enveloppe vidée, retour29 sans vieille demande,
+255 coast et256 refus de format. UI2/2 : CMD12 accepté et libellé35 lisible.
+Build ESP32 sans warning. Flash build-assist-v1-live115200, empreintes toutes
+vérifiées ; image646848 octets, SHA256
+`8b2075874ec7abafb6859e61845cffb3de04489719c42e8957275b6096d9e04b`.
+
+Capture rouverte/laissée ouverte, aucune commande d'effort assistant. Boot et
+init CAN aboutis, données8/8 fraîches (~39,11 V/38 C/SOC69), pertes0 et
+TXerr/timeout0 ; WAIT ZERO/OK, auto1/cal0 car vitesse brute13 encore non nulle,
+couple0 et commande0. Utilisateur informé d'attendre arrêt complet pour zéro.
+Source courant shunt inchangée, validité physique FF/FF toujours non établie.
+Réponse mécanique de ce nouveau réglage à confirmer par utilisateur.

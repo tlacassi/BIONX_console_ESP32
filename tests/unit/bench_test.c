@@ -40,7 +40,7 @@ typedef struct { can_frame_t last; unsigned count, torque_reads, speed_reads; bo
 static bool wire_send(void *ctx,const can_frame_t *f)
 {
     wire_t *w=ctx; w->last=*f; ++w->count;
-    if (f->id==0x20 && f->dlc==4 && f->data[1]==9) assert(f->data[3]<=8 && !f->data[2]);
+    if (f->id==0x20 && f->dlc==4 && f->data[1]==9) assert(f->data[3]<=BX_MAX_BENCH_ASSIST && !f->data[2]);
     if(f->dlc==2 && f->id==0x20 && f->data[1]==0x21) ++w->torque_reads;
     if(f->dlc==2 && f->id==0x20 && f->data[1]==0x11) ++w->speed_reads;
     return !w->fail;
@@ -74,7 +74,12 @@ static void master_safety(void)
         assert(!bx_master_set_assist(&j,9,time));
         advance(&j,&bus,&time,30); assert(j.last_assist==8);
         advance(&j,&bus,&time,80); assert(!j.last_assist);
-        jc.assist_cap=9; assert(!bx_master_init(&j,&jc,wire_send,&bus));
+        jc.assist_cap=12;assert(bx_master_init(&j,&jc,wire_send,&bus));
+        assert(bx_master_start(&j,time));advance(&j,&bus,&time,500);
+        assert(j.state==BX_NEUTRAL && bx_master_set_assist(&j,12,time));
+        assert(!bx_master_set_assist(&j,13,time));
+        advance(&j,&bus,&time,30);assert(j.last_assist==12);
+        jc.assist_cap=13; assert(!bx_master_init(&j,&jc,wire_send,&bus));
     }
     bx_master_t m; wire_t w={0}; int64_t t=0;
     bx_config_t cfg=bx_default_config(); cfg.fast_poll=true; cfg.assist_cap=4;
