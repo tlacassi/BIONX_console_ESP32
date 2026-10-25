@@ -7,8 +7,8 @@ preuves datées priment sur les sections historiques.
 
 Mettre à jour TODO.md avant un incrément firmware, puis y consigner les résultats.
 Séparer implémentation, tests logiciels et observation physique utilisateur.
-Consigner les nouveaux résultats dans VALIDATION.md et actualiser le bilan
-BENCH_FINDINGS.md lorsqu’une conclusion change.
+Consigner les nouveaux résultats dans docs/VALIDATION.md et actualiser le bilan
+docs/BENCH_FINDINGS.md lorsqu’une conclusion change.
 
 Le banc actif est HUZZAH32/ESP32, pas la carte ESP32-C3 cible historique.
 Les profils neutre, jog et assistance pédale ont des autorisations distinctes.

@@ -1,127 +1,77 @@
-# Point de reprise — 25 octobre 2026
+# Point de reprise — V1 du25 octobre2026
 
-## État confirmé et dernière demande
+## Demande et travail livré
 
-L’utilisateur confirme le pilotage moteur sur roue levée, puis répond
-« ça marche bien » après ajout de la lecture du capteur de pédalage.
-Lecture/affichage du capteur jugés fonctionnels ; aucun relevé chiffré,
-zéro sous charge connue, signe, gain ou calibration N/Nm n’a été fourni.
-Dernière demande : vérifier la documentation pour le prochain agent.
-Cette passe ne modifie ni ne reflashe le firmware.
+L'utilisateur demande une V1 : lancement de l'initialisation dès le boot ESP,
+interface ronde d'origine, un seul mode d'assistance ×2, sans régénération,
+affichage de puissance ; rangement et publication sur son dépôt avec commits
+réguliers. Tout le travail est sur `feature/assist-v1` du dépôt
+https://github.com/tlacassi/BIONX_console_ESP32 ; `main` conserve la base importée.
 
-Lire ensuite :
+Lire [README](README.md), [procédure V1](docs/ASSIST_V1.md),
+[exigences](project_requirements.md), [TODO](TODO.md),
+[bilan](docs/BENCH_FINDINGS.md) et [validation](docs/VALIDATION.md).
+Les procédures/analyses sont maintenant dans `docs/`, les captures originales
+inchangées dans `captures/`. Profils et entrypoints restent à la racine.
 
-1. [project_requirements.md](project_requirements.md) : cible fonctionnelle.
-2. [BENCH_FINDINGS.md](docs/BENCH_FINDINGS.md) : acquis et leçons pour le code final.
-3. [JOG_BENCH.md](docs/JOG_BENCH.md) : commandes et limites du profil réellement actif.
-4. [HARDWARE.md](docs/HARDWARE.md) : montage actuel et historique des broches.
-5. [TODO.md](TODO.md) : état courant en tête, puis journal des incréments.
-6. [VALIDATION.md](docs/VALIDATION.md) : preuves datées, images et résultats successifs.
+## Firmware actuellement chargé : toujours le jog précédent
 
-Les sections anciennes « actuel », « dernier firmware », « non flashé » dans
-les journaux décrivent leur date, pas l’état courant ci-dessous. Les tableaux
-C3/SPI partagé ne sont pas le brochage du banc HUZZAH32 à deux SPI.
+**Aucun flash, port série ouvert ou mouvement initié pendant l'incrément V1.**
+Dernier flash connu : `build-encoder-jog/sdkconfig-live`, ESP32/HUZZAH32,
+image historique `bionx_c3_supermini.bin`,509520 octets, SHA256
+`7aba6b67f6c0ce945dffb3d94d70c32d8f4a2d1d56fc837b1439a9c5c7b517ca`.
+Le dossier jog a été recompilé pour vérifier les régressions : son binaire
+local a changé, il ne représente plus cette image précédemment flashée.
+Dernier port connu `/dev/cu.usbserial-016138BC`, à réidentifier sans ouvrir
+un moniteur pendant un essai ou avant préservation d'un premier défaut.
 
-## Firmware réellement chargé
+Jog chargé : dix crans2…20 km/h estimés, plafond commande8 au démarrage/4
+en mouvement, zéro à cible, clic arrêt/acquittement sous conditions,20 s de
+session, aucune régène. Pilotage et lecture pédale confirmés par utilisateur.
+Voir [JOG_BENCH](docs/JOG_BENCH.md) pour ce profil distinct de la V1.
 
-- Carte : Adafruit HUZZAH32, ESP32 classique, écran GC9A01 et MCP2515 séparés.
-- Répertoire `build-encoder-jog`, config `build-encoder-jog/sdkconfig-live`.
-- Image `build-encoder-jog/bionx_c3_supermini.bin`, **509520 octets**.
-  Le nom C3 est historique : cette image est compilée pour ESP32.
-- SHA256 : `7aba6b67f6c0ce945dffb3d94d70c32d8f4a2d1d56fc837b1439a9c5c7b517ca`.
-- Dernier flash : profil jog live avec affichage pédalage, hash vérifié.
-- Dernier port utilisé : `/dev/cu.usbserial-016138BC` ; le réidentifier si besoin,
-  sans ouvrir de moniteur pendant une rotation ni perdre un défaut figé.
-- Flags actifs : HUZZAH32, CAN_MASTER, ASSIST_BENCH, ENCODER_JOG, JOG_TX.
-  `ASSIST_BENCH` est une dépendance du jog ; il ne signifie pas que le
-  contrôleur de pédalage est actif. Le jog fournit l’implémentation bench_app.
-- `CONFIG_BIONX_JOG_WHEEL_MM=2136`, valeur de table provisoire pour700×28C.
-- Defaults exacts : `sdkconfig.defaults;sdkconfig.master;sdkconfig.huzzah32;sdkconfig.components-dual-spi;sdkconfig.master-dual-spi;sdkconfig.assist-bench;sdkconfig.encoder-jog;sdkconfig.encoder-jog-live`.
+## V1 compilée, non flashée
 
-Écran SPI2 : MOSI18/SCK5/CS14/DC32/RST27. MCP SPI3 : SI23/SCK4/SO19/CS33/INT34,
-SPI2 MHz, CAN125 kbit/s, quartz déclaré8 MHz. Encodeur25/26/22, commun GND.
-Wake externe vers GND, aucun wake GPIO. Frein ESP non câblé ; utilisateur
-confirme une coupure haute tension indépendante accessible sur le banc.
+- `build-assist-v1/sdkconfig` : calcul à blanc, initialisation CAN réelle,
+  aucune assistance émise ;643664 octets, SHA256
+  `961465f82d5f1e5065435a69490e88637f4953c635bb054c37efdda2d4b8a48b`.
+- `build-assist-v1-live/sdkconfig` : émission de banc supervisé,643888 octets,
+  SHA256 `db2ce015acafc014da0cc105596a84e5266f59f9f3b9c843c809d8c9b33f39dc`.
+- Cible réelle **ESP32**, nom C3 du binaire historique. Ne pas flasher sur C3.
+- Découverte batterie automatique après silence1 s ; init seulement sur réponse
+  HW attendue, bouton wake externe conservé. Aucun pilotage wake GPIO.
+- Clic sans effort = calibration16 réponses distinctes ; nouveau clic = armement
+  stationnaire au neutre. Le boot ne lance pas le moteur.
+- `min(8, 2*max(0,pédale-zéro-2))`, rampe1/200 ms, baisse immédiate,
+  aucune régène, réduction20–25 km/h candidats, défaut à25, arrêt bouton.
+- Un ×2 brut ne prouve pas un doublement du couple physique. Force/cadence,
+  watts et vitesse non calibrés ; frein ESP non câblé ; timeout moteur sur perte
+  CAN/reset toujours non mesuré. Profil réservé au banc roue levée avec coupure HV.
+- Dashboard d'origine avec données réelles et `--` si périmées : watts batterie
+  signés U×I (`BAT W?`), commande CAN effectivement émise (`CMD n/64`),
+  vitesse estimée, SOC, état et raison de défaut. Aucune puissance mécanique inventée.
 
-## Comportement courant
+## Montage inchangé
 
-Boot à zéro, sonde batterie HW toutes les secondes ; réponse attendue → init.
-Console originale déconnectée. Encodeur : niveau0 arrêt, niveaux1–10 demandent
-2,4,…20 km/h estimés. Clic coupe ; après défaut jog, clic puis relâchement
-acquitte seulement si roue immobile et données saines ; nouvelle rotation
-nécessaire. Pas de reprise différée. Défaut CAN/MCP persistant reste bloquant.
-Maintien2 s : extinction. Sans action20 s ou durée de session20 s : zéro.
+HUZZAH32, écran SPI2 MOSI18/SCK5/CS14/DC32/RST27 ; MCP SPI3 SI23/SCK4/SO19,
+CS33/INT34, quartz déclaré8 MHz, SPI2 MHz, CAN125 kbit/s. Encodeur25/26/22,
+commun GND ; bouton wake externe, GPIO21 inutilisé. Frein36 optionnel avec
+pull-up externe3,3 V et contact normalement fermé, non câblé sur le banc.
 
-Consigne brute max8 au démarrage/4 en mouvement, rampe1 brut/200 ms, zéro
-à cible et reprise en dessous ; aucune régène. Survitesse25 km/h estimés,
-NO MOTION après2 s sans vitesse détectée sous commande>=4. Commande valable
-100 ms, vitesse fraîche<150 ms, garde-fous température/tension/données actifs.
-La coupure CAN ne garantit pas l’arrêt si le moteur garde sa dernière consigne.
+## Sources et vérifications
 
-`Ped raw… max… …ms` : moteur0x21, brut actuel, pic depuis boot, âge. Lecture
-visée250 ms, stale à1 s. Indicateur seulement : aucun pédalage ne démarre
-l’assistance. `Pbat` = U×I batterie signé, pas puissance mécanique moteur.
-Ni watts ni vitesse ni force ne sont calibrés indépendamment.
+- Contrôle V1 pur : `components/bionx_master/bionx_assist.[ch]`.
+- Entrées, commandes locales/série et filtre ultime : `main/assist_app.c`.
+- Intégration CAN et suivi émission réelle : `main/bionx_master_app.c`.
+- Ordonnanceur/paires U/I : `components/bionx_master/bionx_master.[ch]`.
+- Dashboard partagé démo/V1 : `components/dashboard/dashboard.[ch]`.
+- L'ancien banc pédale, le jog et le contrôleur historique restent séparés.
 
-## Où travailler
+Tests9/9 contrôle/protocole et2/2 LVGL ; captures rejouées sans nouveau rejet ;
+builds V1 dry/live et jog sans warning. Branche frein V1 compilée avec-Werror,
+non activée. Procédures et commandes exactes dans ASSIST_V1 et VALIDATION.
+Les tests et builds ne constituent pas une validation matérielle de la V1.
 
-| Besoin | Sources principales |
-|---|---|
-| Protocole/metadata | `components/bionx_protocol/bionx_protocol.[ch]` |
-| Init/arrêt, polling prioritaire et ensembles U/I cohérents | `components/bionx_master/bionx_master.[ch]` |
-| Jog, conversion km/h, clic acquittement et garde-fous | `components/bionx_master/bionx_jog.[ch]` |
-| Capture IRQ, Gray, file de crans et clic bref | `components/bionx_master/bionx_encoder.h` |
-| Entrées, affichage pédalage, autorisation finale TX | `main/jog_app.c` |
-| Boucle principale, UI générale, premier défaut TX figé | `main/bionx_master_app.c` |
-| Transport MCP one-shot, mutex RX/TX | `components/mcp2515/` |
-| Contrôle pédale séparé, non activé dans ce jog | `components/bionx_master/bionx_bench.[ch]`, `main/bench_app.c`, `ASSIST_BENCH.md` |
-| Ancien contrôleur non utilisé par l’application jog | `components/bionx_master/bionx_control.[ch]` |
-
-Ne pas réintroduire les défauts corrigés : acquisition encodeur par polling,
-plafonds divergents entre contrôleur et filtre TX, vitesse affamée par polling
-circulaire, calcul U/I mélangeant des générations, maintien de couple fixe à
-la cible sur roue déchargée. Voir les preuves dans BENCH_FINDINGS/VALIDATION.
-
-## Reproduire les vérifications
-
-Dernier résultat logiciel : **8/8 tests hôte**, y compris charge télémétrie avec
-réponses retardées1/6/11 ms et conversion km/h. Build et flash réussis, sans
-warning. Ces résultats ne constituent pas une mesure physique de sécurité.
-
-```sh
-cmake -S tests/unit -B build-unit
-cmake --build build-unit
-ctest --test-dir build-unit --output-on-failure
-```
-
-Environnement local et build du profil existant :
-
-```sh
-export IDF_PYTHON_CHECK_CONSTRAINTS=0
-. /Users/theolacassin/esp/v5.2/esp-idf/export.sh
-idf.py -B build-encoder-jog build
-```
-
-Pour recréer le build/config, utiliser la commande complète de JOG_BENCH.md,
-pas un autre profil C3 ou un ancien SDKCONFIG. Vérifier les flags et l’image
-avant tout flash. Derniers journaux :
-`/tmp/bionx-jog-pedal-display-{build,flash}.log` (temporaires, pas archives fiables).
-La trace durable est VALIDATION.md et le hash ci-dessus.
-
-## Ce qui reste à faire selon la prochaine demande
-
-- Relever Ped raw au repos et sous efforts reproductibles ; vérifier zéro,
-  signe, dynamique, filtrage et conversion physique avant assistance pédale.
-- Mesurer le tour de roue et contrôler le facteur vitesse CAN. À2136 mm,
-  la quantification donne un premier bin au-dessus25 vers25,63 km/h estimés ;
-  le système ne garantit pas une vitesse mécanique maximale exacte de25.
-- Vérifier le chemin du courant/shunt et comparer U/I à une mesure indépendante.
-- Raccorder/tester frein, caractériser coupure CAN/reset ESP et arrêt matériel.
-- Concevoir et tester le contrôle final avec ces résultats. Le jog validé
-  n’est pas une assistance routière validée et ses plafonds ne sont pas des watts.
-
-Ne pas rouvrir un chantier matériel sur la seule base d’un ancien DATA FAULT :
-relever la première cause précise (SPEED OLD, U/I INVALID, LINK/MASTER, TX…)
-et conserver son contexte avant reset. Les références exactes du transceiver
-et certaines propriétés électriques restent inconnues ; cela ne permet pas
-d’attribuer rétroactivement les défauts déjà reproduits dans le logiciel.
+Prochaine étape : flash seulement sur autorisation explicite, puis essais
+utilisateur roue levée : boot/wake, calibration, armement, réponse pédale,
+arrêt bouton, mesures U/I et validation indépendante des sécurités restantes.

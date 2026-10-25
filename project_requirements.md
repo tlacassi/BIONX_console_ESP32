@@ -258,3 +258,15 @@ Aucun relevé chiffré du capteur n’a été fourni : zéro, signe, dynamique e
 comme force en N ou couple en Nm. La puissance électrique batterie U×I
 n’est pas la puissance mécanique du moteur. Ne pas recopier les paramètres
 jog dans le contrôle final sans traiter calibration, frein et perte de CAN.
+
+## 17. Incrément V1 demandé le25 octobre2026
+
+Sur le banc HUZZAH32 réellement utilisé : découverte et initialisation CAN
+automatiques au boot, interface ronde d'origine alimentée par données réelles,
+un mode pédale ×2 et aucune régénération. Le rapport ×2 porte sur le signal
+brut corrigé du zéro ; un doublement physique de couple ne peut pas être
+affirmé sans calibration. Calibration à vide et armement local restent explicites
+pour cette première version expérimentale. Puissance affichée = U×I batterie,
+commande CAN séparée ; aucune puissance mécanique inventée depuis le niveau.
+Procédure, saturation/rampe, profils calcul à blanc/émission et limites :
+[ASSIST_V1](docs/ASSIST_V1.md). Les exigences routières restent ouvertes.

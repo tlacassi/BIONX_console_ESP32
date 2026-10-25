@@ -5,6 +5,14 @@ il ne valide ni le matériel ESP32-C3 cible, ni un usage routier.
 Pour reprendre le développement : [HANDOFF.md](../HANDOFF.md).
 Les essais détaillés et images flashées figurent dans [VALIDATION.md](VALIDATION.md).
 
+## Incrément V1 logiciel — 25 octobre2026
+
+La branche `feature/assist-v1` ajoute un contrôle pédale séparé : zéro explicite,
+armement local, gain brut×2 plafonné8, aucune régène et dashboard d'origine avec
+watts batterie signés. [Procédure V1](ASSIST_V1.md). Aucun nouveau flash/essai
+physique : les confirmations ci-dessous concernent toujours les essais précédents.
+Le rapport physique effort/commande et les arrêts sur perte CAN restent à mesurer.
+
 ## Résultats physiques rapportés par l’utilisateur
 
 | Résultat | Ce qui est confirmé | Limite |

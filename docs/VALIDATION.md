@@ -1185,3 +1185,72 @@ existant identiques au handoff. Dernier firmware reste l’image pédalage
 509520 octets. Aucun source/config firmware modifié, aucun build/flash,
 aucun mouvement ni nouvel essai physique pendant cet audit. Les8/8 tests
 mentionnés dans le handoff sont ceux de la dernière livraison firmware.
+
+
+## 2026-10-25 — V1 assistance ×2 et publication Git
+
+Demande utilisateur : init au boot, interface originelle, un mode pédale×2,
+aucune régène, puissance visible ; GitHub, commits réguliers et rangement.
+Aucun dépôt Git local préexistant, dépôt distant vide accessible via Git.
+Base importée sur `main`, incréments sur `feature/assist-v1`, publiés sur
+https://github.com/tlacassi/BIONX_console_ESP32 . Le connecteur GitHub répondait404 ;
+Git direct a permis lecture/écriture. `docs/` et `captures/` organisés,
+liens Markdown locaux vérifiés, profils source conservés à la racine.
+
+Sources tierces relues aux mêmes commits que ASSIST_BENCH (main.c et
+sparkfun_bionx.ino), aucun code importé. Contrôle V1 indépendant : calibration
+explicite16 échantillons distincts, armement local stationnaire au neutre,
+`min(8,2*max(0,torque-zero-2))`, rampe200 ms, baisse immédiate, réduction
+20–25 km/h candidats, aucune commande négative. Arrêt bouton vérifié à la
+boucle et avant TX, consigne100 ms, fraîcheur couple/vitesse150 ms, défauts
+verrouillés ; NO MOTION après2 s sans vitesse sous commande≥4. Frein36
+optionnel conservé, absent dans les profils livrés. Aucun armement au boot.
+
+Dashboard original repris : anneau, vitesse, SOC ; mode fixe ASSIST X2,
+watts électriques batterie signés depuis les paires U/I cohérentes, marqueur
+BAT W? et vitesse estimée km/h~. CMD est la dernière commande dont le transport
+confirme l'émission, suivie après substitution éventuelle par neutre. Ce
+suivi d'émission n'établit pas la réponse physique du moteur. Valeurs absentes
+ou périmées masquées, watchdog d'affichage500 ms sans update ; motif de défaut
+préservé. Pas d'inférence de watts depuis le capteur ou le niveau de commande.
+
+Vérifications logicielles exécutées :
+
+- `cmake -S tests/unit -B build-unit`, build, ctest : **9/9 réussis**.
+  Gain/saturation, calibration refusée sous charge ou sur réponses dupliquées,
+  armement, rampe, chute immédiate, seuil vitesse, frein, données anciennes,
+  horloge, saut couple, NO MOTION et défaut verrouillé. Tests existants conservés.
+- Ordonnanceur V1 : vitesse et couple prioritaires50 ms ; scénarios sérialisés
+  à latences1/6/11 ms sur5 s gardent couple/vitesse frais et puissance U/I
+  valide. Profil jog testé en parallèle avec sa cadence couple précédente.
+- `cmake -S tests/host -B build-host`, build, ctest : **2/2 réussis**,
+  dashboard démo et compilation conditionnelle V1. Vrai LVGL : validité,
+  NaN/refus, verrou occupé, watts signés±1400, géométrie circulaire, états,
+  péremption et conservation du motif défaut. Rendu240×240 inspecté visuellement.
+  Un débordement à quatre chiffres corrigé par police16 pour la puissance réelle.
+- Rejeux `tools/check_cl1000.py` :27679 trames,575 UNKNOWN, aucun rejet ;
+  CSV start&stop :1690 trames,42 UNKNOWN, aucun rejet. Hashes inchangés.
+- ESP-IDF local5.2-dirty : builds **V1 dry-run, V1 live et jog réussis sans
+  warning compilateur**. Gestionnaire de composants nécessite accès psutil
+  hors sandbox ; aucun fichier SDK modifié. Branche optionnelle frein36 de
+  assist_app compilée avec-Werror, sans activation dans les profils livrés.
+- `esptool --chip esp32 image_info` de la V1 live : checksum et hash valides.
+
+Images construites, nom historique `bionx_c3_supermini.bin`, cible ESP32 :
+
+| Profil | Taille | SHA256 fichier |
+|---|---:|---|
+| build-assist-v1 (TX=0) |643664|961465f82d5f1e5065435a69490e88637f4953c635bb054c37efdda2d4b8a48b|
+| build-assist-v1-live (V1_TX=y) |643888|db2ce015acafc014da0cc105596a84e5266f59f9f3b9c843c809d8c9b33f39dc|
+| build-encoder-jog (régression, non flashé) |509680|8050a5f5b30c4f43f3d67ba3e27db0cfa01ad9fe3734f83d6eb479331f6b9963|
+
+Logs temporaires `/tmp/bionx-v1-{build,live-build,jog-build,unit-build,ui-build,replay}.log`.
+Les hashes peuvent changer après un nouveau commit/build car la version Git
+est intégrée dans l'image ; ils identifient précisément les fichiers vérifiés ici.
+
+**Aucun flash, aucune ouverture série ni nouvel essai physique.** Le firmware
+chargé connu reste le jog509520 octets/hash7aba6b67… du précédent essai ; le
+rebuild jog local n'est pas ce firmware flashé. Le gain physique×2 n'est pas
+calibré, capteur de couple sans cadence, vitesse et watts candidats, frein non
+raccordé, timeout moteur sur perte CAN/reset non mesuré. Ni ce build ni ces
+tests ne valident un usage roulant. Procédure : [ASSIST_V1](ASSIST_V1.md).

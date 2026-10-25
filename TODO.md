@@ -4,11 +4,18 @@
 
 - [x] Initialiser Git et publier une base fidèle du banc sur le dépôt utilisateur.
 - [x] Ranger documentation et captures, préserver les références et profils existants.
-- [ ] Relire les sources tierces ; définir le gain brut ×2 sans inventer une calibration physique.
-- [ ] Ajouter un profil V1 séparé : découverte automatique au boot, un mode, aucune régène.
-- [ ] Restaurer le dashboard initial avec données réelles, péremption, puissance batterie et état de contrôle.
-- [ ] Tester commande/arrêt/défauts/polling et interface ; compiler HUZZAH32 et vérifier régressions.
-- [ ] Documenter limites, procédure et résultats ; committer et publier les incréments.
+- [x] Relire les sources tierces ; définir le gain brut ×2 sans inventer une calibration physique.
+- [x] Ajouter un profil V1 séparé : découverte automatique au boot, un mode, aucune régène.
+- [x] Restaurer le dashboard initial avec données réelles, péremption, puissance batterie et état de contrôle.
+- [x] Tester commande/arrêt/défauts/polling et interface ; compiler HUZZAH32 et vérifier régressions.
+- [x] Documenter limites, procédure et résultats ; committer et publier les incréments.
+
+Preuves V1 : tests9/9 contrôle et2/2 LVGL, captures rejouées sans nouveau
+rejet, builds ESP32 dry/live et jog sans warning ; empreintes et détails dans
+[VALIDATION](docs/VALIDATION.md). Commits publiés sur `feature/assist-v1`.
+
+- [ ] Essais physiques V1 après autorisation de flash : calibration, pédalage et arrêt.
+- [ ] Calibrer le gain physique, vitesse et U/I ; frein et arrêt sur perte CAN/reset.
 
 Aucun flash demandé dans cet incrément. Le profil jog chargé reste inchangé.
 
