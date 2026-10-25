@@ -1404,3 +1404,26 @@ volontaire. Boot/init puis auto-calibration16 et ASSIST X2/OK observés ;
 ~39,18 V, courant-1 mA, watts-0,039, UI ESP_OK, vitesse/couple/commande0,
 pertes0/TEC0/REC0/txerr0/timeout0. Pas d'effort initié par l'assistant.
 Log en cours `/tmp/bionx-v1-pedal-pulse.log`. Essai utilisateur en attente.
+
+
+### Retour de l'essai impulsionnel : TX positif et indicateur moteur non nul
+
+Utilisateur : « je crois avoir vu passer une augmentation courte de la jauge
+moteur ». Capture laissée ouverte. Snapshot durable :
+[essai impulsionnel](logs/2026-10-25-v1-pedal-pulse-snapshot.txt).
+21 changements de commande confirmés par le transport, valeurs0…7 bruts,
+dont montée1/2/3/4/5/6/7 puis retour0. À29,137 s : tq2, vitesse brute20,
+want2/wire2/TX2, **P14=5**, watts-0,039, courant-0,001 A, UI ESP_OK.
+P14 non nul et hausse de jauge rapportée corroborent une activité moteur ;
+ils ne mesurent pas une puissance mécanique en W ni une accélération physique
+indépendante. À29,371 s, contrôle FAULT RANGE après augmentation de vitesse ;
+ensuite pas de nouvelle émission positive, malgré de nouveaux pics pédale.
+
+Courant1E/1F reste FF/FF pendant les commandes positives et P14 non nul ;
+tension descendue momentanément vers38,87 V puis revenue vers39,17 V.
+Le courant-1 mA et les watts associés ne sont pas crédibles comme mesure de
+l'activité moteur dans cet essai. Registre/shunt/chemin réel du courant à
+vérifier avant d'affirmer des watts moteur. Aucun wattage fabriqué depuis
+la consigne ou le pourcentage moteur. Port laissé ouvert conformément à la
+demande ; commande actuelle0, contrôle verrouillé, lecture des logs possible
+sans réouverture du port. Aucun mouvement initié par l'assistant.

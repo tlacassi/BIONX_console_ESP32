@@ -515,4 +515,6 @@ sur une impulsion courte.
 - [x] Enveloppe décroissante bornée400 ms et attaque50 ms, plafond8 conservé.
 - [x] Arrêt immédiat sur bouton/frein/données périmées/survitesse et filtre TX cohérent.
 - [x] Tests impulsion, expiration, coupure et limites ; build/flash puis capture ouverte.
-- [ ] Retour physique utilisateur sur la réponse au petit coup de pédale.
+- [x] Retour utilisateur : hausse brève de jauge ; logs TX positif jusqu’à7/64 et P14=5.
+- [ ] Vérifier source de courant/shunt : FF/FF reste figé pendant activité moteur, watts non fiables.
+- [ ] Validation mécanique indépendante et nouveaux essais à faible vitesse après acquittement.

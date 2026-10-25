@@ -168,3 +168,12 @@ présent. Cela ne valide pas la mesure physique du shunt. Requête batterie
 A6 sans réponse vers56 s, maître FAULT ; origine non établie.
 Demande utilisateur de réponse à impulsion courte traitée avec enveloppe
 ≤400 ms et attaque50 ms, arrêt immédiat sur défauts/données périmées.
+
+## Première réponse impulsionnelle observée dans les données
+
+Essai après correction : TX moteur confirmé jusqu'à7/64 puis zéro, indicateur
+moteur14=5/64 et utilisateur rapporte brève hausse de jauge. Pas de mesure
+mécanique indépendante. Nouveau RANGE après accélération de roue, verrouillé.
+Courant reste FF/FF malgré P14 non nul et baisse de tension : ne plus traiter
+-0,039 W comme puissance réelle représentative du moteur. Source de courant
+et trajet à travers shunt BionX à vérifier ; aucun remplacement par estimation.

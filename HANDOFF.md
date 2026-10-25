@@ -26,7 +26,10 @@ SHA256 `e486babc7231c16f0ad05f6bcef68b8b06d14e51f9b47ac23a0d462bc06f7d3f`.
 Flash/hash vérifiés. Réponse demandée à l'impulsion : montée1/50 ms, enveloppe
 qui décroît1/50 ms et expire≤400 ms, cap8, défaut/frein/bouton/péremption
 coupent immédiatement. Le filtre TX autorise la même enveloppe. Tests9/9 et
-2/2 UI, build sans warning. Essai utilisateur de cette nouvelle réponse attendu.
+2/2 UI, build sans warning. Essai reçu : TX confirmé jusqu'à7/64 puis0, P14=5 ; utilisateur rapporte
+brève hausse de jauge. Nouveau RANGE ensuite. Pas de mesure mécanique indépendante.
+Courant FF/FF reste figé malgré activité moteur : watts non crédibles comme
+mesure moteur, vérifier registre/shunt/chemin du courant avant correction.
 
 Cause du dernier essai sans moteur : vitesse dépassant25 km/h candidats avant
 les pics de couple (jusqu'à14) ; RANGE verrouillé, aucune commande positive
