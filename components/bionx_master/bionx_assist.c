@@ -17,12 +17,12 @@ static bv_reason_t check(const bb_input_t *i,int64_t now)
     return BV_OK;
 }
 static uint8_t trip(bv_control_t *c,bv_reason_t r)
-{ c->state=BV_FAULT;c->reason=r;c->output=c->target=0;return 0; }
+{ c->state=BV_FAULT;c->reason=r;c->output=c->target=c->pulse_peak=0;return 0; }
 void bv_init(bv_control_t *c)
 { *c=(bv_control_t){.torque_us=-1,.stalled_since=-1,.boot_pending=true}; }
 void bv_stop(bv_control_t *c)
 {
-    c->boot_pending=false;c->output=c->target=0;
+    c->boot_pending=false;c->output=c->target=c->pulse_peak=0;
     if(c->state!=BV_FAULT) { c->state=BV_IDLE;c->reason=BV_STOPPED; }
 }
 bool bv_calibrate(bv_control_t *c,const bb_input_t *i,int64_t now)
@@ -37,13 +37,24 @@ bool bv_arm(bv_control_t *c,const bb_input_t *i,int64_t now)
        i->speed.raw || i->torque.raw>c->baseline+2) return false;
     c->boot_pending=false;c->state=BV_ACTIVE;c->reason=BV_OK;c->last_us=c->ramp_us=now;
     c->torque_us=i->torque.timestamp_us;c->last_torque=i->torque.raw;c->stalled_since=-1;
-    c->output=c->target=0;return true;
+    c->output=c->target=c->pulse_peak=0;c->pulse_us=now;return true;
 }
 static unsigned demand(const bv_control_t *c,const bb_input_t *i)
 {
     unsigned effort=i->torque.raw>c->baseline+2 ? i->torque.raw-c->baseline-2 : 0;
     unsigned target=2*effort;
     return target>BV_MAX_DRIVE ? BV_MAX_DRIVE : target;
+}
+/* A fresh pedal impulse decays by one raw point per 50ms, at most400ms
+ * from its peak. Only live, valid telemetry permits this short tail. */
+static unsigned pulse_demand(const bv_control_t *c,const bb_input_t *i,int64_t now)
+{
+    unsigned current=demand(c,i),tail=0;
+    if(now>=c->pulse_us && now-c->pulse_us<400000) {
+        unsigned fall=(unsigned)((now-c->pulse_us)/50000);
+        tail=c->pulse_peak>fall ? c->pulse_peak-fall:0;
+    }
+    return current>tail ? current:tail;
 }
 uint8_t bv_step(bv_control_t *c,const bb_input_t *i,int64_t now)
 {
@@ -76,12 +87,16 @@ uint8_t bv_step(bv_control_t *c,const bb_input_t *i,int64_t now)
         if(c->stalled_since<0) c->stalled_since=now;
         if(now-c->stalled_since>=2000000) return trip(c,BV_STALL);
     } else c->stalled_since=-1;
-    c->target=demand(c,i);
+    unsigned target=pulse_demand(c,i,now);
+    if(demand(c,i)>0 && demand(c,i)>=target) {
+        c->pulse_peak=demand(c,i);c->pulse_us=now;
+    }
+    c->target=target;
     /* Fade out from 20 to 25 candidate km/h; never command regen. */
     uint32_t speed=bv_speed_millikmh(i->speed.raw);
     if(speed>=20000) c->target=c->target*(25000-speed)/5000;
     if(c->target<c->output) c->output=c->target;
-    if(now-c->ramp_us>=200000) {
+    if(now-c->ramp_us>=50000) {
         if(c->target>c->output) ++c->output;
         c->ramp_us=now;
     }
@@ -112,10 +127,10 @@ bool bv_authorizes(const bv_control_t *c,const bb_input_t *i,uint8_t raw,int64_t
 {
     if(c->state!=BV_ACTIVE || !raw || raw>BV_MAX_DRIVE || raw!=c->output ||
        now<c->last_us || now-c->last_us>=BV_COMMAND_TTL || check(i,now)!=BV_OK ||
-       i->deadman || raw>demand(c,i)) return false;
+       i->deadman || raw>pulse_demand(c,i,now)) return false;
     if(!i->speed.raw && c->stalled_since>=0 && now-c->stalled_since>=2000000) return false;
     uint32_t speed=bv_speed_millikmh(i->speed.raw);
-    return speed<20000 || raw<=demand(c,i)*(25000-speed)/5000;
+    return speed<20000 || raw<=pulse_demand(c,i,now)*(25000-speed)/5000;
 }
 const char *bv_state_name(bv_state_t s)
 {

@@ -5,6 +5,28 @@ MCP2515 à deux SPI. C'est une V1 expérimentale pour essais supervisés roue
 levée. Le câblage reste celui de [HARDWARE.md](HARDWARE.md).
 Le profil jog précédemment chargé n'est pas remplacé sans flash explicite.
 
+## Réponse impulsionnelle et diagnostic — 25 octobre2026
+
+Demande utilisateur après essai : répondre à un coup de pédale court.
+Montée désormais1 point brut/50 ms ; le pic de demande corrigée du zéro
+alimente une enveloppe qui perd1 point/50 ms, expirant au plus400 ms après
+le pic (maximum8). Une nouvelle impulsion mesurée peut renouveler la demande.
+Cette brève décroissance remplace la baisse immédiate sur simple retour du
+couple à zéro. **Bouton, frein, défaut, donnée périmée et survitesse coupent
+immédiatement**, y compris pendant l'enveloppe. Les mesures doivent continuer
+à arriver fraîches ; aucune prolongation si le capteur cesse de répondre.
+Le filtre final TX vérifie la même enveloppe et les mêmes expirations.
+
+Diagnostic : `pedal_rx` journalise les changements de couple ; `drive_tx`
+confirme les commandes moteur effectivement transmises, y compris retour0.
+`assist_diag` et `power_diag` donnent1 Hz état, âges, demande, sortie, émission,
+U/I bruts/cohérence, watts/courant exacts et retour de mise à jour UI.
+Un affichage-0 W a été expliqué par courant FF/FF, interprété-1 mA, soit
+-0,039 W vers39,2 V. Validité physique du registre/shunt restant à confirmer.
+Lors du premier essai détaillé, la survitesse a verrouillé le contrôle avant
+les pics couple2…14 ; la récupération CAN seule ne réarme pas le contrôle.
+Pour l'essai roue levée, repartir à l'arrêt et garder une vitesse faible.
+
 ## Mise à jour automatique — 25 octobre2026
 
 L'utilisateur confirme le rendu, SOC et vitesse puis demande explicitement

@@ -157,3 +157,14 @@ demande auto-zéro/armement et émission moteur. Nouvel incrément testé/compil
 flashé et empreintes vérifiées : V1_TX=y. Anneau mesure moteur14, barre
 couple21. Aucun essai d'effort initié par l'assistant ; réponse physique
 du contrôle automatique encore à confirmer. Frein et timeout CAN non validés.
+
+## Diagnostic pédale et watts — 25 octobre2026
+
+Capture détaillée : couple initial0 malgré rotation, vitesse jusqu'à brut23 ;
+défaut RANGE à28,6 s (seuil25 km/h candidat). Ensuite le couple a atteint14,
+mais contrôle déjà verrouillé : aucune commande positive confirmée sur cet essai.
+Courant FF/FF→-1 mA, puissance-0,039 W et UI ESP_OK : le champ-0 W est bien
+présent. Cela ne valide pas la mesure physique du shunt. Requête batterie
+A6 sans réponse vers56 s, maître FAULT ; origine non établie.
+Demande utilisateur de réponse à impulsion courte traitée avec enveloppe
+≤400 ms et attaque50 ms, arrêt immédiat sur défauts/données périmées.

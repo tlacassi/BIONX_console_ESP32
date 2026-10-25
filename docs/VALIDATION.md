@@ -1329,3 +1329,32 @@ Aucun port série rouvert après flash, aucune calibration/commande d'effort
 Retour matériel du zéro/armement et de la réponse moteur encore attendu.
 Ce flash ne valide ni frein, ni calibration physique du gain, ni arrêt sur
 perte CAN/reset. La commande peut désormais devenir positive après auto-armement.
+
+
+## 2026-10-25 — Première capture utilisateur pédale, puissance faible
+
+Utilisateur ne perçoit pas d'assistance, signale watts absents et autorise
+capture série continue pendant pédalage. Port ouvert à115200 sans reset
+volontaire ; boot effectivement relancé à l'ouverture. Zéro/armement auto
+aboutis vers3,3 s, état ASSIST X2/OK, maître NEUTRAL,8/8 frais, pertes0,
+aucun TX error/timeout pendant le runtime initial.
+
+Logs à4 Hz : un relevé ped3/want2/cmd1 à16,526 s, ped1/want0/cmd0 à37,786 s,
+sinon pédale/demande nulles. Le log cmd représente la proposition applicative,
+pas une preuve de TX effectif ; ajout de trace transport confirmé pour le prochain
+firmware. La capture4 Hz ne permet pas d'exclure des pics entre les relevés.
+Utilisateur précise avoir appuyé plusieurs secondes et voir « -oW » : compatible
+avec -0 W arrondi, donc champ présent ; courant exact encore à relever.
+
+À69,679 s : maître FAULT/NO REPLY sur batterie10/61, puis contrôle FAULT
+DATA OLD/LINK. Aucune perte RX ni erreur TX enregistrée. L'utilisateur indique
+un arrêt puis une reprise ; capture finale montre maître redevenu NEUTRAL/OK
+mais contrôle toujours FAULT. La récupération des échanges ne réarme pas
+l'assistance, conformément au verrouillage prévu. Un seul marqueur boot dans
+la capture ; origine de la reprise de découverte non confirmée.
+
+[Capture pré-diagnostic détaillé](logs/2026-10-25-v1-pedal-first-diagnostic.txt).
+Aucun seuil ni gain augmenté. Instrumentation suivante : changements de couple,
+commande CAN confirmée, validité U/I, octets/âges/skews, watts/courant exacts et
+code retour dashboard1 Hz. Le test LVGL vérifie aussi qu'un zéro valide donne
++0 W. Logs supplémentaires bornés, pas d'impression de toutes les trames en RX.

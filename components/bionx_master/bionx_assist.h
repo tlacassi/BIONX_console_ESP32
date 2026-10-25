@@ -15,9 +15,9 @@ typedef struct {
     bv_state_t state;
     bv_reason_t reason;
     bool calibrated, boot_pending;
-    uint8_t baseline, cal_min, cal_max, last_torque, output, target;
+    uint8_t baseline, cal_min, cal_max, last_torque, output, target, pulse_peak;
     unsigned cal_count;
-    int64_t last_us, torque_us, ramp_us, stalled_since;
+    int64_t last_us, torque_us, ramp_us, stalled_since, pulse_us;
 } bv_control_t;
 void bv_init(bv_control_t *c);
 bool bv_calibrate(bv_control_t *c,const bb_input_t *i,int64_t now);

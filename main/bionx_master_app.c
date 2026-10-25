@@ -47,7 +47,17 @@ static bool transmit(const can_frame_t *f,bool probe)
             mcp2515_tx_failure_name(s,err),esp_err_to_name(err),(unsigned long)f->id,f->data[1],f->data[3],
             s->last_tx_ctrl,s->last_tx_intf,s->eflg,s->tec,s->rec,s->mode);
     }
-    if(err==ESP_OK && f->id==0x20 && f->dlc==4 && f->data[1]==9) confirmed_assist=f->data[3];
+    if(err==ESP_OK && f->id==0x20 && f->dlc==4 && f->data[1]==9) {
+#ifdef CONFIG_BIONX_ASSIST_V1
+        static int64_t last_drive_log;
+        int64_t sent_at=esp_timer_get_time();
+        if(f->data[3]!=confirmed_assist || (f->data[3] && sent_at-last_drive_log>=1000000)) {
+            ESP_LOGI("drive_tx","CONFIRMED id=020 [4] %02x %02x %02x %02x",f->data[0],f->data[1],f->data[2],f->data[3]);
+            last_drive_log=sent_at;
+        }
+#endif
+        confirmed_assist=f->data[3];
+    }
     return err==ESP_OK;
 }
 static bool send(void *ctx,const can_frame_t *f)

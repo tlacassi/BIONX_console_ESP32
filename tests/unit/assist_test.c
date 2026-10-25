@@ -24,7 +24,12 @@ int main(void)
         assert(c.target==4); /* raw5 - zero1 - deadband2 =2, gain2 =>4. */
     }
     assert(c.output==4 && bv_authorizes(&c,&i,4,t));
-    i=input(t+1,1,1);assert(!bv_step(&c,&i,t+1) && c.output==0);
+    i=input(t+1,1,1);assert(bv_step(&c,&i,t+1)==4);
+    for(int n=1;n<=4;n++) {
+        i=input(t+n*50000,1,1);bv_step(&c,&i,t+n*50000);
+        assert(c.output==4-n);
+    }
+    t+=200000;assert(!c.output);
     for(int n=0;n<40;n++) { t+=50000;i=input(t,15,1);bv_step(&c,&i,t);assert(c.output<=8); }
     assert(c.output==8);i=input(t+1,15,21);bv_step(&c,&i,t+1);assert(c.output<2);
     i=input(t+2,15,22);assert(!bv_step(&c,&i,t+2) && c.state==BV_FAULT);
@@ -72,5 +77,22 @@ int main(void)
     assert(c.state==BV_FAULT); /* no recovery after runtime fault */
     bv_init(&c);i=input(0,0,0);i.deadman=true;bv_auto_step(&c,&i,0);
     i=input(50000,0,0);bv_auto_step(&c,&i,50000);assert(c.state==BV_IDLE && !c.boot_pending);
+    /* A brief fresh pulse starts a bounded response even after effort drops. */
+    t=ready(&c);i=input(t+5000,14,0);bv_step(&c,&i,t+5000);
+    bool response=false;
+    for(int n=1;n<=20;n++) {
+        int64_t now=t+5000+n*25000;i=input(now,1,1);
+        uint8_t cmd=bv_step(&c,&i,now);assert(cmd<=8);
+        if(cmd) { response=true;assert(bv_authorizes(&c,&i,cmd,now)); }
+        if(n>=16) assert(!cmd); /* tail expires by400ms */
+    }
+    assert(response);
+    t=ready(&c);i=input(t+5000,14,0);bv_step(&c,&i,t+5000);
+    i=input(t+55000,1,1);assert(bv_step(&c,&i,t+55000)>0);
+    i.torque.valid=false;assert(!bv_step(&c,&i,t+55001));
+    assert(c.state==BV_FAULT && !c.pulse_peak);
+    t=ready(&c);i=input(t+5000,14,0);bv_step(&c,&i,t+5000);
+    i=input(t+55000,1,1);bv_step(&c,&i,t+55000);
+    i.deadman=true;assert(!bv_step(&c,&i,t+55001) && !c.pulse_peak);
     return 0;
 }

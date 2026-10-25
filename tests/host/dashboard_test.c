@@ -145,6 +145,14 @@ int main(void)
         if(lv_obj_check_type(obj,&lv_label_class) && !strcmp(lv_label_get_text(obj),"CAN INIT FAIL")) fault_seen=true;
     }
     assert(fault_seen);real.fault=false;
+    real.fault=false;real.power_valid=true;real.battery_power_w=0;
+    assert(dashboard_live_update(&real)==ESP_OK);
+    bool zero_watts_seen=false;
+    for(uint32_t k=0;k<lv_obj_get_child_count(lv_screen_active());k++) {
+        lv_obj_t *obj=lv_obj_get_child(lv_screen_active(),k);
+        if(lv_obj_check_type(obj,&lv_label_class) && !strcmp(lv_label_get_text(obj),"+0 W")) zero_watts_seen=true;
+    }
+    assert(zero_watts_seen); /* a valid idle measurement must not disappear */
     real.power_valid=false;real.speed_valid=false;real.soc_valid=false;
     real.motor_level_valid=false;real.torque_valid=false;
     real.command_valid=false;real.status="WAIT BATTERY";

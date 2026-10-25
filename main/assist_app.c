@@ -61,6 +61,12 @@ void bench_app_tick(bx_master_t *m,const mcp2515_transport_stats_t *s,int64_t no
 #else
     (void)brake_seen;(void)brake_closed_since;
 #endif
+    static uint16_t last_torque=UINT16_MAX;
+    if(input.torque.valid && input.torque.raw!=last_torque) {
+        ESP_LOGI("pedal_rx","raw=%u sample_us=%lld age_ms=%ld",input.torque.raw,
+            (long long)input.torque.timestamp_us,(long)((now-input.torque.timestamp_us)/1000));
+        last_torque=input.torque.raw;
+    }
     if(input.deadman) bv_stop(&control);
     uint8_t wanted=bv_auto_step(&control,&input,now);
 #ifdef CONFIG_BIONX_V1_TX
@@ -107,6 +113,28 @@ void assist_app_dashboard(const bx_master_t *m,int64_t now,const char *master_st
     d.torque_valid=bx_sample_fresh(&m->samples[BX_TORQUE],now,BV_TORQUE_TTL) && m->samples[BX_TORQUE].raw<=64;
     d.torque=m->samples[BX_TORQUE].raw;
     float a;d.power_valid=bx_battery_power(m,now,&d.battery_power_w,&a);
-    dashboard_live_update(&d);
+    static int64_t next_log;
+    const esp_err_t ui=dashboard_live_update(&d);
+    if(now>=next_log) {
+        next_log=now+1000000;
+        float watts=0,amps=0;bool valid=bx_battery_power(m,now,&watts,&amps);
+        ESP_LOGI("assist_diag","healthy=%d auto=%d cal=%u zero=%u tq=%u age=%ldms speed=%u age=%ldms want=%u wire=%u TX=%u P14=%u Wvalid=%d W=%.3f I=%.4f UI=%s",
+            input.healthy,control.boot_pending,control.cal_count,control.baseline,
+            input.torque.raw,(long)((now-input.torque.timestamp_us)/1000),input.speed.raw,
+            (long)((now-input.speed.timestamp_us)/1000),control.target,wire,confirmed_command,
+            input.power.raw,valid,(double)watts,(double)amps,esp_err_to_name(ui));
+        ESP_LOGI("power_diag","U=%u/%u valid=%d/%d age=%ld/%ldms I=%u/%u valid=%d/%d age=%ld/%ldms Uskew=%ldms Iskew=%ldms UIskew=%ldms",
+            m->power_voltage_pair[0].raw,m->power_voltage_pair[1].raw,
+            m->power_voltage_pair[0].valid,m->power_voltage_pair[1].valid,
+            (long)((now-m->power_voltage_pair[0].timestamp_us)/1000),
+            (long)((now-m->power_voltage_pair[1].timestamp_us)/1000),
+            m->current_pair[0].raw,m->current_pair[1].raw,
+            m->current_pair[0].valid,m->current_pair[1].valid,
+            (long)((now-m->current_pair[0].timestamp_us)/1000),
+            (long)((now-m->current_pair[1].timestamp_us)/1000),
+            (long)((m->power_voltage_pair[1].timestamp_us-m->power_voltage_pair[0].timestamp_us)/1000),
+            (long)((m->current_pair[1].timestamp_us-m->current_pair[0].timestamp_us)/1000),
+            (long)((m->current_pair[1].timestamp_us-m->power_voltage_pair[1].timestamp_us)/1000));
+    }
 }
 #endif
