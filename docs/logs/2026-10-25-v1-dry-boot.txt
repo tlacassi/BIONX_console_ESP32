@@ -1,0 +1,225 @@
+ets �ets Jun  8 2016 00:22:57
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+flash read err, 1000
+ets_main.c 371 
+ets Jun  8 2016 00:22:57
+
+rst:0x10 (RTCWDT_RTC_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7172
+load:0x40078000,len:15532
+load:0x40080400,len:4
+load:0x40080404,len:3904
+entry 0x40080640
+I (29) boot: ESP-IDF v5.2-dirty 2nd stage bootloader
+I (29) boot: compile time Oct 25 2026 15:26:06
+I (29) boot: Multicore bootloader
+I (34) boot: chip revision: v1.0
+I (38) boot.esp32: SPI Speed      : 40MHz
+I (42) boot.esp32: SPI Mode       : DIO
+I (47) boot.esp32: SPI Flash Size : 4MB
+I (51) boot: Enabling RNG early entropy source...
+I (57) boot: Partition Table:
+I (60) boot: ## Label            Usage          Type ST Offset   Length
+I (68) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (75) boot:  1 otadata          OTA data         01 00 0000f000 00002000
+I (83) boot:  2 phy_init         RF data          01 01 00011000 00001000
+I (90) boot:  3 ota_0            OTA app          00 10 00020000 00180000
+I (98) boot:  4 ota_1            OTA app          00 11 001a0000 00180000
+I (105) boot:  5 storage          Unknown data     01 82 00320000 000e0000
+I (113) boot: End of partition table
+I (117) esp_image: segment 0: paddr=00020020 vaddr=3f400020 size=3699ch (223644) map
+I (202) esp_image: segment 1: paddr=000569c4 vaddr=3ffb0000 size=024f4h (  9460) load
+I (206) esp_image: segment 2: paddr=00058ec0 vaddr=40080000 size=07158h ( 29016) load
+I (219) esp_image: segment 3: paddr=00060020 vaddr=400d0020 size=54714h (345876) map
+I (338) esp_image: segment 4: paddr=000b473c vaddr=40087158 size=08ae4h ( 35556) load
+I (360) boot: Loaded app from partition at offset 0x20000
+I (360) boot: Disabling RNG early entropy source...
+I (372) cpu_start: Multicore app
+I (380) cpu_start: Pro cpu start user code
+I (381) cpu_start: cpu freq: 160000000 Hz
+I (381) cpu_start: Application information:
+I (384) cpu_start: Project name:     bionx_c3_supermini
+I (389) cpu_start: App version:      cdea92d-dirty
+I (395) cpu_start: Compile time:     Oct 25 2026 15:36:45
+I (401) cpu_start: ELF file SHA256:  ba1938380...
+I (406) cpu_start: ESP-IDF:          v5.2-dirty
+I (412) cpu_start: Min chip rev:     v0.0
+I (416) cpu_start: Max chip rev:     v3.99 
+I (421) cpu_start: Chip rev:         v1.0
+I (426) heap_init: Initializing. RAM available for dynamic allocation:
+I (433) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (439) heap_init: At 3FFBBCC0 len 00024340 (144 KiB): DRAM
+I (445) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (452) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (458) heap_init: At 4008FC3C len 000103C4 (64 KiB): IRAM
+I (466) spi_flash: detected chip: gd
+I (469) spi_flash: flash io: dio
+I (473) main_task: Started on CPU0
+I (477) main_task: Calling app_main()
+W (480) master: PEDAL BENCH CONTROL: inspect DRY RUN / TX permission; external wake button
+I (490) board_spi: LCD SPI2 MOSI=18 SCK=5; MCP SPI3 SI=23 SCK=4 SO=19
+I (497) gpio: GPIO[27]| InputEn: 0| OutputEn: 1| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:0 
+I (506) gc9a01: LCD panel create success, version: 2.0.4
+I (634) LVGL: Starting LVGL task
+I (643) display: GC9A01 240x240 RGB565, SPI 20 MHz DMA, LVGL 9.2.2
+I (644) display: DMA buffers=9600 B; heap free=240736, minimum=240736, largest DMA block=110592
+I (764) dashboard: Dashboard ready (partial render, target 30 FPS); heap=240736, min=240736
+I (778) gpio: GPIO[34]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 0| Pulldown: 0| Intr:2 
+I (779) mcp2515: NORMAL one-shot 125 kbit/s, osc=8 MHz, RX queue=64
+I (784) gpio: GPIO[22]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 
+W (792) assist: V1 raw gain x2 cap8; click calibrate, click arm, press stop; wheel-up bench only
+I (802) master: Auto WAIT_WAKE: battery query every 1s; external wake starts neutral init. Short/s=rearm, hold 2s/q=stop.
+I (815) master: OFF fault=OK step=0 wait=0 00/00 TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=00
+I (830) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (1066) master: OFF fault=OK step=0 wait=0 00/00 TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=00
+I (1072) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (1319) master: OFF fault=OK step=0 wait=0 00/00 TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=00
+I (1326) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (1572) master: OFF fault=OK step=0 wait=0 00/00 TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=0 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=00
+I (1579) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (1826) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=1 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (1833) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (2079) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=1 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (2086) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (2332) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=1 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (2339) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (2585) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=1 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (2592) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (2839) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=2 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (2846) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (3092) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=2 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (3099) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (3345) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=2 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (3352) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (3598) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=2 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (3605) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (3851) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=3 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (3858) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (4104) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=3 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (4111) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (4357) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=3 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (4364) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (4610) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=3 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (4617) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (4863) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=4 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (4870) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (5116) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=4 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (5123) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (5369) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=4 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (5376) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (5622) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=4 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (5629) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (5876) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=8 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (5883) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (6129) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=8 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (6136) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (6382) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=8 REC=12 txerr=5 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (6389) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (6635) master: WAIT_WAKE fault=OK step=0 wait=0 10/3b TX=0 RX=0 age=-1ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=8 REC=12 txerr=5 timeout=0 maxpoll=365us TXCTRL=50 TXINTF=80
+I (6642) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (6889) master: STARTING fault=OK step=3 wait=1 10/3c TX=4 RX=2 age=17ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=4 REC=10 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (6896) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (7140) master: STARTING fault=OK step=15 wait=0 10/fb TX=16 RX=10 age=12ms pack=-- temp=-- SOC=-- fresh=0/8 loss=0 EFLG=00 TEC=0 REC=2 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (7147) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (7395) master: NEUTRAL fault=OK step=21 wait=1 10/1e TX=37 RX=21 age=3ms pack=39.27 V? temp=35 C? SOC=72 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (7403) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (7648) master: NEUTRAL fault=OK step=21 wait=0 20/11 TX=68 RX=41 age=3ms pack=39.27 V? temp=35 C? SOC=72 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (7657) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (7902) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=95 RX=59 age=3ms pack=39.27 V? temp=35 C? SOC=72 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (7910) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (8154) master: NEUTRAL fault=OK step=21 wait=1 20/11 TX=123 RX=76 age=23ms pack=39.27 V? temp=35 C? SOC=72 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (8163) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (8406) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=154 RX=97 age=10ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (8414) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (8659) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=182 RX=115 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (8668) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (8912) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=210 RX=133 age=9ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (8920) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (9164) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=238 RX=151 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (9173) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (9416) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=269 RX=172 age=10ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (9424) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (9669) master: NEUTRAL fault=OK step=21 wait=0 20/11 TX=297 RX=190 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (9677) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (9921) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=325 RX=207 age=8ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (9930) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (10176) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=353 RX=225 age=9ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (10184) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (10428) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=384 RX=246 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (10437) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (10681) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=412 RX=264 age=9ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (10689) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (10934) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=440 RX=282 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (10943) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (11187) master: NEUTRAL fault=OK step=21 wait=0 20/14 TX=468 RX=300 age=9ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (11195) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (11437) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=498 RX=320 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=86
+I (11446) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (11692) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=526 RX=338 age=39ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (11700) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (11947) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=554 RX=356 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (11956) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (12200) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=582 RX=374 age=34ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (12208) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (12452) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=613 RX=395 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (12461) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (12705) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=641 RX=413 age=34ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (12713) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (12960) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=669 RX=431 age=3ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (12969) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (13214) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=697 RX=449 age=39ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (13222) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (13467) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=728 RX=470 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (13476) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (13721) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=756 RX=488 age=39ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (13729) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (13975) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=784 RX=506 age=3ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (13984) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (14229) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=812 RX=524 age=39ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (14237) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (14482) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=843 RX=545 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (14491) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (14737) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=871 RX=563 age=39ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (14745) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (14992) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=899 RX=581 age=3ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (15001) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (15247) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=927 RX=599 age=39ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (15255) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (15499) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=958 RX=620 age=3ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (15508) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (15753) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=987 RX=638 age=40ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (15762) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (16006) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=1014 RX=656 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (16015) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (16260) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1042 RX=674 age=39ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (16269) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (16512) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=1073 RX=695 age=3ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (16521) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (16766) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1101 RX=713 age=39ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (16775) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (17019) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=1129 RX=731 age=3ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (17028) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (17272) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1157 RX=749 age=34ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (17280) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (17523) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=1188 RX=770 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (17532) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (17776) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1216 RX=788 age=34ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (17785) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (18030) master: NEUTRAL fault=OK step=21 wait=1 10/a6 TX=1245 RX=807 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (18039) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (18281) master: NEUTRAL fault=OK step=21 wait=0 10/1f TX=1276 RX=828 age=14ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (18290) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (18532) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=1306 RX=848 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (18541) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (18787) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1335 RX=867 age=34ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (18795) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (19040) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=1363 RX=885 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (19049) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (19293) master: NEUTRAL fault=OK step=21 wait=0 20/21 TX=1391 RX=903 age=34ms pack=39.25 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (19301) bench: V1 CLICK ZERO OK zero0 ped0 want0 cmd0
+I (19544) master: NEUTRAL fault=OK step=21 wait=1 20/21 TX=1421 RX=923 age=3ms pack=39.27 V? temp=33 C? SOC=71 %? fresh=8/8 loss=0 EFLG=00 TEC=0 REC=0 txerr=5 timeout=0 maxpoll=365us TXCTRL=00 TXINTF=84
+I (19553) bench: V1 ZERO PEDALS OK zero0 ped0 want0 cmd0

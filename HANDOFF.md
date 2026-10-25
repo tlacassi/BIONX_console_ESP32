@@ -14,7 +14,18 @@ Lire [README](README.md), [procédure V1](docs/ASSIST_V1.md),
 Les procédures/analyses sont maintenant dans `docs/`, les captures originales
 inchangées dans `captures/`. Profils et entrypoints restent à la racine.
 
-## Firmware actuellement chargé : toujours le jog précédent
+## Firmware actuellement chargé : V1 calcul à blanc
+
+Flash autorisé et exécuté le25 octobre2026 sur HUZZAH32, profil
+`build-assist-v1/sdkconfig`, V1_TX désactivé,643664 octets. SHA256
+`db189abb652b285cfe9bdd558ddd1f16716cc9dfe34817b8a3fd75b49111f5d0`.
+Flash/hash vérifiés ; capture20 s : découverte, init puis NEUTRAL/OK,8/8 frais,
+commande0, pertes0. Anomalie ROM transitoire `flash read err,1000` avant reset
+RTCWDT puis boot réussi ; cause non établie. Pas de nouveau reset à provoquer
+pendant les essais utilisateur. Affichage/calibration/réponse pédale à confirmer.
+Log et détails : [VALIDATION](docs/VALIDATION.md).
+
+## Historique avant ce flash : jog précédent
 
 **Aucun flash, port série ouvert ou mouvement initié pendant l'incrément V1.**
 Dernier flash connu : `build-encoder-jog/sdkconfig-live`, ESP32/HUZZAH32,
@@ -30,7 +41,7 @@ en mouvement, zéro à cible, clic arrêt/acquittement sous conditions,20 s de
 session, aucune régène. Pilotage et lecture pédale confirmés par utilisateur.
 Voir [JOG_BENCH](docs/JOG_BENCH.md) pour ce profil distinct de la V1.
 
-## V1 compilée, non flashée
+## Images V1 initiales avant le flash calcul à blanc
 
 - `build-assist-v1/sdkconfig` : calcul à blanc, initialisation CAN réelle,
   aucune assistance émise ;643664 octets, SHA256
@@ -72,6 +83,7 @@ builds V1 dry/live et jog sans warning. Branche frein V1 compilée avec-Werror,
 non activée. Procédures et commandes exactes dans ASSIST_V1 et VALIDATION.
 Les tests et builds ne constituent pas une validation matérielle de la V1.
 
-Prochaine étape : flash seulement sur autorisation explicite, puis essais
+Prochaine étape : essais calcul à blanc déjà flashé, puis profil live seulement
+sur autorisation explicite. Essais
 utilisateur roue levée : boot/wake, calibration, armement, réponse pédale,
 arrêt bouton, mesures U/I et validation indépendante des sécurités restantes.

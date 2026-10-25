@@ -468,3 +468,17 @@ matérielle depuis le seul message générique, diagnostiquer le statut précis.
 
 Documentation uniquement : aucun source/config firmware changé, aucun build,
 flash ou mouvement moteur exécuté pendant cet audit.
+
+## Flash V1 calcul à blanc — autorisé le25 octobre2026
+
+Utilisateur : « go, je suis bien roue levée en securité », après proposition
+explicite du profil calcul à blanc.
+- [x] Recompiler et vérifier ESP32/HUZZAH32, V1_TX désactivé et image.
+- [x] Flasher build-assist-v1 sur HUZZAH32, vérifier les empreintes.
+- [x] Capturer le boot sans commande utilisateur et consigner les résultats.
+
+Preuve :643664 octets, SHA256 db189abb652b285cfe9bdd558ddd1f16716cc9dfe34817b8a3fd75b49111f5d0,
+flash/hash vérifiés ;20 s de capture, init puis NEUTRAL/OK,8/8 mesures fraîches,
+commande0, aucune perte. Boot ROM : erreur lecture1000 transitoire puis reset
+RTCWDT et démarrage réussi, cause non établie. Validation visuelle/calibration
+et rapport ×2 à poursuivre par l'utilisateur ; aucun armement envoyé par l'assistant.

@@ -140,3 +140,12 @@ réponse à un effort connu, signe et gain), mesure indépendante U/I, chemin du
 shunt, frein réel et coupure matérielle, comportement/watchdog moteur sur perte
 CAN ou reset ESP, régulation stable et essais de charge. Établir explicitement
 les plafonds physiques avant le contrôle d’assistance en circulation.
+
+## Flash V1 calcul à blanc — 25 octobre2026
+
+Flash/hash vérifiés, init CAN puis NEUTRAL/OK observés sur20 s de capture,
+commande0, huit mesures fraîches et pertes0. Cinq échecs de sondes avant
+réponse batterie ; aucun nouvel échec TX pendant le runtime observé. Erreur ROM
+transitoire lecture1000 puis reset RTCWDT et boot réussi, cause inconnue.
+Dashboard initialisé côté logiciel ; rendu physique/calibration/réponse×2
+à confirmer par utilisateur. [Preuves](VALIDATION.md). Aucun essai moteur.

@@ -1254,3 +1254,37 @@ rebuild jog local n'est pas ce firmware flashé. Le gain physique×2 n'est pas
 calibré, capteur de couple sans cadence, vitesse et watts candidats, frein non
 raccordé, timeout moteur sur perte CAN/reset non mesuré. Ni ce build ni ces
 tests ne valident un usage roulant. Procédure : [ASSIST_V1](ASSIST_V1.md).
+
+
+## 2026-10-25 — Flash V1 calcul à blanc autorisé, boot et CAN
+
+Autorisation utilisateur « go, je suis bien roue levée en securité » suite à
+la proposition explicite du profil calcul à blanc. Rebuild build-assist-v1
+réussi sans warning ; config ESP32/HUZZAH32, ASSIST_V1=y, V1_TX non défini.
+Image643664 octets, SHA256 fichier
+`db189abb652b285cfe9bdd558ddd1f16716cc9dfe34817b8a3fd75b49111f5d0`.
+Version source cdea92d, TODO modifié pour suivre l'opération ; nouveau hash
+lié notamment à la version Git embarquée. esptool image_info checksum/hash valides.
+
+Port libre vérifié, flash115200 sur /dev/cu.usbserial-016138BC réussi ;
+ESP32-D0WDQ6 rev1.0 identifié, application/bootloader/partitions/ota_data
+empreintes vérifiées. Reset esptool puis capture série20 s avec reset RTS
+contrôlé, aucune commande série de calibration/armement/assistance envoyée.
+Port fermé à l'issue. Log durable : [capture boot](logs/2026-10-25-v1-dry-boot.txt).
+
+Au début : ROM `flash read err, 1000`, puis RTCWDT_RTC_RESET et démarrage
+normal. Cause non établie ; pas de boucle de reset observée après démarrage
+applicatif dans cette fenêtre. Ne pas présenter cette capture comme plusieurs
+boots sans anomalie. Dashboard init réussi à764 ms, GC9A01/LVGL actifs.
+WAIT_WAKE à~1,8 s, cinq sondes TX échouées avant réponse batterie ; échecs
+tolérés en découverte, cause physique non attribuée. STARTING à6,9 s puis
+NEUTRAL/OK à7,4 s. Runtime ensuite stable jusqu'à19,5 s : TX1421/RX923,
+fresh8/8, pertes0, EFLG0, TEC/REC0, timeout0 ; txerr5 reste le cumul des sondes,
+sans augmentation en runtime. Valeurs candidates39,25–39,27 V,33 °C,71 %.
+
+Contrôle CLICK ZERO, pédale0, want0/cmd0 ; dernière ligne ZERO PEDALS,
+calibration locale apparemment commencée pendant la capture, origine du geste
+non confirmée. Aucune calibration ou armement déclenché par l'assistant.
+Le verrou V1_TX reste fermé même si l'utilisateur arme ce profil.
+Affichage physique, calibration aboutie et réponse pédale×2 encore à confirmer
+par l'utilisateur. Aucun essai de rotation ni validation de frein/perte CAN.

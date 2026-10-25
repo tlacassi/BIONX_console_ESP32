@@ -14,7 +14,8 @@ calibrer. Procédure : [ASSIST_V1](docs/ASSIST_V1.md).
 
 Le pilotage moteur roue levée, l'écran/encodeur, le démarrage/extinction et la
 lecture pédale du profil jog précédent sont confirmés par l'utilisateur.
-La V1 est un nouvel incrément logiciel, sans flash ni validation physique.
+La V1 en calcul à blanc est flashée : boot, init CAN et mesures observés.
+Son affichage physique et la calibration attendent confirmation utilisateur.
 Frein et arrêt moteur sur perte CAN/reset restent à mesurer avant usage roulant.
 
 - [Point de reprise et image actuellement chargée](HANDOFF.md)
