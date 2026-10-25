@@ -40,3 +40,9 @@ add_executable(power_test power_test.c ../../components/bionx_master/bionx_maste
 target_include_directories(power_test PRIVATE ../../components/bionx_master ../../components/bionx_protocol)
 target_compile_options(power_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
 add_test(NAME electrical_power COMMAND power_test)
+
+add_executable(assist_test assist_test.c ../../components/bionx_master/bionx_assist.c
+    ../../components/bionx_master/bionx_master.c ../../components/bionx_protocol/bionx_protocol.c)
+target_include_directories(assist_test PRIVATE ../../components/bionx_master ../../components/bionx_protocol)
+target_compile_options(assist_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+add_test(NAME assist_v1 COMMAND assist_test)

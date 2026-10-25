@@ -28,9 +28,9 @@ static void simulate(bx_master_t *m,bus_t *b)
     }
 }
 /* Serialized delayed replies reproduce the runtime scheduling pressure. */
-static void delayed_telemetry(int64_t latency)
+static void delayed_telemetry(int64_t latency,bool pedal)
 {
-    bx_config_t cfg=bx_default_config();cfg.fast_poll=true;cfg.measure_power=true;
+    bx_config_t cfg=bx_default_config();cfg.fast_poll=true;cfg.measure_power=true;cfg.pedal_control=pedal;
     bx_master_t m;bus_t b={0};can_frame_t reply={0};int64_t due=0;
     assert(bx_master_init(&m,&cfg,send,&b));m.state=BX_NEUTRAL;
     unsigned measured=0;
@@ -46,6 +46,7 @@ static void delayed_telemetry(int64_t latency)
         if(t>1000000) {
             float w,a;
             assert(bx_sample_fresh(&m.samples[BX_SPEED],t,150000));
+            if(pedal) assert(bx_sample_fresh(&m.samples[BX_TORQUE],t,150000));
             /* Publishing a new voltage pair alone cannot invalidate old U/I. */
             assert(bx_battery_power(&m,t,&w,&a));
             assert(w>39.49f && w<39.51f);++measured;
@@ -55,7 +56,9 @@ static void delayed_telemetry(int64_t latency)
 }
 int main(void)
 {
-    delayed_telemetry(1000);delayed_telemetry(6000);delayed_telemetry(11000);
+    for(unsigned p=0;p<2;p++) {
+        delayed_telemetry(1000,p);delayed_telemetry(6000,p);delayed_telemetry(11000,p);
+    }
     bx_config_t cfg=bx_default_config();cfg.fast_poll=true;cfg.measure_power=true;
     bx_master_t m;bus_t b={0};float w,a;
     assert(bx_master_init(&m,&cfg,send,&b));m.state=BX_NEUTRAL;

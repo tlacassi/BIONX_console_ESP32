@@ -40,6 +40,7 @@ bool bx_master_init(bx_master_t *m, const bx_config_t *c, bx_send_fn send, void 
         c->control_us < 10000 || c->control_us > 1000000 ||
         c->battery_us < c->control_us || c->battery_us > 2000000 ||
         c->sample_ttl_us < c->reply_us || c->sample_ttl_us > 10000000 ||
+        (c->pedal_control && (!c->fast_poll || !c->measure_power)) ||
         c->assist_cap>BX_MAX_BENCH_ASSIST || (c->assist_cap && (!c->fast_poll || c->control_us>50000)) || !c->max_charge_raw || !c->max_discharge_raw) return false;
     *m=(bx_master_t){.config=*c,.send=send,.ctx=ctx};
     return true;
@@ -233,6 +234,9 @@ void bx_master_tick(bx_master_t *m, int64_t now)
         if(m->config.measure_power && now>=m->poll_due[1]) {
             m->poll_index=1; m->poll_due[1]=now+periods[1]; emit(m,polls[1]); return;
         }
+        if(m->config.pedal_control && now>=m->poll_due[0]) {
+            m->poll_index=0; m->poll_due[0]=now+50000; emit(m,polls[0]); return;
+        }
         if(m->config.measure_power && m->pair_low) {
             unsigned low=m->pair_low;
             m->pair_low=low==7?8:low==8?9:0;
@@ -248,7 +252,7 @@ void bx_master_tick(bx_master_t *m, int64_t now)
                     m->poll_cursor=(idx+1)%10;
                     if(idx==6) m->pair_low=7;
                 }
-                m->poll_due[idx]=now+(m->config.measure_power && idx==0 ? 250000 :
+                m->poll_due[idx]=now+(m->config.measure_power && idx==0 ? (m->config.pedal_control?50000:250000) :
                     m->config.measure_power && idx==2 ? 250000 : periods[idx]);
                 emit(m,polls[idx]);
                 break;

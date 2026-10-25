@@ -1,0 +1,109 @@
+/* SPDX-License-Identifier: GPL-3.0-only */
+#include "bionx_assist.h"
+uint32_t bv_speed_millikmh(uint16_t raw)
+{ return ((uint64_t)raw*9091*BV_WHEEL_MM*6+99999)/100000; }
+static bv_reason_t check(const bb_input_t *i,int64_t now)
+{
+    if(now<0 || now>INT64_MAX-10000000) return BV_CLOCK;
+    if(!i || !i->healthy || !bx_sample_fresh(&i->torque,now,BV_TORQUE_TTL) ||
+       !bx_sample_fresh(&i->speed,now,BV_SPEED_TTL) ||
+       !bx_sample_fresh(&i->temperature,now,2000000) ||
+       !bx_sample_fresh(&i->voltage_mv,now,2000000) ||
+       !bx_sample_fresh(&i->power,now,500000)) return BV_DATA;
+    if(i->brake || !i->brake_valid) return BV_BRAKE;
+    if(i->torque.raw>64 || bv_speed_millikmh(i->speed.raw)>=25000 ||
+       i->temperature.raw>=50 || i->voltage_mv.raw<30000 ||
+       i->voltage_mv.raw>42000 || i->power.raw>64) return BV_RANGE;
+    return BV_OK;
+}
+static uint8_t trip(bv_control_t *c,bv_reason_t r)
+{ c->state=BV_FAULT;c->reason=r;c->output=c->target=0;return 0; }
+void bv_init(bv_control_t *c)
+{ *c=(bv_control_t){.torque_us=-1,.stalled_since=-1}; }
+void bv_stop(bv_control_t *c)
+{
+    c->output=c->target=0;
+    if(c->state!=BV_FAULT) { c->state=BV_IDLE;c->reason=BV_STOPPED; }
+}
+bool bv_calibrate(bv_control_t *c,const bb_input_t *i,int64_t now)
+{
+    if(check(i,now)!=BV_OK || i->deadman || i->speed.raw || i->torque.raw>8 || c->state==BV_ACTIVE) return false;
+    bv_init(c);c->state=BV_CALIBRATING;c->last_us=now;c->cal_min=255;
+    return true;
+}
+bool bv_arm(bv_control_t *c,const bb_input_t *i,int64_t now)
+{
+    if(c->state!=BV_READY || !c->calibrated || check(i,now)!=BV_OK || i->deadman ||
+       i->speed.raw || i->torque.raw>c->baseline+2) return false;
+    c->state=BV_ACTIVE;c->reason=BV_OK;c->last_us=c->ramp_us=now;
+    c->torque_us=i->torque.timestamp_us;c->last_torque=i->torque.raw;c->stalled_since=-1;
+    c->output=c->target=0;return true;
+}
+static unsigned demand(const bv_control_t *c,const bb_input_t *i)
+{
+    unsigned effort=i->torque.raw>c->baseline+2 ? i->torque.raw-c->baseline-2 : 0;
+    unsigned target=2*effort;
+    return target>BV_MAX_DRIVE ? BV_MAX_DRIVE : target;
+}
+uint8_t bv_step(bv_control_t *c,const bb_input_t *i,int64_t now)
+{
+    if(c->state==BV_FAULT || c->state==BV_IDLE) return 0;
+    if(now<c->last_us || now-c->last_us>BV_COMMAND_TTL) return trip(c,BV_CLOCK);
+    c->last_us=now;
+    bv_reason_t r=check(i,now);if(r!=BV_OK) return trip(c,r);
+    if(i->torque.timestamp_us<c->torque_us) return trip(c,BV_CLOCK);
+    if(c->state==BV_CALIBRATING) {
+        if(i->deadman || i->speed.raw || i->torque.raw>8) return trip(c,BV_CAL_LOAD);
+        if(i->torque.timestamp_us==c->torque_us) return 0;
+        c->torque_us=i->torque.timestamp_us;
+        if(i->torque.raw<c->cal_min) c->cal_min=i->torque.raw;
+        if(i->torque.raw>c->cal_max) c->cal_max=i->torque.raw;
+        if(c->cal_max-c->cal_min>2) return trip(c,BV_CAL_LOAD);
+        if(++c->cal_count==16) {
+            c->baseline=c->cal_max;c->calibrated=true;c->state=BV_READY;
+        }
+        return 0;
+    }
+    if(c->state!=BV_ACTIVE) return 0;
+    if(i->deadman) { bv_stop(c);return 0; }
+    if(i->torque.timestamp_us!=c->torque_us) {
+        int delta=(int)i->torque.raw-c->last_torque;
+        /* Falling torque always cuts immediately, including a rapid release. */
+        if(delta>16) return trip(c,BV_TORQUE_JUMP);
+        c->last_torque=i->torque.raw;c->torque_us=i->torque.timestamp_us;
+    }
+    if(!i->speed.raw && c->output>=4) {
+        if(c->stalled_since<0) c->stalled_since=now;
+        if(now-c->stalled_since>=2000000) return trip(c,BV_STALL);
+    } else c->stalled_since=-1;
+    c->target=demand(c,i);
+    /* Fade out from 20 to 25 candidate km/h; never command regen. */
+    uint32_t speed=bv_speed_millikmh(i->speed.raw);
+    if(speed>=20000) c->target=c->target*(25000-speed)/5000;
+    if(c->target<c->output) c->output=c->target;
+    if(now-c->ramp_us>=200000) {
+        if(c->target>c->output) ++c->output;
+        c->ramp_us=now;
+    }
+    return c->output;
+}
+bool bv_authorizes(const bv_control_t *c,const bb_input_t *i,uint8_t raw,int64_t now)
+{
+    if(c->state!=BV_ACTIVE || !raw || raw>BV_MAX_DRIVE || raw!=c->output ||
+       now<c->last_us || now-c->last_us>=BV_COMMAND_TTL || check(i,now)!=BV_OK ||
+       i->deadman || raw>demand(c,i)) return false;
+    if(!i->speed.raw && c->stalled_since>=0 && now-c->stalled_since>=2000000) return false;
+    uint32_t speed=bv_speed_millikmh(i->speed.raw);
+    return speed<20000 || raw<=demand(c,i)*(25000-speed)/5000;
+}
+const char *bv_state_name(bv_state_t s)
+{
+    static const char *n[]={"CLICK ZERO","ZERO PEDALS","CLICK ARM","ASSIST X2","FAULT"};
+    return (unsigned)s<5?n[s]:"UNKNOWN";
+}
+const char *bv_reason_name(bv_reason_t r)
+{
+    static const char *n[]={"OK","DATA OLD/LINK","RANGE","LOOP DELAY","PEDALS LOADED",
+        "TORQUE JUMP","CLICK CALIBRATE","BRAKE","NO MOTION"};
+    return (unsigned)r<9?n[r]:"UNKNOWN";
+}
