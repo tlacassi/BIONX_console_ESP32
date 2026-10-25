@@ -102,7 +102,7 @@ int main(void)
     }
     dashboard_live_t real={.speed_valid=true,.speed_kmh=18.6f,.soc_valid=true,
         .battery_soc=74,.power_valid=true,.battery_power_w=123,.command_valid=true,
-        .command=4,.status="ASSIST X2"};
+        .command=4,.motor_level_valid=true,.motor_level=32,.torque_valid=true,.torque=20,.status="ASSIST X2"};
     assert(dashboard_live_update(NULL)==ESP_ERR_INVALID_ARG);
     real.battery_power_w=NAN;assert(dashboard_live_update(&real)==ESP_ERR_INVALID_ARG);
     real.battery_power_w=123;test_lock_available=false;
@@ -110,6 +110,17 @@ int main(void)
     assert(dashboard_live_update(&real)==ESP_OK);
     lv_tick_inc(50);lv_timer_handler();lv_obj_update_layout(lv_screen_active());
     check_labels(lv_screen_active());
+    lv_obj_t *motor_arc=NULL,*pedal_bar=NULL;
+    for(uint32_t k=0;k<lv_obj_get_child_count(lv_screen_active());k++) {
+        lv_obj_t *obj=lv_obj_get_child(lv_screen_active(),k);
+        if(lv_obj_check_type(obj,&lv_arc_class)) motor_arc=obj;
+        if(lv_obj_check_type(obj,&lv_bar_class)) pedal_bar=obj;
+    }
+    assert(motor_arc && pedal_bar);
+    assert(lv_arc_get_value(motor_arc)==32 && lv_bar_get_value(pedal_bar)==20);
+    real.speed_kmh=0;assert(dashboard_live_update(&real)==ESP_OK);
+    assert(lv_arc_get_value(motor_arc)==32); /* ring does not follow speed */
+    real.speed_kmh=18.6f;
     FILE *live_file=fopen("dashboard-live.rgb565","wb");assert(live_file);
     assert(fwrite(framebuffer,sizeof(framebuffer),1,live_file)==1);fclose(live_file);
     for(int watts=-1400;watts<=1400;watts+=1400) {
@@ -118,7 +129,7 @@ int main(void)
         lv_tick_inc(50);lv_timer_handler();lv_obj_update_layout(lv_screen_active());
         check_labels(lv_screen_active());
     }
-    const char *states[]={"CLICK ZERO","ZERO PEDALS","CLICK ARM","ASSIST X2",
+    const char *states[]={"WAIT ZERO","ZERO PEDALS","WAIT NEUTRAL","ASSIST X2",
         "DRY RUN TX OFF","DATA OLD/LINK","PEDALS LOADED","CAN INIT FAIL"};
     for(unsigned k=0;k<sizeof(states)/sizeof(states[0]);k++) {
         real.status=states[k];assert(dashboard_live_update(&real)==ESP_OK);
@@ -135,10 +146,12 @@ int main(void)
     }
     assert(fault_seen);real.fault=false;
     real.power_valid=false;real.speed_valid=false;real.soc_valid=false;
+    real.motor_level_valid=false;real.torque_valid=false;
     real.command_valid=false;real.status="WAIT BATTERY";
     assert(dashboard_live_update(&real)==ESP_OK);
     lv_tick_inc(50);lv_timer_handler();lv_obj_update_layout(lv_screen_active());
     check_labels(lv_screen_active());
+    assert(!lv_arc_get_value(motor_arc) && !lv_bar_get_value(pedal_bar));
     lv_tick_inc(600);lv_timer_handler();lv_obj_update_layout(lv_screen_active());
     bool old_seen=false;
     for(uint32_t k=0;k<lv_obj_get_child_count(lv_screen_active());k++) {

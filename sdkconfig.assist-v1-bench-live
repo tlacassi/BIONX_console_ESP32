@@ -1,4 +1,5 @@
 # Supervised wheel-up bench only, with independent HV disconnect accessible.
-# Requires unloaded calibration and explicit arm on each boot. No auto motion.
+# Boot automatically calibrates/arms while stationary: keep pedals unloaded.
+# Pedal effort after this point may start the wheel; button press stops.
 # Brake, torque calibration and motor CAN-loss timeout remain unverified.
 CONFIG_BIONX_V1_TX=y

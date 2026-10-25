@@ -27,8 +27,9 @@ esp_err_t dashboard_update(const dashboard_data_t *data);
  * electrical power, never inferred from the drive command. */
 typedef struct {
     float speed_kmh, battery_power_w;
-    uint8_t battery_soc, command;
+    uint8_t battery_soc, command, motor_level, torque;
     bool speed_valid, soc_valid, power_valid, command_valid, fault;
+    bool motor_level_valid, torque_valid;
     const char *status;
 } dashboard_live_t;
 esp_err_t dashboard_live_update(const dashboard_live_t *data);

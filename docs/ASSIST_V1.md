@@ -5,7 +5,32 @@ MCP2515 à deux SPI. C'est une V1 expérimentale pour essais supervisés roue
 levée. Le câblage reste celui de [HARDWARE.md](HARDWARE.md).
 Le profil jog précédemment chargé n'est pas remplacé sans flash explicite.
 
-## Démarrage et commandes
+## Mise à jour automatique — 25 octobre2026
+
+L'utilisateur confirme le rendu, SOC et vitesse puis demande explicitement
+la suppression des clics de calibration/armement et l'émission moteur.
+Au boot, pédales déchargées et roue immobile : attente de mesures saines,
+calibration16 réponses distinctes stables (≤8, dispersion≤2), puis armement
+automatique au neutre. Un zéro instable/chargé recommence la fenêtre sans
+commande. Un faible effort statique stable peut ressembler à un offset :
+le logiciel ne peut pas prouver seul que les pédales sont déchargées.
+
+Une fois ASSIST X2 affiché, l'effort pédale peut commander le moteur dans le
+profil live. Le plafond8/64, rampe, défauts et absence de régène sont conservés.
+Appui bouton = arrêt bloquant, même pendant le zéro ; pas de reprise automatique
+après stop ou défaut. Un nouveau boot recommence l'automatisation ; `cal` puis
+`arm` restent des commandes de diagnostic disponibles, pas une étape normale.
+
+Anneau = registre moteur14, facteur candidat100/64 %, affiché MTR…%?.
+Aucune substitution par la commande ou la vitesse si cette mesure manque.
+Ce registre a déjà renvoyé0 pendant une rotation : un anneau vide ne prouve pas
+l'absence d'assistance. CMD n/64 et watts batterie restent séparés.
+Barre horizontale cyan = capteur21 brut0–64, valeur TQ…/64, sans conversion N/Nm.
+Ces deux jauges sont vidées et marquées-- si la mesure est périmée.
+La vitesse centrale est conservée. Les étapes manuelles ci-dessous décrivent
+la V1 précédente et ne sont plus nécessaires au boot normal.
+
+## Historique : démarrage et commandes manuels
 
 L'écran d'origine (anneau, vitesse centrale, batterie et puissance) apparaît au
 boot. Après une seconde de silence CAN, l'ESP tente une lecture HW batterie

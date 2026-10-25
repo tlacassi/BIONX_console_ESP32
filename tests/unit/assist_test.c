@@ -46,5 +46,31 @@ int main(void)
     for(int n=0;n<30;n++) bv_step(&c,&i,0);
     assert(c.cal_count==1); /* duplicates cannot establish zero. */
     i=input(50000,5,0);bv_step(&c,&i,50000);assert(c.reason==BV_CAL_LOAD);
+    /* Fully automatic boot: no positive command during zeroing/arm. */
+    bv_init(&c);
+    for(int n=0;n<40;n++) {
+        t=n*50000;i=input(t,1,0);
+        assert(!bv_auto_step(&c,&i,t));
+    }
+    assert(c.state==BV_ACTIVE && !c.boot_pending && c.baseline==1);
+    for(int n=0;n<20;n++) { t+=50000;i=input(t,5,1);bv_auto_step(&c,&i,t); }
+    assert(c.output==4);
+    bv_stop(&c);
+    for(int n=0;n<40;n++) {t+=50000;i=input(t,1,0);assert(!bv_auto_step(&c,&i,t));}
+    assert(c.state==BV_IDLE && !c.boot_pending); /* no automatic restart after stop */
+    bv_init(&c);
+    for(int n=0;n<30;n++) {i=input(n*50000,10,0);assert(!bv_auto_step(&c,&i,n*50000));}
+    assert(c.state==BV_IDLE && !c.calibrated); /* loaded pedal cannot calibrate */
+    bv_init(&c);
+    for(int n=0;n<30;n++) {i=input(n*50000,n%2?4:0,0);assert(!bv_auto_step(&c,&i,n*50000));}
+    assert(!c.calibrated); /* unstable zero restarts observation */
+    bv_init(&c);
+    for(int n=0;n<40;n++) {t=n*50000;i=input(t,0,0);bv_auto_step(&c,&i,t);}
+    assert(c.state==BV_ACTIVE);
+    i=input(t+50000,40,0);bv_auto_step(&c,&i,t+50000);assert(c.state==BV_FAULT);
+    for(int n=2;n<40;n++){i=input(t+n*50000,0,0);assert(!bv_auto_step(&c,&i,t+n*50000));}
+    assert(c.state==BV_FAULT); /* no recovery after runtime fault */
+    bv_init(&c);i=input(0,0,0);i.deadman=true;bv_auto_step(&c,&i,0);
+    i=input(50000,0,0);bv_auto_step(&c,&i,50000);assert(c.state==BV_IDLE && !c.boot_pending);
     return 0;
 }

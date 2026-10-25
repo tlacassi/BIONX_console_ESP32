@@ -11,7 +11,7 @@
 #include "esp_system.h"
 
 static const char *TAG = "dashboard";
-static lv_obj_t *speed, *ring, *mode_badge, *mode_label, *battery, *power, *status_label, *power_title, *command_label, *speed_unit;
+static lv_obj_t *speed, *ring, *mode_badge, *mode_label, *battery, *power, *status_label, *power_title, *command_label, *speed_unit, *torque_bar;
 static assist_mode_t current_mode;
 static int32_t shown_speed;
 static int32_t speed_from, speed_target;
@@ -49,7 +49,9 @@ static void refresh(lv_timer_t *timer)
         if(lv_tick_elaps(live_tick)>=500) {
             lv_label_set_text(speed,"--");lv_arc_set_value(ring,0);
             lv_label_set_text(battery,"--%");lv_label_set_text(power,"-- W");
-            lv_label_set_text(command_label,"CMD --");
+            lv_label_set_text(command_label,"MTR -- CMD --");
+            lv_label_set_text(speed_unit,"km/h~  TQ --");
+            lv_bar_set_value(torque_bar,0,LV_ANIM_OFF);
             if(!live_fault) lv_label_set_text(status_label,"DATA OLD");
         }
         return;
@@ -139,6 +141,13 @@ esp_err_t dashboard_init(void)
     lv_obj_set_x(power, 44);
     status_label=label(screen, "DEMO", 210, &lv_font_montserrat_12, 0x93A8B3);
     command_label=label(screen, "", 69, &lv_font_montserrat_12, 0x93A8B3);
+    torque_bar=lv_bar_create(screen);
+    lv_obj_set_size(torque_bar,110,5);
+    lv_obj_align(torque_bar,LV_ALIGN_TOP_MID,0,156);
+    lv_bar_set_range(torque_bar,0,64);lv_bar_set_value(torque_bar,0,LV_ANIM_OFF);
+    lv_obj_set_style_bg_color(torque_bar,lv_color_hex(0x203038),LV_PART_MAIN);
+    lv_obj_set_style_bg_color(torque_bar,lv_color_hex(0x41DCF5),LV_PART_INDICATOR);
+    lv_obj_add_flag(torque_bar,LV_OBJ_FLAG_HIDDEN);
 #ifdef CONFIG_BIONX_ASSIST_V1
     live=true;live_tick=lv_tick_get();
     lv_label_set_text(speed_unit,"km/h~");
@@ -197,6 +206,8 @@ esp_err_t dashboard_live_update(const dashboard_live_t *d)
     if(!d || (d->speed_valid && (!isfinite(d->speed_kmh) || d->speed_kmh<0 || d->speed_kmh>300)) ||
        (d->soc_valid && d->battery_soc>100) ||
        (d->power_valid && (!isfinite(d->battery_power_w) || fabsf(d->battery_power_w)>20000)) ||
+       (d->motor_level_valid && d->motor_level>64) ||
+       (d->torque_valid && d->torque>64) ||
        (d->command_valid && d->command>8)) return ESP_ERR_INVALID_ARG;
     if(!initialized) return ESP_ERR_INVALID_STATE;
     if(!lvgl_port_lock(5)) return ESP_ERR_TIMEOUT;
@@ -208,15 +219,25 @@ esp_err_t dashboard_live_update(const dashboard_live_t *d)
     if(d->speed_valid) snprintf(buf,sizeof(buf),"%.1f",(double)d->speed_kmh);
     else snprintf(buf,sizeof(buf),"--");
     lv_label_set_text(speed,buf);
-    lv_arc_set_value(ring,d->speed_valid?(int)(d->speed_kmh*10):0);
+    /* Motor power meter 0x14, candidate 1/64 full scale. Never substitute
+     * commanded drive for a missing measured motor level. */
+    lv_arc_set_range(ring,0,64);
+    lv_arc_set_value(ring,d->motor_level_valid?d->motor_level:0);
+    lv_obj_remove_flag(torque_bar,LV_OBJ_FLAG_HIDDEN);
+    lv_bar_set_value(torque_bar,d->torque_valid?d->torque:0,LV_ANIM_OFF);
+    if(d->torque_valid) snprintf(buf,sizeof(buf),"km/h~   TQ %u/64",d->torque);
+    else snprintf(buf,sizeof(buf),"km/h~   TQ --");
+    lv_label_set_text(speed_unit,buf);
     if(d->soc_valid) snprintf(buf,sizeof(buf),"%u%%",d->battery_soc);
     else snprintf(buf,sizeof(buf),"--%%");
     lv_label_set_text(battery,buf);
     if(d->power_valid) snprintf(buf,sizeof(buf),"%+.0f W",(double)d->battery_power_w);
     else snprintf(buf,sizeof(buf),"-- W");
     lv_label_set_text(power,buf);
-    if(d->command_valid) snprintf(buf,sizeof(buf),"CMD %u/64  NO REGEN",d->command);
-    else snprintf(buf,sizeof(buf),"CMD --  NO REGEN");
+    char motor[20]="MTR --",cmd[16]="CMD --";
+    if(d->motor_level_valid) snprintf(motor,sizeof(motor),"MTR %.0f%%?",d->motor_level*100.0/64);
+    if(d->command_valid) snprintf(cmd,sizeof(cmd),"CMD %u/64",d->command);
+    snprintf(buf,sizeof(buf),"%s %s",motor,cmd);
     lv_label_set_text(command_label,buf);
     lv_label_set_text(status_label,d->status?d->status:"--");
     lvgl_port_unlock();return ESP_OK;

@@ -19,10 +19,10 @@ static bv_reason_t check(const bb_input_t *i,int64_t now)
 static uint8_t trip(bv_control_t *c,bv_reason_t r)
 { c->state=BV_FAULT;c->reason=r;c->output=c->target=0;return 0; }
 void bv_init(bv_control_t *c)
-{ *c=(bv_control_t){.torque_us=-1,.stalled_since=-1}; }
+{ *c=(bv_control_t){.torque_us=-1,.stalled_since=-1,.boot_pending=true}; }
 void bv_stop(bv_control_t *c)
 {
-    c->output=c->target=0;
+    c->boot_pending=false;c->output=c->target=0;
     if(c->state!=BV_FAULT) { c->state=BV_IDLE;c->reason=BV_STOPPED; }
 }
 bool bv_calibrate(bv_control_t *c,const bb_input_t *i,int64_t now)
@@ -35,7 +35,7 @@ bool bv_arm(bv_control_t *c,const bb_input_t *i,int64_t now)
 {
     if(c->state!=BV_READY || !c->calibrated || check(i,now)!=BV_OK || i->deadman ||
        i->speed.raw || i->torque.raw>c->baseline+2) return false;
-    c->state=BV_ACTIVE;c->reason=BV_OK;c->last_us=c->ramp_us=now;
+    c->boot_pending=false;c->state=BV_ACTIVE;c->reason=BV_OK;c->last_us=c->ramp_us=now;
     c->torque_us=i->torque.timestamp_us;c->last_torque=i->torque.raw;c->stalled_since=-1;
     c->output=c->target=0;return true;
 }
@@ -87,6 +87,27 @@ uint8_t bv_step(bv_control_t *c,const bb_input_t *i,int64_t now)
     }
     return c->output;
 }
+/* Only the initial boot is automatic. A stop or a runtime fault cannot rearm
+ * itself. Before calibration completes, unstable/loaded pedals restart the
+ * observation window with zero command, rather than accepting a loaded zero. */
+uint8_t bv_auto_step(bv_control_t *c,const bb_input_t *i,int64_t now)
+{
+    if(!c->boot_pending || c->state==BV_FAULT) return bv_step(c,i,now);
+    if(i && i->deadman) { bv_stop(c);return 0; }
+    if(c->state==BV_IDLE) {
+        if(bv_calibrate(c,i,now)) return bv_step(c,i,now);
+        return 0;
+    }
+    if(c->state==BV_CALIBRATING) {
+        if(check(i,now)!=BV_OK || i->speed.raw || i->torque.raw>8 ||
+           (c->cal_count && i->torque.raw+2<c->cal_max) || (c->cal_count && i->torque.raw>c->cal_min+2)) {
+            c->state=BV_IDLE;c->cal_count=0;c->torque_us=-1;return 0;
+        }
+        bv_step(c,i,now);
+    }
+    if(c->state==BV_READY) bv_arm(c,i,now);
+    return 0;
+}
 bool bv_authorizes(const bv_control_t *c,const bb_input_t *i,uint8_t raw,int64_t now)
 {
     if(c->state!=BV_ACTIVE || !raw || raw>BV_MAX_DRIVE || raw!=c->output ||
@@ -98,12 +119,12 @@ bool bv_authorizes(const bv_control_t *c,const bb_input_t *i,uint8_t raw,int64_t
 }
 const char *bv_state_name(bv_state_t s)
 {
-    static const char *n[]={"CLICK ZERO","ZERO PEDALS","CLICK ARM","ASSIST X2","FAULT"};
+    static const char *n[]={"WAIT ZERO","ZERO PEDALS","WAIT NEUTRAL","ASSIST X2","FAULT"};
     return (unsigned)s<5?n[s]:"UNKNOWN";
 }
 const char *bv_reason_name(bv_reason_t r)
 {
     static const char *n[]={"OK","DATA OLD/LINK","RANGE","LOOP DELAY","PEDALS LOADED",
-        "TORQUE JUMP","CLICK CALIBRATE","BRAKE","NO MOTION"};
+        "TORQUE JUMP","STOPPED","BRAKE","NO MOTION"};
     return (unsigned)r<9?n[r]:"UNKNOWN";
 }

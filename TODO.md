@@ -1,5 +1,15 @@
 # TODO — console BionX CAN sur MCP2515
 
+## V1 automatique et émission moteur — 25 octobre2026
+
+Utilisateur confirme boot, interface, SOC et vitesse ; demande explicite de
+zéro/armement automatiques, anneau puissance, barre couple et émission moteur.
+- [x] Automatiser la calibration stable au boot et l'armement au neutre ; garder arrêt/défaut bloquants.
+- [x] Anneau = indicateur moteur14, barre = couple21 ; masquer les données périmées.
+- [x] Tester transitions automatiques et jauges ; compiler le profil live.
+- [ ] Flasher le profil live demandé, sans déclencher d'effort ni commande positive de test.
+- [ ] Consigner les résultats et publier les commits.
+
 ## V1 assistance ×2 — travail demandé le 25 octobre 2026
 
 - [x] Initialiser Git et publier une base fidèle du banc sur le dépôt utilisateur.

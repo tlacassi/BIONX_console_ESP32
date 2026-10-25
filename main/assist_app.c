@@ -14,20 +14,17 @@ static bv_control_t control;
 static bb_input_t input;
 static int64_t wire_deadline,power_deadline;
 static uint8_t wire;
-static bool pressed,click_pending,brake_seen,stop_press;
-static int64_t button_changed,brake_closed_since;
-static bool raw_button;
+static bool brake_seen;
+static int64_t brake_closed_since;
 bool bench_app_init(void)
 {
     bv_init(&control);
-    pressed=raw_button=gpio_get_level(22)==0;
-    button_changed=esp_timer_get_time();
 #ifdef CONFIG_BIONX_ASSIST_BRAKE
     gpio_config_t pin={.pin_bit_mask=1ULL<<36,.mode=GPIO_MODE_INPUT,
         .pull_up_en=GPIO_PULLUP_DISABLE,.intr_type=GPIO_INTR_DISABLE};
     if(gpio_config(&pin)!=ESP_OK) return false;
 #endif
-    ESP_LOGW("assist","V1 raw gain x2 cap8; click calibrate, click arm, press stop; wheel-up bench only");
+    ESP_LOGW("assist","V1 raw gain x2 cap8; auto zero/arm at boot, press stop; wheel-up bench only");
     return true;
 }
 bool bench_app_command(const char *cmd,int64_t now)
@@ -64,21 +61,8 @@ void bench_app_tick(bx_master_t *m,const mcp2515_transport_stats_t *s,int64_t no
 #else
     (void)brake_seen;(void)brake_closed_since;
 #endif
-    /* Stop on raw press, act only on debounced release. No delayed arm. */
-    
-    if(input.deadman!=raw_button) { raw_button=input.deadman;button_changed=now; }
-    if(raw_button && control.state==BV_ACTIVE) { bv_stop(&control);stop_press=true;click_pending=false; }
-    if(raw_button!=pressed && now-button_changed>=25000) {
-        pressed=raw_button;
-        if(pressed) click_pending=!stop_press && control.state!=BV_ACTIVE;
-        else if(click_pending && !stop_press) {
-            click_pending=false;
-            if(control.state==BV_READY) bv_arm(&control,&input,now);
-            else bv_calibrate(&control,&input,now);
-        }
-    }
-    if(!pressed && !raw_button) stop_press=false;
-    uint8_t wanted=bv_step(&control,&input,now);
+    if(input.deadman) bv_stop(&control);
+    uint8_t wanted=bv_auto_step(&control,&input,now);
 #ifdef CONFIG_BIONX_V1_TX
     wire=wanted;
 #else
@@ -118,6 +102,10 @@ void assist_app_dashboard(const bx_master_t *m,int64_t now,const char *master_st
     d.speed_kmh=bv_speed_millikmh(m->samples[BX_SPEED].raw)*0.001f;
     d.soc_valid=bx_sample_fresh(&m->samples[BX_SOC_VOLTAGE],now,2000000) && m->samples[BX_SOC_VOLTAGE].raw<=100;
     d.battery_soc=m->samples[BX_SOC_VOLTAGE].raw;
+    d.motor_level_valid=bx_sample_fresh(&m->samples[BX_POWER],now,500000) && m->samples[BX_POWER].raw<=64;
+    d.motor_level=m->samples[BX_POWER].raw;
+    d.torque_valid=bx_sample_fresh(&m->samples[BX_TORQUE],now,BV_TORQUE_TTL) && m->samples[BX_TORQUE].raw<=64;
+    d.torque=m->samples[BX_TORQUE].raw;
     float a;d.power_valid=bx_battery_power(m,now,&d.battery_power_w,&a);
     dashboard_live_update(&d);
 }

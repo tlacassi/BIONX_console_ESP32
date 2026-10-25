@@ -14,7 +14,7 @@ typedef enum { BV_OK, BV_DATA, BV_RANGE, BV_CLOCK, BV_CAL_LOAD, BV_TORQUE_JUMP,
 typedef struct {
     bv_state_t state;
     bv_reason_t reason;
-    bool calibrated;
+    bool calibrated, boot_pending;
     uint8_t baseline, cal_min, cal_max, last_torque, output, target;
     unsigned cal_count;
     int64_t last_us, torque_us, ramp_us, stalled_since;
@@ -23,6 +23,7 @@ void bv_init(bv_control_t *c);
 bool bv_calibrate(bv_control_t *c,const bb_input_t *i,int64_t now);
 bool bv_arm(bv_control_t *c,const bb_input_t *i,int64_t now);
 void bv_stop(bv_control_t *c);
+uint8_t bv_auto_step(bv_control_t *c,const bb_input_t *i,int64_t now);
 uint8_t bv_step(bv_control_t *c,const bb_input_t *i,int64_t now);
 bool bv_authorizes(const bv_control_t *c,const bb_input_t *i,uint8_t raw,int64_t now);
 uint32_t bv_speed_millikmh(uint16_t raw);
