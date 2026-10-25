@@ -5,6 +5,44 @@ MCP2515 à deux SPI. C'est une V1 expérimentale pour essais supervisés roue
 levée. Le câblage reste celui de [HARDWARE.md](HARDWARE.md).
 Le profil jog précédemment chargé n'est pas remplacé sans flash explicite.
 
+## Choix explicite de la mesure de courant
+
+Deux sources batterie sont disponibles dans la configuration V1 :
+
+| Source | Registres | Conversion candidate |
+|---|---|---|
+| Shunt BionX (défaut) |10:1E/1F|16 bits signés×0,001 A|
+| Gas gauge batterie |10:D3/D4|16 bits signés×0,002141 A|
+
+Option `BIONX_CURRENT_GAS`, overlay `sdkconfig.current-gas` à ajouter après
+`sdkconfig.assist-v1` lors d'une nouvelle configuration. Dans une configuration
+existante, utiliser menuconfig : les defaults ne remplacent pas forcément un
+choix déjà enregistré. Un redémarrage du profil sélectionné repart avec des
+paires vierges. Aucune bascule automatique, aucun mélange d'octets/sources.
+La paire choisie remplace les lectures de courant, sans augmenter leur nombre.
+Les contrôles fraîcheur, ordre, skew, U/I et signe sont conservés ; le log
+`power_diag src=BAT_GG_D3D4` ou `BAT_SHUNT_1E1F` identifie la source.
+
+D3/D4 est documenté dans BionXtool et Minimal Translator, mais support réel,
+signe, latence et calibration restent à mesurer sur ce pack. Le moteur fournit
+un indicateur14 en pourcentage ; aucun registre de courant moteur en ampères
+n'est confirmé dans ces deux tables. Ne pas convertir14 en watts ni utiliser
+les registres de limites moteur7A–7D comme une mesure de courant.
+
+Le choix gas gauge est implémenté/testé et sa branche ESP32 compilée ; il n'a
+pas encore été essayé sur le vélo. L'image actuellement flashée utilise encore
+le shunt. Prochain essai utile : profil diagnostic gas gauge puis comparaison
+repos/impulsion, avant de déclarer des watts fiables.
+
+## Profil de banc sans limite de vitesse — 25 octobre2026
+
+Sur demande explicite utilisateur, la V1 ne verrouille plus un défaut à25 km/h
+et ne réduit plus l'assistance entre20 et25. La vitesse reste affichée et sa
+fraîcheur reste obligatoire ; seules les valeurs hors format octet sont refusées.
+Les profils jog et ancien banc pédale ne changent pas. Cap8/64, enveloppe≤400 ms,
+arrêt bouton/frein, température/tension, NO MOTION, expiration et défaut CAN
+restent actifs. Les seuils de vitesse cités plus bas sont historiques.
+
 ## Réponse impulsionnelle et diagnostic — 25 octobre2026
 
 Demande utilisateur après essai : répondre à un coup de pédale court.

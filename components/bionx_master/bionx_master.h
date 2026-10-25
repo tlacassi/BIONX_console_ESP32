@@ -10,7 +10,7 @@ typedef enum { BX_OK, BX_TX_ERROR, BX_REPLY_TIMEOUT, BX_PROFILE_MISMATCH,
 typedef struct {
     int64_t reply_us, write_gap_us, frame_gap_us, control_us, battery_us, sample_ttl_us;
     uint16_t max_charge_raw, max_discharge_raw;
-    bool fast_poll, measure_power, pedal_control;
+    bool fast_poll, measure_power, pedal_control, current_gas;
     uint8_t assist_cap; /* 0 in the normal neutral profile; bench maximum 8. */
     uint8_t battery_hw, battery_sw, motor_sw;
 } bx_config_t;

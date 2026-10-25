@@ -1,10 +1,11 @@
 /* SPDX-License-Identifier: GPL-3.0-only */
 #include <assert.h>
 #include "bionx_master.h"
-typedef struct { can_frame_t f; unsigned count, hi, lo, torque_reads; } bus_t;
+typedef struct { can_frame_t f; unsigned count, hi, lo, torque_reads, gas_reads; } bus_t;
 static bool send(void *ctx,const can_frame_t *f)
 {
     bus_t *b=ctx; b->f=*f; ++b->count;
+    if(f->dlc==2 && f->id==0x10 && (f->data[1]==0xd3 || f->data[1]==0xd4)) ++b->gas_reads;
     if(f->dlc==2 && f->id==0x20 && f->data[1]==0x21) ++b->torque_reads;
     if(f->dlc==4 && f->id==0x20 && f->data[1]==9) assert(!f->data[3]);
     return true;
@@ -19,8 +20,8 @@ static void simulate(bx_master_t *m,bus_t *b)
             case 0x21:r.data[3]=37;break;
             case 0xa6:r.data[3]=0x9a;break;
             case 0xa7:r.data[3]=0x4c;break;
-            case 0x1e:r.data[3]=3;++b->hi;break;
-            case 0x1f:r.data[3]=0xe8;++b->lo;break;
+            case 0xd3:case 0x1e:r.data[3]=3;++b->hi;break;
+            case 0xd4:case 0x1f:r.data[3]=0xe8;++b->lo;break;
             default:r.data[3]=0;
             }
             bx_master_receive(m,&r);
@@ -86,5 +87,12 @@ int main(void)
     cfg.measure_power=false;b=(bus_t){0};
     assert(bx_master_init(&m,&cfg,send,&b));m.state=BX_NEUTRAL;
     simulate(&m,&b);assert(!b.hi && !b.lo && !bx_battery_power(&m,1000000,&w,&a));
+    cfg.measure_power=true;cfg.current_gas=true;b=(bus_t){0};
+    assert(bx_master_init(&m,&cfg,send,&b));m.state=BX_NEUTRAL;
+    simulate(&m,&b);assert(b.gas_reads>6);
+    assert(bx_battery_power(&m,1000000,&w,&a));
+    assert(a>2.1409f && a<2.1411f && w>84.56f && w<84.58f);
+    m.current_pair[0].raw=0xfe;m.current_pair[1].raw=0x0c;
+    assert(bx_battery_power(&m,1000000,&w,&a) && a< -1.0704f && a> -1.0706f);
     return 0;
 }

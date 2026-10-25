@@ -45,6 +45,13 @@ config BIONX_ASSIST_V1
     help
         Auto CAN discovery, original dashboard and raw pedal gain x2.
         Explicit unloaded calibration and local arm required. No regen.
+config BIONX_CURRENT_GAS
+    bool "Use battery gas-gauge current D3/D4 instead of shunt 1E/1F"
+    depends on BIONX_ASSIST_V1
+    default n
+    help
+        Candidate signed factor0.002141 A/raw; verify sign and calibration.
+        Replaces the current pair, does not add polling load or auto fallback.
 config BIONX_V1_TX
     bool "V1 positive TX for supervised wheel-up bench"
     depends on BIONX_ASSIST_V1

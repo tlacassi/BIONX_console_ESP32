@@ -135,6 +135,9 @@ void bionx_master_app_run(void)
 #endif
 #ifdef CONFIG_BIONX_ASSIST_V1
     cfg.assist_cap=BV_MAX_DRIVE;cfg.measure_power=true;cfg.pedal_control=true;
+#ifdef CONFIG_BIONX_CURRENT_GAS
+    cfg.current_gas=true;
+#endif
 #endif
     cfg.reply_us=CONFIG_BIONX_MASTER_REPLY_MS*1000;
     cfg.write_gap_us=CONFIG_BIONX_MASTER_WRITE_GAP_MS*1000;

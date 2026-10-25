@@ -11,7 +11,7 @@ static bv_reason_t check(const bb_input_t *i,int64_t now)
        !bx_sample_fresh(&i->voltage_mv,now,2000000) ||
        !bx_sample_fresh(&i->power,now,500000)) return BV_DATA;
     if(i->brake || !i->brake_valid) return BV_BRAKE;
-    if(i->torque.raw>64 || bv_speed_millikmh(i->speed.raw)>=25000 ||
+    if(i->torque.raw>64 || i->speed.raw>255 ||
        i->temperature.raw>=50 || i->voltage_mv.raw<30000 ||
        i->voltage_mv.raw>42000 || i->power.raw>64) return BV_RANGE;
     return BV_OK;
@@ -92,9 +92,7 @@ uint8_t bv_step(bv_control_t *c,const bb_input_t *i,int64_t now)
         c->pulse_peak=demand(c,i);c->pulse_us=now;
     }
     c->target=target;
-    /* Fade out from 20 to 25 candidate km/h; never command regen. */
-    uint32_t speed=bv_speed_millikmh(i->speed.raw);
-    if(speed>=20000) c->target=c->target*(25000-speed)/5000;
+    /* Wheel-up V1: no speed cutoff/taper, per explicit bench request. */
     if(c->target<c->output) c->output=c->target;
     if(now-c->ramp_us>=50000) {
         if(c->target>c->output) ++c->output;
@@ -129,8 +127,7 @@ bool bv_authorizes(const bv_control_t *c,const bb_input_t *i,uint8_t raw,int64_t
        now<c->last_us || now-c->last_us>=BV_COMMAND_TTL || check(i,now)!=BV_OK ||
        i->deadman || raw>pulse_demand(c,i,now)) return false;
     if(!i->speed.raw && c->stalled_since>=0 && now-c->stalled_since>=2000000) return false;
-    uint32_t speed=bv_speed_millikmh(i->speed.raw);
-    return speed<20000 || raw<=pulse_demand(c,i,now)*(25000-speed)/5000;
+    return true;
 }
 const char *bv_state_name(bv_state_t s)
 {

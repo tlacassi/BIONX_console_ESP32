@@ -123,7 +123,8 @@ void assist_app_dashboard(const bx_master_t *m,int64_t now,const char *master_st
             input.torque.raw,(long)((now-input.torque.timestamp_us)/1000),input.speed.raw,
             (long)((now-input.speed.timestamp_us)/1000),control.target,wire,confirmed_command,
             input.power.raw,valid,(double)watts,(double)amps,esp_err_to_name(ui));
-        ESP_LOGI("power_diag","U=%u/%u valid=%d/%d age=%ld/%ldms I=%u/%u valid=%d/%d age=%ld/%ldms Uskew=%ldms Iskew=%ldms UIskew=%ldms",
+        ESP_LOGI("power_diag","src=%s U=%u/%u valid=%d/%d age=%ld/%ldms I=%u/%u valid=%d/%d age=%ld/%ldms Uskew=%ldms Iskew=%ldms UIskew=%ldms",
+            m->config.current_gas?"BAT_GG_D3D4":"BAT_SHUNT_1E1F",
             m->power_voltage_pair[0].raw,m->power_voltage_pair[1].raw,
             m->power_voltage_pair[0].valid,m->power_voltage_pair[1].valid,
             (long)((now-m->power_voltage_pair[0].timestamp_us)/1000),

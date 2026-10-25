@@ -26,6 +26,14 @@ static const unsigned poll_samples[] = {
     BX_TORQUE, BX_SPEED, BX_POWER, BX_TEMP, BX_SOC_VOLTAGE, BX_SOC_GAUGE, BX_PACK_HI, BX_PACK_LO, BX_CURRENT_HI, BX_CURRENT_LO
 };
 
+/* Select one current sensor for the complete pair; never mix sources. */
+static op_t current_poll(const bx_master_t *m,unsigned idx)
+{
+    op_t op=polls[idx];
+    if(m->config.current_gas && idx>=8) op.reg=idx==8?0xd3:0xd4;
+    return op;
+}
+
 bx_config_t bx_default_config(void)
 {
     return (bx_config_t){.reply_us=200000, .write_gap_us=20000,
@@ -232,16 +240,16 @@ void bx_master_tick(bx_master_t *m, int64_t now)
          * Speed takes priority over a saturated round-robin. Finish a started
          * HI/LO pair next, except when speed itself is due. */
         if(m->config.measure_power && now>=m->poll_due[1]) {
-            m->poll_index=1; m->poll_due[1]=now+periods[1]; emit(m,polls[1]); return;
+            m->poll_index=1; m->poll_due[1]=now+periods[1]; emit(m,current_poll(m,1)); return;
         }
         if(m->config.pedal_control && now>=m->poll_due[0]) {
-            m->poll_index=0; m->poll_due[0]=now+50000; emit(m,polls[0]); return;
+            m->poll_index=0; m->poll_due[0]=now+50000; emit(m,current_poll(m,0)); return;
         }
         if(m->config.measure_power && m->pair_low) {
             unsigned low=m->pair_low;
             m->pair_low=low==7?8:low==8?9:0;
             m->poll_index=low;
-            m->poll_due[low]=now+periods[low]; emit(m,polls[low]); return;
+            m->poll_due[low]=now+periods[low]; emit(m,current_poll(m,low)); return;
         }
         for (unsigned n=0;n<(m->config.measure_power?10U:8U);++n) {
             unsigned idx=((m->config.measure_power?m->poll_cursor:m->poll_index)+n)%(m->config.measure_power?10:8);
@@ -254,11 +262,11 @@ void bx_master_tick(bx_master_t *m, int64_t now)
                 }
                 m->poll_due[idx]=now+(m->config.measure_power && idx==0 ? (m->config.pedal_control?50000:250000) :
                     m->config.measure_power && idx==2 ? 250000 : periods[idx]);
-                emit(m,polls[idx]);
+                emit(m,current_poll(m,idx));
                 break;
             }
         }
-    } else if (!m->waiting && now>=m->next_poll_us) emit(m,polls[m->poll_index]);
+    } else if (!m->waiting && now>=m->next_poll_us) emit(m,current_poll(m,m->poll_index));
 }
 bool bx_sample_fresh(const bx_sample_t *s,int64_t now,int64_t ttl)
 { return s && s->valid && ttl>0 && s->timestamp_us>=0 && now>=s->timestamp_us && now-s->timestamp_us<ttl; }
@@ -289,7 +297,7 @@ bool bx_battery_power(const bx_master_t *m,int64_t now,float *watts,float *amps)
     unsigned raw=(m->current_pair[0].raw<<8)|m->current_pair[1].raw;
     int ma=raw>=32768 ? (int)raw-65536 : (int)raw;
     if(mv<30000 || mv>42000 || ma == -32768 || ma == 32767) return false;
-    *amps=ma*0.001f;
+    *amps=ma*(m->config.current_gas ? 0.002141f:0.001f);
     *watts=mv*0.001f * *amps;
     return true;
 }

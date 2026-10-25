@@ -1427,3 +1427,35 @@ vérifier avant d'affirmer des watts moteur. Aucun wattage fabriqué depuis
 la consigne ou le pourcentage moteur. Port laissé ouvert conformément à la
 demande ; commande actuelle0, contrôle verrouillé, lecture des logs possible
 sans réouverture du port. Aucun mouvement initié par l'assistant.
+
+
+## 2026-10-25 — Retrait limite vitesse et choix courant
+
+Demande explicite : oublier la limite de survitesse. V1 seulement : défaut25
+et réduction20–25 retirés dans le contrôleur et le filtre TX. Vitesse affichée
+et fraîcheur requise, valeur hors octet refusée ; autres garde-fous conservés.
+Tests9/9 passent : contrôle reste actif/autorisé aux bruts21/22/255, format256
+refusé et autres défauts encore bloquants. Build ESP32 sans warning.
+Flash build-assist-v1-live646128 octets, SHA256
+`051790b62c00cbf54eaaea222ba34843c18e305ad35e8d6923ece4e439f83ffe`,
+empreintes vérifiées, capture rouverte et laissée ouverte (`/tmp/bionx-v1-no-speed.log`).
+Aucun mouvement initié par l'assistant. Le log montre ensuite STOPPED et NO REPLY
+sur batterieA7, aucune attribution de cause matérielle sur ce seul constat.
+
+Pendant ce travail, utilisateur suggère choisir courant batterie ou moteur.
+Tables sources relues : Minimal Translator Inc/CAN-Registers.h d8f4fbb et
+BionXtool registers.h f8cca39. Deux sources batterie documentées : shunt1E/1F
+signé×0,001 A et gas-gaugeD3/D4×0,002141 A, signe à vérifier. Aucun courant
+moteur mesuré confirmé dans ces tables ;14 est un pourcentage,7A–7D des limites.
+
+Ajout choix explicite `bx_config_t.current_gas` / CONFIG_BIONX_CURRENT_GAS,
+overlay sdkconfig.current-gas. Même plan de polling à deux octets, remplacement
+1E/1F parD3/D4, appariement attendu conservé, pas de fallback ni mélange.
+Conversion distincte selon source, log identifie le choix. Tests9/9, y compris
+requêtesD3/D4 et courant/puissance positifs et négatifs ; validation physique
+GG/signe/calibration non effectuée. Le build suivant ne constitue pas un flash
+GG ; le firmware chargé reste celui sans limite avec source shunt par défaut.
+
+Build principal courant au choix réussi sans warning ; branche applicative
+CONFIG_BIONX_CURRENT_GAS compilée séparément avec le compilateur ESP32 et-Werror.
+Pas de flash supplémentaire ; port de capture conservé ouvert.

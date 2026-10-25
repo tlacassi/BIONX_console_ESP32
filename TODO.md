@@ -518,3 +518,16 @@ sur une impulsion courte.
 - [x] Retour utilisateur : hausse brève de jauge ; logs TX positif jusqu’à7/64 et P14=5.
 - [ ] Vérifier source de courant/shunt : FF/FF reste figé pendant activité moteur, watts non fiables.
 - [ ] Validation mécanique indépendante et nouveaux essais à faible vitesse après acquittement.
+
+## Suppression limite vitesse V1 banc — demande utilisateur
+
+- [x] Retirer défaut vitesse25 et réduction20–25 du contrôleur V1 et du filtre TX.
+- [x] Tester maintien du contrôle après dépassement et protections restantes, compiler.
+- [x] Consigner le profil et les prochaines priorités.
+
+## Choix de source courant — suggestion utilisateur
+
+- [x] Ajouter sélection explicite batterie shunt1E/1F ou gas gaugeD3/D4, sans registre moteur inventé.
+- [x] Conversions distinctes, même cohérence U/I et pas de bascule implicite ; tests.
+- [x] Compiler le build principal et la branche alternative avec-Werror ; documenter limites avant essai.
+- [ ] Tester physiquement D3/D4 et vérifier signe/calibration avant sélection définitive.

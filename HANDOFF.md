@@ -14,7 +14,23 @@ Lire [README](README.md), [procédure V1](docs/ASSIST_V1.md),
 Les procédures/analyses sont maintenant dans `docs/`, les captures originales
 inchangées dans `captures/`. Profils et entrypoints restent à la racine.
 
-## État courant : diagnostic et réponse au coup de pédale
+## Dernier état — sans limite vitesse, choix courant préparé
+
+Image flashée V1 live sans défaut25 ni réduction20–25 :646128 octets,
+SHA256 `051790b62c00cbf54eaaea222ba34843c18e305ad35e8d6923ece4e439f83ffe`.
+Source courant encore shunt1E/1F. Capture laissée ouverte, session exec4428,
+fichier `/tmp/bionx-v1-no-speed.log`, processus `/tmp/bionx-live-diagnostic.py`.
+Lire ce log sans rouvrir le port. Dernier relevé STOPPED/NO REPLY batterieA7 ;
+origine non établie, pas de réarmement de contrôle envoyé par l'assistant.
+
+Code courant alternatif gas gaugeD3/D4 ajouté, option BIONX_CURRENT_GAS /
+sdkconfig.current-gas ; conversion signée candidate0,002141 A/raw distincte du
+shunt0,001. Aucun nouveau flash après cet ajout, GG non essayé physiquement.
+Sources primaires ne confirment pas de registre courant moteur mesuré.
+Prochaine étape : essai lecture GG, comparaison sous impulsion puis choix de
+source et calibration ; garder anneau14 en pourcentage séparé des watts.
+
+## Historique : diagnostic et réponse au coup de pédale
 
 Port série **laissé ouvert à la demande utilisateur** par le processus
 `/tmp/bionx-live-diagnostic.py`, session exec7907. Lire d'abord

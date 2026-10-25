@@ -1,0 +1,3 @@
+# Experimental alternate battery current source, not a motor current register.
+# Apply after sdkconfig.assist-v1; sign/path/calibration must be verified.
+CONFIG_BIONX_CURRENT_GAS=y

@@ -31,8 +31,11 @@ int main(void)
     }
     t+=200000;assert(!c.output);
     for(int n=0;n<40;n++) { t+=50000;i=input(t,15,1);bv_step(&c,&i,t);assert(c.output<=8); }
-    assert(c.output==8);i=input(t+1,15,21);bv_step(&c,&i,t+1);assert(c.output<2);
-    i=input(t+2,15,22);assert(!bv_step(&c,&i,t+2) && c.state==BV_FAULT);
+    assert(c.output==8);i=input(t+1,15,21);bv_step(&c,&i,t+1);assert(c.output==8 && bv_authorizes(&c,&i,8,t+1));
+    i=input(t+2,15,22);assert(bv_step(&c,&i,t+2)==8 && c.state==BV_ACTIVE);
+    assert(bv_authorizes(&c,&i,8,t+2));
+    i=input(t+3,15,255);assert(bv_step(&c,&i,t+3)==8 && c.state==BV_ACTIVE);
+    i=input(t+4,15,256);assert(!bv_step(&c,&i,t+4) && c.state==BV_FAULT);
     i=input(t+3,1,0);assert(!bv_arm(&c,&i,t+3));
     t=ready(&c);i=input(t+1,4,1);bv_step(&c,&i,t+1);
     assert(!bv_authorizes(&c,&i,1,t+150001));
