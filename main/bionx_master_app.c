@@ -19,6 +19,11 @@
 #include "driver/gpio.h"
 #include "bionx_button.h"
 #include "bench_app.h"
+#ifdef CONFIG_BIONX_ASSIST_V1
+#include "assist_app.h"
+#include "bionx_assist.h"
+#include "dashboard.h"
+#endif
 #include "mcp2515_diagnostic.h"
 #include "esp_lvgl_port.h"
 
@@ -26,6 +31,7 @@ static bx_master_t master;
 static lv_obj_t *label;
 /* Owned by master task: preserve first failed TX even after RX is latched off. */
 static bool tx_failure;
+static uint8_t confirmed_assist;
 static mcp2515_transport_stats_t tx_failure_stats;
 static esp_err_t tx_failure_error;
 static can_frame_t tx_failure_frame;
@@ -41,6 +47,7 @@ static bool transmit(const can_frame_t *f,bool probe)
             mcp2515_tx_failure_name(s,err),esp_err_to_name(err),(unsigned long)f->id,f->data[1],f->data[3],
             s->last_tx_ctrl,s->last_tx_intf,s->eflg,s->tec,s->rec,s->mode);
     }
+    if(err==ESP_OK && f->id==0x20 && f->dlc==4 && f->data[1]==9) confirmed_assist=f->data[3];
     return err==ESP_OK;
 }
 static bool send(void *ctx,const can_frame_t *f)
@@ -81,6 +88,9 @@ void bionx_master_app_run(void)
 #endif
     esp_err_t init_err=display_init();
     if (init_err!=ESP_OK) { ESP_LOGE("master","Display/pins: %s",esp_err_to_name(init_err)); return; }
+#ifdef CONFIG_BIONX_ASSIST_V1
+    if(dashboard_init()!=ESP_OK) { ESP_LOGE("master","Dashboard init failed");return; }
+#else
     if (lvgl_port_lock(1000)) {
         label=lv_label_create(lv_screen_active());
         lv_obj_set_width(label,204);
@@ -91,9 +101,13 @@ void bionx_master_app_run(void)
         lv_label_set_text(label,"NEUTRAL MASTER\nUSB: s=start q=stop");
         lvgl_port_unlock();
     }
+#endif
     init_err=mcp2515_transport_start_master();
     if (init_err!=ESP_OK) {
         ESP_LOGE("master","CAN configuration/hardware required: %s",esp_err_to_name(init_err));
+#ifdef CONFIG_BIONX_ASSIST_V1
+        dashboard_live_t failed={.status="CAN INIT FAIL",.fault=true};dashboard_live_update(&failed);
+#endif
         if (label && lvgl_port_lock(1000)) {
             lv_label_set_text(label,"CAN CONFIG REQUIRED\nVerify MCP module/quartz");
             lvgl_port_unlock();
@@ -108,6 +122,9 @@ void bionx_master_app_run(void)
     cfg.assist_cap=BJ_MAX_DRIVE; /* Shared jog cap: startup8, rolling4, zero at target. */
     cfg.measure_power=true;
 #endif
+#endif
+#ifdef CONFIG_BIONX_ASSIST_V1
+    cfg.assist_cap=BV_MAX_DRIVE;cfg.measure_power=true;cfg.pedal_control=true;
 #endif
     cfg.reply_us=CONFIG_BIONX_MASTER_REPLY_MS*1000;
     cfg.write_gap_us=CONFIG_BIONX_MASTER_WRITE_GAP_MS*1000;
@@ -225,6 +242,10 @@ void bionx_master_app_run(void)
             bench_app_status(bench_text,sizeof(bench_text));
 #ifdef CONFIG_BIONX_ASSIST_BENCH
             ESP_LOGI("bench","%s",bench_text);
+#endif
+#ifdef CONFIG_BIONX_ASSIST_V1
+            assist_app_dashboard(&master,now,tx_failure ? "TX FAULT" :
+                master.state==BX_FAULT ? fault_name(master.fault):state_name(master.state),confirmed_assist);
 #endif
             /* LVGL copies this task-local buffer while locked. */
             if (label && lvgl_port_lock(5)) {

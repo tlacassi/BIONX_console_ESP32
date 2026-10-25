@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-only */
 #include "sdkconfig.h"
-#ifdef CONFIG_BIONX_DASHBOARD_DEMO
+#if defined(CONFIG_BIONX_DASHBOARD_DEMO) || defined(CONFIG_BIONX_ASSIST_V1)
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -11,14 +11,15 @@
 #include "esp_system.h"
 
 static const char *TAG = "dashboard";
-static lv_obj_t *speed, *ring, *mode_badge, *mode_label, *battery, *power;
+static lv_obj_t *speed, *ring, *mode_badge, *mode_label, *battery, *power, *status_label, *power_title, *command_label, *speed_unit;
 static assist_mode_t current_mode;
 static int32_t shown_speed;
 static int32_t speed_from, speed_target;
 static uint32_t speed_tick, mode_tick;
 static char speed_text[16], battery_text[8], power_text[12];
 static lv_opa_t mode_opacity = LV_OPA_COVER;
-static bool initialized;
+static bool initialized, live, live_fault;
+static uint32_t live_tick;
 
 static lv_obj_t *label(lv_obj_t *parent, const char *text, int y,
                        const lv_font_t *font, uint32_t color)
@@ -44,6 +45,15 @@ static void animate_speed(void *unused, int32_t value)
 static void refresh(lv_timer_t *timer)
 {
     (void)timer;
+    if(live) {
+        if(lv_tick_elaps(live_tick)>=500) {
+            lv_label_set_text(speed,"--");lv_arc_set_value(ring,0);
+            lv_label_set_text(battery,"--%");lv_label_set_text(power,"-- W");
+            lv_label_set_text(command_label,"CMD --");
+            if(!live_fault) lv_label_set_text(status_label,"DATA OLD");
+        }
+        return;
+    }
     uint32_t dt = lv_tick_elaps(speed_tick);
     if (dt > 100) dt = 100;
     int32_t value = speed_from + (speed_target - speed_from) * (int32_t)dt / 100;
@@ -118,16 +128,26 @@ esp_err_t dashboard_init(void)
     speed = label(screen, "0.0", 82, &lv_font_montserrat_48, 0xF4FBFF);
     lv_obj_set_width(speed, 190);
     lv_obj_set_style_text_align(speed, LV_TEXT_ALIGN_CENTER, 0);
-    label(screen, "km/h", 138, &lv_font_montserrat_12, 0x93A8B3);
+    speed_unit=label(screen, "km/h", 138, &lv_font_montserrat_12, 0x93A8B3);
     lv_obj_t *soc_title = label(screen, "BATTERY", 166, &lv_font_montserrat_12, 0x93A8B3);
     lv_obj_set_x(soc_title, -44);
-    lv_obj_t *watts_title = label(screen, "MOTOR", 166, &lv_font_montserrat_12, 0x93A8B3);
-    lv_obj_set_x(watts_title, 44);
+    power_title = label(screen, "MOTOR", 166, &lv_font_montserrat_12, 0x93A8B3);
+    lv_obj_set_x(power_title, 44);
     battery = label(screen, "--%", 183, &lv_font_montserrat_20, 0xF4FBFF);
     lv_obj_set_x(battery, -44);
     power = label(screen, "-- W", 183, &lv_font_montserrat_20, 0xF4FBFF);
     lv_obj_set_x(power, 44);
-    label(screen, "DEMO", 214, &lv_font_montserrat_12, 0x93A8B3);
+    status_label=label(screen, "DEMO", 210, &lv_font_montserrat_12, 0x93A8B3);
+    command_label=label(screen, "", 69, &lv_font_montserrat_12, 0x93A8B3);
+#ifdef CONFIG_BIONX_ASSIST_V1
+    live=true;live_tick=lv_tick_get();
+    lv_label_set_text(speed_unit,"km/h~");
+    lv_label_set_text(mode_label,"ASSIST X2");
+    lv_label_set_text(power_title,"BAT W?");
+    lv_obj_set_style_text_font(power,&lv_font_montserrat_16,0);
+    lv_label_set_text(speed,"--");
+    lv_label_set_text(status_label,"WAIT BATTERY");
+#endif
 
     if (!lv_timer_create(refresh, 33, NULL)) {
         ESP_LOGE(TAG, "Cannot allocate dashboard refresh timer");
@@ -170,5 +190,35 @@ esp_err_t dashboard_update(const dashboard_data_t *data)
     }
     lvgl_port_unlock();
     return ESP_OK;
+}
+
+esp_err_t dashboard_live_update(const dashboard_live_t *d)
+{
+    if(!d || (d->speed_valid && (!isfinite(d->speed_kmh) || d->speed_kmh<0 || d->speed_kmh>300)) ||
+       (d->soc_valid && d->battery_soc>100) ||
+       (d->power_valid && (!isfinite(d->battery_power_w) || fabsf(d->battery_power_w)>20000)) ||
+       (d->command_valid && d->command>8)) return ESP_ERR_INVALID_ARG;
+    if(!initialized) return ESP_ERR_INVALID_STATE;
+    if(!lvgl_port_lock(5)) return ESP_ERR_TIMEOUT;
+    live=true;live_fault=d->fault;live_tick=lv_tick_get();
+    lv_label_set_text(speed_unit,"km/h~");
+    lv_label_set_text(mode_label,"ASSIST X2");lv_label_set_text(power_title,"BAT W?");
+    lv_obj_set_style_text_font(power,&lv_font_montserrat_16,0);
+    char buf[64];
+    if(d->speed_valid) snprintf(buf,sizeof(buf),"%.1f",(double)d->speed_kmh);
+    else snprintf(buf,sizeof(buf),"--");
+    lv_label_set_text(speed,buf);
+    lv_arc_set_value(ring,d->speed_valid?(int)(d->speed_kmh*10):0);
+    if(d->soc_valid) snprintf(buf,sizeof(buf),"%u%%",d->battery_soc);
+    else snprintf(buf,sizeof(buf),"--%%");
+    lv_label_set_text(battery,buf);
+    if(d->power_valid) snprintf(buf,sizeof(buf),"%+.0f W",(double)d->battery_power_w);
+    else snprintf(buf,sizeof(buf),"-- W");
+    lv_label_set_text(power,buf);
+    if(d->command_valid) snprintf(buf,sizeof(buf),"CMD %u/64  NO REGEN",d->command);
+    else snprintf(buf,sizeof(buf),"CMD --  NO REGEN");
+    lv_label_set_text(command_label,buf);
+    lv_label_set_text(status_label,d->status?d->status:"--");
+    lvgl_port_unlock();return ESP_OK;
 }
 #endif

@@ -38,9 +38,23 @@ config BIONX_ASSIST_BENCH
     bool "Bench pedal control (dry-run by default, not for riding)"
     depends on BIONX_BOARD_HUZZAH32 && BIONX_MASTER_ENCODER_BUTTON
     default n
+config BIONX_ASSIST_V1
+    bool "V1 single-mode pedal gain x2 (experimental bench)"
+    depends on BIONX_ASSIST_BENCH
+    default n
+    help
+        Auto CAN discovery, original dashboard and raw pedal gain x2.
+        Explicit unloaded calibration and local arm required. No regen.
+config BIONX_V1_TX
+    bool "V1 positive TX for supervised wheel-up bench"
+    depends on BIONX_ASSIST_V1
+    default n
+    help
+        Requires independent HV disconnect. Brake and motor CAN-loss cutoff
+        remain physical validation items. Do not use on road.
 config BIONX_ENCODER_JOG
     bool "Wheel-up encoder low-speed bench jog (not pedal assist)"
-    depends on BIONX_ASSIST_BENCH
+    depends on BIONX_ASSIST_BENCH && !BIONX_ASSIST_V1
     default n
 config BIONX_JOG_WHEEL_MM
     int "Jog wheel circumference (mm; 0 inhibits drive)"

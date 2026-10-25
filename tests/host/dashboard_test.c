@@ -100,6 +100,52 @@ int main(void)
             fclose(file);
         }
     }
+    dashboard_live_t real={.speed_valid=true,.speed_kmh=18.6f,.soc_valid=true,
+        .battery_soc=74,.power_valid=true,.battery_power_w=123,.command_valid=true,
+        .command=4,.status="ASSIST X2"};
+    assert(dashboard_live_update(NULL)==ESP_ERR_INVALID_ARG);
+    real.battery_power_w=NAN;assert(dashboard_live_update(&real)==ESP_ERR_INVALID_ARG);
+    real.battery_power_w=123;test_lock_available=false;
+    assert(dashboard_live_update(&real)==ESP_ERR_TIMEOUT);test_lock_available=true;
+    assert(dashboard_live_update(&real)==ESP_OK);
+    lv_tick_inc(50);lv_timer_handler();lv_obj_update_layout(lv_screen_active());
+    check_labels(lv_screen_active());
+    FILE *live_file=fopen("dashboard-live.rgb565","wb");assert(live_file);
+    assert(fwrite(framebuffer,sizeof(framebuffer),1,live_file)==1);fclose(live_file);
+    for(int watts=-1400;watts<=1400;watts+=1400) {
+        real.battery_power_w=watts;real.status="DATA OLD/LINK";
+        assert(dashboard_live_update(&real)==ESP_OK);
+        lv_tick_inc(50);lv_timer_handler();lv_obj_update_layout(lv_screen_active());
+        check_labels(lv_screen_active());
+    }
+    const char *states[]={"CLICK ZERO","ZERO PEDALS","CLICK ARM","ASSIST X2",
+        "DRY RUN TX OFF","DATA OLD/LINK","PEDALS LOADED","CAN INIT FAIL"};
+    for(unsigned k=0;k<sizeof(states)/sizeof(states[0]);k++) {
+        real.status=states[k];assert(dashboard_live_update(&real)==ESP_OK);
+        lv_tick_inc(50);lv_timer_handler();lv_obj_update_layout(lv_screen_active());
+        check_labels(lv_screen_active());
+    }
+    real.fault=true;real.status="CAN INIT FAIL";
+    assert(dashboard_live_update(&real)==ESP_OK);
+    lv_tick_inc(600);lv_timer_handler();
+    bool fault_seen=false;
+    for(uint32_t k=0;k<lv_obj_get_child_count(lv_screen_active());k++) {
+        lv_obj_t *obj=lv_obj_get_child(lv_screen_active(),k);
+        if(lv_obj_check_type(obj,&lv_label_class) && !strcmp(lv_label_get_text(obj),"CAN INIT FAIL")) fault_seen=true;
+    }
+    assert(fault_seen);real.fault=false;
+    real.power_valid=false;real.speed_valid=false;real.soc_valid=false;
+    real.command_valid=false;real.status="WAIT BATTERY";
+    assert(dashboard_live_update(&real)==ESP_OK);
+    lv_tick_inc(50);lv_timer_handler();lv_obj_update_layout(lv_screen_active());
+    check_labels(lv_screen_active());
+    lv_tick_inc(600);lv_timer_handler();lv_obj_update_layout(lv_screen_active());
+    bool old_seen=false;
+    for(uint32_t k=0;k<lv_obj_get_child_count(lv_screen_active());k++) {
+        lv_obj_t *obj=lv_obj_get_child(lv_screen_active(),k);
+        if(lv_obj_check_type(obj,&lv_label_class) && !strcmp(lv_label_get_text(obj),"DATA OLD")) old_seen=true;
+    }
+    assert(old_seen);
     lv_mem_monitor_t mem;
     lv_mem_monitor(&mem);
     printf("UI/demo tests passed; LVGL pool used=%u%%, largest free=%lu\n",

@@ -1,0 +1,11 @@
+# Apply after sdkconfig.assist-bench on HUZZAH32 dual-SPI only.
+CONFIG_BIONX_ASSIST_V1=y
+# CONFIG_BIONX_ENCODER_JOG is not set
+# CONFIG_BIONX_V1_TX is not set
+# CONFIG_BIONX_ASSIST_TX_VERIFIED is not set
+# Brake is not yet connected: dry-run until separately selected bench TX.
+# CONFIG_BIONX_ASSIST_BRAKE is not set
+CONFIG_LV_FONT_MONTSERRAT_12=y
+CONFIG_LV_FONT_MONTSERRAT_16=y
+CONFIG_LV_FONT_MONTSERRAT_20=y
+CONFIG_LV_FONT_MONTSERRAT_48=y

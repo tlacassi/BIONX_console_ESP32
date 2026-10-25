@@ -3,7 +3,7 @@
 #include "bench_app.h"
 #include <stdio.h>
 #include <string.h>
-#if defined(CONFIG_BIONX_ASSIST_BENCH) && !defined(CONFIG_BIONX_ENCODER_JOG)
+#if defined(CONFIG_BIONX_ASSIST_BENCH) && !defined(CONFIG_BIONX_ENCODER_JOG) && !defined(CONFIG_BIONX_ASSIST_V1)
 #include "bionx_bench.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
@@ -110,7 +110,7 @@ void bench_app_status(char *text,size_t size)
     snprintf(text,size,"%s %s\nTq%u base%u want%u tx%u\n%s",mode,bb_state_name(control.state),
         input.torque.raw,control.baseline,control.output,wire_command,bb_reason_name(control.reason));
 }
-#elif !defined(CONFIG_BIONX_ENCODER_JOG)
+#elif !defined(CONFIG_BIONX_ENCODER_JOG) && !defined(CONFIG_BIONX_ASSIST_V1)
 bool bench_app_init(void) { return true; }
 void bench_app_tick(bx_master_t *m,const mcp2515_transport_stats_t *s,int64_t now) { (void)m;(void)s;(void)now; }
 bool bench_app_command(const char *c,int64_t now) { (void)c;(void)now;return false; }

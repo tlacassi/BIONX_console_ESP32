@@ -12,3 +12,11 @@ target_include_directories(dashboard_test PRIVATE stubs ../../components/dashboa
 target_compile_options(dashboard_test PRIVATE -Wall -Wextra -Werror)
 target_link_libraries(dashboard_test PRIVATE lvgl m)
 add_test(NAME dashboard COMMAND dashboard_test)
+
+add_executable(dashboard_v1_test dashboard_test.c
+    ../../components/dashboard/dashboard.c ../../components/dashboard/dashboard_demo.c)
+target_include_directories(dashboard_v1_test PRIVATE stubs ../../components/dashboard)
+target_compile_definitions(dashboard_v1_test PRIVATE CONFIG_BIONX_ASSIST_V1=1)
+target_compile_options(dashboard_v1_test PRIVATE -Wall -Wextra -Werror)
+target_link_libraries(dashboard_v1_test PRIVATE lvgl m)
+add_test(NAME dashboard_v1 COMMAND dashboard_v1_test)

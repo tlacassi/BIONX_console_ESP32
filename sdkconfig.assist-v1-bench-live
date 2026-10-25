@@ -1,0 +1,4 @@
+# Supervised wheel-up bench only, with independent HV disconnect accessible.
+# Requires unloaded calibration and explicit arm on each boot. No auto motion.
+# Brake, torque calibration and motor CAN-loss timeout remain unverified.
+CONFIG_BIONX_V1_TX=y
