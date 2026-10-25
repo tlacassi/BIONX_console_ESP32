@@ -14,7 +14,25 @@ Lire [README](README.md), [procédure V1](docs/ASSIST_V1.md),
 Les procédures/analyses sont maintenant dans `docs/`, les captures originales
 inchangées dans `captures/`. Profils et entrypoints restent à la racine.
 
-## Firmware actuellement chargé : V1 calcul à blanc
+## Firmware actuellement chargé : V1 live automatique
+
+Demande explicite utilisateur après confirmation du rendu, SOC et vitesse :
+suppression des clics, anneau moteur, barre couple et émission d'assistance.
+Profil `build-assist-v1-live/sdkconfig`, ESP32/HUZZAH32, ASSIST_V1=y et V1_TX=y.
+Image644592 octets, SHA256 `bb1ec62cd8ee0f7d3e908f42d3faed9c99baa9503eaf975ecf64d0e1ab82e8bd`.
+Flash115200/hash vérifiés. Zéro et armement automatiques au boot seulement,
+pédales déchargées, roue immobile et mesures saines. Plafond8/64, gain brut×2,
+rampe, expirations et défauts conservés ; aucune régène. Appui bouton coupe
+sans reprise automatique. Aucun effort/commande positive de test de l'assistant.
+Pas de capture série après ce flash pour ne pas réinitialiser un essai utilisateur.
+Armement/réponse moteur de ce nouvel incrément à confirmer par l'utilisateur.
+
+Anneau : mesure moteur14 (0–64, % candidat), pas vitesse ni consigne.
+Barre cyan et TQ : capteur couple21 brut0–64. Vitesse centrale, CMD réellement
+émise et puissance électrique batterie séparées. Un registre14 nul peut rester
+nul malgré rotation, comme déjà observé ; aucune puissance mécanique inventée.
+
+## Historique : V1 calcul à blanc
 
 Flash autorisé et exécuté le25 octobre2026 sur HUZZAH32, profil
 `build-assist-v1/sdkconfig`, V1_TX désactivé,643664 octets. SHA256

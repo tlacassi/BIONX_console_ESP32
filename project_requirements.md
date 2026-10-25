@@ -270,3 +270,15 @@ pour cette première version expérimentale. Puissance affichée = U×I batterie
 commande CAN séparée ; aucune puissance mécanique inventée depuis le niveau.
 Procédure, saturation/rampe, profils calcul à blanc/émission et limites :
 [ASSIST_V1](docs/ASSIST_V1.md). Les exigences routières restent ouvertes.
+
+## 18. Mise à jour V1 automatique demandée le25 octobre2026
+
+Utilisateur confirme le boot, l'interface, SOC et vitesse. Il demande
+zéro/armement sans clic, anneau de puissance moteur, petite barre couple et
+activation de l'assistance sur le banc roue levée. La calibration automatique
+attend16 mesures distinctes, stables et basses à l'arrêt puis arme au neutre ;
+les pédales doivent être déchargées. Stops/défauts restent bloquants, sans
+reprise automatique. Anneau = indicateur moteur14 candidat, barre = couple21
+brut, commande et watts batterie séparés. Plafond8/64 et absence de régène
+conservés. Cette demande remplace l'armement manuel au boot de la section17,
+sans transformer les limites physiques encore inconnues en validations.

@@ -6,7 +6,7 @@ séparés. Licence GPL-3.0-only.
 
 **V1 expérimentale :** initialisation automatique au boot, dashboard d'origine,
 un mode d'assistance au signal pédale ×2, sans régénération, puissance électrique
-batterie et commande CAN visibles. Calibration à vide puis armement local ;
+batterie et commande CAN visibles. Zéro stable et armement automatiques au boot, pédales déchargées ;
 aucun départ moteur au simple boot. Le gain physique et les watts restent à
 calibrer. Procédure : [ASSIST_V1](docs/ASSIST_V1.md).
 
@@ -14,8 +14,8 @@ calibrer. Procédure : [ASSIST_V1](docs/ASSIST_V1.md).
 
 Le pilotage moteur roue levée, l'écran/encodeur, le démarrage/extinction et la
 lecture pédale du profil jog précédent sont confirmés par l'utilisateur.
-La V1 en calcul à blanc est flashée : boot, init CAN et mesures observés.
-Son affichage physique et la calibration attendent confirmation utilisateur.
+Le rendu V1, le SOC et la vitesse sont confirmés par l’utilisateur.
+Le nouvel incrément automatise le zéro/armement et active le profil moteur de banc.
 Frein et arrêt moteur sur perte CAN/reset restent à mesurer avant usage roulant.
 
 - [Point de reprise et image actuellement chargée](HANDOFF.md)

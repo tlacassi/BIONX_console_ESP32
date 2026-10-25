@@ -2,13 +2,18 @@
 
 ## V1 automatique et émission moteur — 25 octobre2026
 
+État courant : profil live flashé, zéro/armement automatiques, anneau moteur14,
+barre couple21. Tests9/9 et2/2, build sans warning, empreintes flash vérifiées.
+Aucune commande de test envoyée par l'assistant ; retour physique utilisateur
+sur armement et assistance attendu. Les sections suivantes gardent l'historique.
+
 Utilisateur confirme boot, interface, SOC et vitesse ; demande explicite de
 zéro/armement automatiques, anneau puissance, barre couple et émission moteur.
 - [x] Automatiser la calibration stable au boot et l'armement au neutre ; garder arrêt/défaut bloquants.
 - [x] Anneau = indicateur moteur14, barre = couple21 ; masquer les données périmées.
 - [x] Tester transitions automatiques et jauges ; compiler le profil live.
-- [ ] Flasher le profil live demandé, sans déclencher d'effort ni commande positive de test.
-- [ ] Consigner les résultats et publier les commits.
+- [x] Flasher le profil live demandé, sans déclencher d'effort ni commande positive de test.
+- [x] Consigner les résultats et publier les commits.
 
 ## V1 assistance ×2 — travail demandé le 25 octobre 2026
 

@@ -149,3 +149,11 @@ réponse batterie ; aucun nouvel échec TX pendant le runtime observé. Erreur R
 transitoire lecture1000 puis reset RTCWDT et boot réussi, cause inconnue.
 Dashboard initialisé côté logiciel ; rendu physique/calibration/réponse×2
 à confirmer par utilisateur. [Preuves](VALIDATION.md). Aucun essai moteur.
+
+## V1 automatique et live — 25 octobre2026
+
+Utilisateur confirme le rendu, SOC et vitesse de la V1 calcul à blanc, puis
+demande auto-zéro/armement et émission moteur. Nouvel incrément testé/compilé,
+flashé et empreintes vérifiées : V1_TX=y. Anneau mesure moteur14, barre
+couple21. Aucun essai d'effort initié par l'assistant ; réponse physique
+du contrôle automatique encore à confirmer. Frein et timeout CAN non validés.

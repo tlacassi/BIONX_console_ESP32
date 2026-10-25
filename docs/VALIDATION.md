@@ -1288,3 +1288,44 @@ non confirmée. Aucune calibration ou armement déclenché par l'assistant.
 Le verrou V1_TX reste fermé même si l'utilisateur arme ce profil.
 Affichage physique, calibration aboutie et réponse pédale×2 encore à confirmer
 par l'utilisateur. Aucun essai de rotation ni validation de frein/perte CAN.
+
+
+## 2026-10-25 — Zéro/armement automatiques, jauges et flash moteur demandé
+
+Utilisateur confirme « ça boot, l'interface est là », SOC et vitesse visibles.
+Il demande explicitement calibration/armement automatiques, anneau puissance,
+barre couple et émission moteur. Banc roue levée confirmé dans le tour précédent.
+
+Logiciel : zéro automatique dès mesures complètes/saines à l'arrêt,16 réponses
+couple distinctes≤8 et dispersion≤2, puis armement au neutre. Fenêtre initiale
+recommencée si signal chargé/instable/périmé. Un arrêt au bouton, y compris
+pendant le zéro, annule l'automatisme ; défaut après armement reste verrouillé.
+Aucune reprise automatique après arrêt/défaut. Un nouveau boot peut recommencer
+le zéro puis armer. Un effort statique faible et stable ne peut pas être
+distingué sûrement d'un offset : pédales déchargées requises au boot.
+Gain brut×2, plafond8/64, rampe200 ms, baisse immédiate, temporisations,
+NO MOTION, contrôles U/I et aucune régène conservés.
+
+UI : anneau depuis moteur14 et pourcentage candidat100/64 ; petite barre
+horizontale cyan depuis couple21, TQ brut0–64. Mesures masquées si périmées,
+aucune substitution par vitesse ou commande. Watts batterie et CMD transport
+restent séparés. Le14 a déjà renvoyé0 malgré rotation ; ne pas interpréter
+l'anneau comme une mesure mécanique garantie. Rendu hôte inspecté visuellement.
+
+Tests :9/9 unitaires et2/2 LVGL passent. Nouveaux scénarios : séquence boot
+sans clic et sans demande pendant zéro/armement, effort après armement,
+stop/fault sans reprise, bouton maintenu au boot, signal chargé et zéro instable.
+Jauges vérifiées par vraies valeurs LVGL : vitesse changée sans modifier
+l'anneau moteur, couple indépendant, masquage/péremption et géométrie.
+Build live ESP32 sans warning, image_info checksum/hash valides.
+
+Commit implémentation f9a3796 publié. Flash build-assist-v1-live sur
+/dev/cu.usbserial-016138BC à115200, cible ESP32-D0WDQ6 rev1.0, ASSIST_V1=y,
+V1_TX=y, ENCODER_JOG désactivé. Image644592 octets, SHA256 fichier
+`bb1ec62cd8ee0f7d3e908f42d3faed9c99baa9503eaf975ecf64d0e1ab82e8bd`. Application/bootloader/partitions/ota_data écrits et empreintes
+vérifiées, reset esptool exécuté. [Log flash](logs/2026-10-25-v1-auto-live-flash.txt).
+Aucun port série rouvert après flash, aucune calibration/commande d'effort
+émise par l'assistant. L'effort éventuel appartient à l'essai utilisateur.
+Retour matériel du zéro/armement et de la réponse moteur encore attendu.
+Ce flash ne valide ni frein, ni calibration physique du gain, ni arrêt sur
+perte CAN/reset. La commande peut désormais devenir positive après auto-armement.
