@@ -2,7 +2,7 @@
 
 Mis à jour le 25 octobre 2026. Ce bilan décrit le montage HUZZAH32 actuel ;
 il ne valide ni le matériel ESP32-C3 cible, ni un usage routier.
-Pour reprendre le développement : [HANDOFF.md](HANDOFF.md).
+Pour reprendre le développement : [HANDOFF.md](../HANDOFF.md).
 Les essais détaillés et images flashées figurent dans [VALIDATION.md](VALIDATION.md).
 
 ## Résultats physiques rapportés par l’utilisateur
@@ -44,7 +44,7 @@ sont pas devenues connues simplement parce que des échanges CAN ont réussi.
 Le maître découvre par requête batterie0x10 registre3B, une fois par seconde.
 Seule une réponse attendue et à temps déclenche l’init : une trame quelconque
 ne suffit pas. Profil observé : batterie HW33/SW69/type3, moteur SW60/sensor0.
-Init et arrêt suivent la capture locale [start&stop.csv](start&stop.csv).
+Init et arrêt suivent la capture locale [start&stop.csv](../captures/start&stop.csv).
 Les réponses sur ID08 n’ont pas d’identifiant de transaction : conserver une
 seule lecture en attente, le registre attendu et la fenêtre temporelle.
 

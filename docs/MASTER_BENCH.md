@@ -11,7 +11,7 @@ estimés, zéro arrêt, survitesse25 estimés, pneu700×28C/config2136 mm provis
 Commande max8 bruts au démarrage/4 en mouvement, rampe200 ms et zéro à cible.
 Clic arrêt/acquittement sous conditions ;20 s maximum/session, expiration100 ms.
 Lecture/affichage pédalage confirmés par l’utilisateur ; U/I reste en diagnostic.
-La force en N/Nm n’est pas calibrée. Reprise : [HANDOFF.md](HANDOFF.md).
+La force en N/Nm n’est pas calibrée. Reprise : [HANDOFF.md](../HANDOFF.md).
 Voir [JOG_BENCH.md](JOG_BENCH.md), [HARDWARE.md](HARDWARE.md) et les preuves/images
 successives dans [VALIDATION.md](VALIDATION.md). Pas de validation routière ni
 watchdog moteur sur perte CAN prouvé.

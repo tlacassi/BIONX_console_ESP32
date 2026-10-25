@@ -245,7 +245,7 @@ Livrables attendus : sources, configurations, dépendances verrouillées lorsque
 ## 16. Acquis du banc à reprendre — 25 octobre 2026
 
 Lire [HANDOFF.md](HANDOFF.md) pour l’image réellement chargée, les commandes
-et le point de reprise, puis [BENCH_FINDINGS.md](BENCH_FINDINGS.md) pour les
+et le point de reprise, puis [BENCH_FINDINGS.md](docs/BENCH_FINDINGS.md) pour les
 observations, correctifs et inconnues. Les sections1–15 définissent la cible
 fonctionnelle et décrivent aussi l’état initial ; elles ne constituent pas
 un statut matériel courant.

@@ -2,8 +2,8 @@
 
 ## V1 assistance ×2 — travail demandé le 25 octobre 2026
 
-- [ ] Initialiser Git et publier une base fidèle du banc sur le dépôt utilisateur.
-- [ ] Ranger documentation et captures, préserver les références et profils existants.
+- [x] Initialiser Git et publier une base fidèle du banc sur le dépôt utilisateur.
+- [x] Ranger documentation et captures, préserver les références et profils existants.
 - [ ] Relire les sources tierces ; définir le gain brut ×2 sans inventer une calibration physique.
 - [ ] Ajouter un profil V1 séparé : découverte automatique au boot, un mode, aucune régène.
 - [ ] Restaurer le dashboard initial avec données réelles, péremption, puissance batterie et état de contrôle.
@@ -14,7 +14,7 @@ Aucun flash demandé dans cet incrément. Le profil jog chargé reste inchangé.
 
 ## État courant pour la reprise — 25 octobre 2026
 
-Lire [HANDOFF.md](HANDOFF.md) et [BENCH_FINDINGS.md](BENCH_FINDINGS.md).
+Lire [HANDOFF.md](HANDOFF.md) et [BENCH_FINDINGS.md](docs/BENCH_FINDINGS.md).
 
 - [x] Pilotage moteur au banc confirmé par l’utilisateur.
 - [x] Lecture/affichage capteur pédalage jugés fonctionnels par l’utilisateur.
@@ -88,7 +88,7 @@ profil MCP2515 tant que son alimentation et son quartz ne sont pas identifiés.
 
 ## Capture d’origine reçue — 0000235.TXT
 
-Analyse et rejeu effectués : [rapport](LOG_ANALYSIS_0000235.md),
+Analyse et rejeu effectués : [rapport](docs/LOG_ANALYSIS_0000235.md),
 `python3 tools/check_cl1000.py`. 27 104 trames reconnues sur 27 679 ;
 575 trames 0x58/009C restent sans sémantique décodée. Deux tests hôte passent.
 La capture contient des émissions du logger et ne valide pas à elle seule
@@ -115,7 +115,7 @@ la phase 2. Aucune écriture CAN ni commande de réveil ajoutée.
 
 ## Capture locale démarrage/arrêt — 24 octobre 2026
 
-`start&stop.csv` analysé : [rapport](START_STOP_ANALYSIS.md).
+`start&stop.csv` analysé : [rapport](docs/START_STOP_ANALYSIS.md).
 Séquence CAN démarrage/arrêt et copie des limites batterie → moteur observées
 sur notre système. Runtime exclusivement immobile, assistance nulle. 1 690
 trames rejouées dans le parseur C : 1 648 décodées, 42 UNKNOWN, aucun rejet.
@@ -125,7 +125,7 @@ wake électrique restent non validés. Les points matériels de phase 2 restent 
 
 ## Implémentation phase 2 — 24 octobre 2026
 
-Voir [MASTER_BENCH.md](MASTER_BENCH.md) pour le périmètre, les hypothèses et
+Voir [MASTER_BENCH.md](docs/MASTER_BENCH.md) pour le périmètre, les hypothèses et
 les builds. Ce relevé remplace les mentions historiques « TX non implémenté ».
 
 - [x] MCP2515 normal explicite, TX one-shot borné, confirmation TX0IF,

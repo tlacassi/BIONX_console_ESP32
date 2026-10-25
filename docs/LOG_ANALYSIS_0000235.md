@@ -37,7 +37,7 @@ partagées sur 0x08, requêtes concurrentes et égalités temporelles.
 Commande reproductible, sans émission CAN :
 
 ```sh
-python3 tools/check_cl1000.py 0000235.TXT
+python3 tools/check_cl1000.py captures/0000235.TXT
 cmake --build build-unit
 ctest --test-dir build-unit --output-on-failure
 ```

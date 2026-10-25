@@ -12,11 +12,11 @@ Cette passe ne modifie ni ne reflashe le firmware.
 Lire ensuite :
 
 1. [project_requirements.md](project_requirements.md) : cible fonctionnelle.
-2. [BENCH_FINDINGS.md](BENCH_FINDINGS.md) : acquis et leçons pour le code final.
-3. [JOG_BENCH.md](JOG_BENCH.md) : commandes et limites du profil réellement actif.
-4. [HARDWARE.md](HARDWARE.md) : montage actuel et historique des broches.
+2. [BENCH_FINDINGS.md](docs/BENCH_FINDINGS.md) : acquis et leçons pour le code final.
+3. [JOG_BENCH.md](docs/JOG_BENCH.md) : commandes et limites du profil réellement actif.
+4. [HARDWARE.md](docs/HARDWARE.md) : montage actuel et historique des broches.
 5. [TODO.md](TODO.md) : état courant en tête, puis journal des incréments.
-6. [VALIDATION.md](VALIDATION.md) : preuves datées, images et résultats successifs.
+6. [VALIDATION.md](docs/VALIDATION.md) : preuves datées, images et résultats successifs.
 
 Les sections anciennes « actuel », « dernier firmware », « non flashé » dans
 les journaux décrivent leur date, pas l’état courant ci-dessous. Les tableaux

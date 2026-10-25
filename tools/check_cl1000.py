@@ -17,7 +17,7 @@ class Packet(c.Structure):
     _fields_ = [('kind', c.c_int), ('reg', c.c_uint8), ('raw', c.c_uint16), ('target', c.c_uint8)]
 
 root = Path(__file__).resolve().parents[1]
-source = Path(sys.argv[1]) if len(sys.argv) > 1 else root / '0000235.TXT'
+source = Path(sys.argv[1]) if len(sys.argv) > 1 else root / 'captures/0000235.TXT'
 blob = source.read_bytes()  # One snapshot, even if the original is later replaced.
 print(f'bytes={len(blob)} sha256={hashlib.sha256(blob).hexdigest()}')
 ids, kinds, rejected, types, seconds = (collections.Counter() for _ in range(5))

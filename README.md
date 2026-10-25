@@ -5,32 +5,32 @@
 Projet ESP-IDF natif préparé pour ESP32-C3 Super Mini, sans Arduino requis.
 **Observation CAN, diagnostic, dashboard et pilotage MCP2515 sur banc roue levée.**
 
-[Bilan des trouvailles pour le code final](BENCH_FINDINGS.md) : pilotage moteur
+[Bilan des trouvailles pour le code final](docs/BENCH_FINDINGS.md) : pilotage moteur
 et lecture/affichage du capteur de pédalage confirmés par l’utilisateur.
 Calibrations physiques et sécurité routière restent à valider séparément.
 
-Nouveau : [maître et profil Adafruit HUZZAH32](MASTER_BENCH.md).
-Dernier firmware chargé : [test encodeur roue levée](JOG_BENCH.md),
+Nouveau : [maître et profil Adafruit HUZZAH32](docs/MASTER_BENCH.md).
+Dernier firmware chargé : [test encodeur roue levée](docs/JOG_BENCH.md),
 `build-encoder-jog` (sdkconfig-live), faible commande positive autorisée par
 l'utilisateur pour ce banc. Clic neutre, expirations ; pas de validation roulante.
-[Analyse des dépôts et contrôle de pédalage](ASSIST_BENCH.md) séparés.
+[Analyse des dépôts et contrôle de pédalage](docs/ASSIST_BENCH.md) séparés.
 Banc HUZZAH32 actuel : **deux bus SPI**, MCP SI→SDA23 et SCK→A5/GPIO4,
 profil passif `sdkconfig.components-dual-spi` après `sdkconfig.components`.
 Le profil maître neutre est `build-master-dual-spi` : bouton wake externe,
 requête batterie toutes les secondes puis initialisation et runtime neutre
 sur réponse attendue. Écran : tension, température moteur, SOC et diagnostics.
 Maintien encodeur 2 s pour arrêter ; appui court pour réarmer après arrêt.
-Voir [MASTER_BENCH.md](MASTER_BENCH.md) pour les defaults de compilation.
+Voir [MASTER_BENCH.md](docs/MASTER_BENCH.md) pour les defaults de compilation.
 Les anciens profils partagés correspondent au câblage précédent.
 Séquence démarrage/arrêt, TX borné, télémétrie expirante et tests de contrôle
 sont implémentés. Le profil neutre garde une assistance nulle ; le profil jog
 actif permet la rotation au banc. Le wake est un bouton externe, sans GPIO.
 Compilation ESP32-C3 réussie le 23 octobre 2026 avec l’ESP-IDF local
 **v5.2-dirty**. Flash USB effectué sur ESP32-C3 révision 0.4, flash 4 Mo.
-Voir le [rapport de validation](VALIDATION.md) pour les outils, résultats et limites.
+Voir le [rapport de validation](docs/VALIDATION.md) pour les outils, résultats et limites.
 Les exigences fonctionnelles sont dans [project_requirements.md](project_requirements.md).
 
-Analyse de la capture d’origine : [0000235.TXT](LOG_ANALYSIS_0000235.md).
+Analyse de la capture d’origine : [0000235.TXT](docs/LOG_ANALYSIS_0000235.md).
 Rejeu hôte : 97,92 % des trames décodées ; observation compatible au niveau
 format ; ce rejeu seul ne valide pas le remplacement de console.
 
@@ -42,7 +42,7 @@ Une réponse 0x58 ne satisfait pas une lecture normale attendant 0x08.
 Les journaux ajoutent des noms de registres et des conversions marquées
 `candidate` (rpm, %, °C) lorsque la cible est connue. Les réponses passives
 restent d’origine inconnue ; aucune attribution automatique par registre.
-Voir les sources et limites dans [BIONXTOOL_ANALYSIS.md](BIONXTOOL_ANALYSIS.md).
+Voir les sources et limites dans [BIONXTOOL_ANALYSIS.md](docs/BIONXTOOL_ANALYSIS.md).
 
 Le diagnostic TWAI optionnel interroge désormais vitesse, indicateur de puissance,
 température, capteur de couple et jauges batterie distinctes, ainsi que les deux
@@ -58,7 +58,7 @@ restent à confirmer sur le vélo. Le journal conserve sa limite de 100 lignes/s
 pour borner la sortie série ; les omissions sont comptées, et ce profil ne
 promet pas une capture intégrale des ~189 trames/s observées.
 
-Test matériel HUZZAH32 : [écran, MCP et encodeur](COMPONENT_TEST.md).
+Test matériel HUZZAH32 : [écran, MCP et encodeur](docs/COMPONENT_TEST.md).
 
 ## Démarrer
 Le gestionnaire de composants a été mis à jour en **2.4.11** dans l’environnement
@@ -110,7 +110,7 @@ Quitter le moniteur avec Ctrl+]. Vérifier que la carte possède bien 4 Mo de fl
 
 ## Anciens brochages C3 et profils associés
 
-Le [suivi matériel et pinout MCP2515 proposé](HARDWARE.md) tient compte des
+Le [suivi matériel et pinout MCP2515 proposé](docs/HARDWARE.md) tient compte des
 photos moteur/batterie et de l’écran branché. Le CAN est confirmé par
 l’utilisateur ; les inconnues matérielles et le wake externe sont détaillés
 dans HARDWARE.md. Ce paragraphe conserve l’ancien plan C3.
@@ -293,7 +293,7 @@ alimentation, niveaux logiques, câblage et terminaisons. Les valeurs livrées
 sont « matériel non vérifié » et quartz inconnu (`0`) : le code refuse alors
 de démarrer le MCP et l’écran indique une erreur de configuration.
 
-Le [pinout](HARDWARE.md) conserve l’écran et partage MOSI=3/SCLK=4 ; MCP
+Le [pinout](docs/HARDWARE.md) conserve l’écran et partage MOSI=3/SCLK=4 ; MCP
 MISO=5, CS=6, INT=7. La fréquence CAN configurée est 125 kbit/s, celle du SPI
 MCP 1 MHz. La présence de deux buffers RX matériels impose un essai de charge.
 En observation, l’écran utilise deux buffers DMA de deux lignes, soit
@@ -348,7 +348,7 @@ ctest --test-dir build-unit --output-on-failure
 Le modèle SPI teste configuration, débit, mode silencieux, buffers RX,
 identifiants/RTR/DLC, débordements, erreurs injectées et absence d’instructions
 TX. Il ne simule ni la couche électrique, ni les arbitrages SPI/FreeRTOS réels.
-Les résultats et la procédure banc/vélo figurent dans [VALIDATION.md](VALIDATION.md).
+Les résultats et la procédure banc/vélo figurent dans [VALIDATION.md](docs/VALIDATION.md).
 
 ## Origine et licence
 GPL-3.0-only. Sources du protocole et attributions :
@@ -356,3 +356,11 @@ GPL-3.0-only. Sources du protocole et attributions :
 - Ali Saghiran (2018) : https://github.com/inarighas/BionxConsole
 - Documentation carte : https://github.com/apache/nuttx/blob/master/Documentation/platforms/risc-v/esp32c3/boards/esp32c3-supermini/index.rst
 - USB : https://docs.espressif.com/projects/esp-idf/en/v5.5/esp32c3/api-guides/usb-serial-jtag-console.html
+
+## Arborescence
+
+`main/` intègre les applications ; `components/` contient protocole, contrôle,
+transport et interface ; `tests/` contient les tests hôte ; `docs/` conserve
+les procédures et preuves datées ; `captures/` conserve les captures originales.
+Les profils source `sdkconfig.*` restent à la racine pour préserver les commandes
+de build existantes. `build*/` et `managed_components/` sont générés et ignorés.

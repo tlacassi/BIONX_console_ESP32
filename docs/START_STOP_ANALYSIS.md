@@ -17,7 +17,7 @@ l’absence d’autres participants actifs.
 Rejeu dans le parseur C existant :
 
 ```sh
-python3 tools/check_cl1000.py 'start&stop.csv'
+python3 tools/check_cl1000.py 'captures/start&stop.csv'
 ```
 
 Résultat : 452 SET, 598 QUERY, 598 REPLY et 42 UNKNOWN (0x58/009C),

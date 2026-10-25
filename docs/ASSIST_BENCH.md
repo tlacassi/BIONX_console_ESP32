@@ -1,7 +1,7 @@
 # Assistance de banc — analyse et procédure (25 octobre 2026)
 
 Ce document concerne le contrôleur de pédalage séparé et ses analyses, pas
-l’application jog active. Pour le firmware courant, lire [HANDOFF.md](HANDOFF.md).
+l’application jog active. Pour le firmware courant, lire [HANDOFF.md](../HANDOFF.md).
 La lecture pédalage est fonctionnelle selon l’utilisateur ; assistance depuis
 ce capteur et calibration physique ne sont pas validées.
 

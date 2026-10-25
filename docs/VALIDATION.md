@@ -1,7 +1,7 @@
 # Validation du socle — 23 octobre 2026
 
 Ce fichier est un journal chronologique. Pour l’état courant et l’image réellement
-chargée, lire [HANDOFF.md](HANDOFF.md). Les mentions « non flashé », « prochain »
+chargée, lire [HANDOFF.md](../HANDOFF.md). Les mentions « non flashé », « prochain »
 ou « restant » ci-dessous décrivent leur étape historique ; voir les ajouts récents
 en fin de fichier et le bilan [BENCH_FINDINGS.md](BENCH_FINDINGS.md).
 
