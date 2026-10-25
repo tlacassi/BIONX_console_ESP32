@@ -1519,3 +1519,28 @@ TXerr/timeout0 ; WAIT ZERO/OK, auto1/cal0 car vitesse brute13 encore non nulle,
 couple0 et commande0. Utilisateur informé d'attendre arrêt complet pour zéro.
 Source courant shunt inchangée, validité physique FF/FF toujours non établie.
 Réponse mécanique de ce nouveau réglage à confirmer par utilisateur.
+
+
+## 2026-10-25 — Reprise sous35 vérifiée ; courant retrouvé dans CL1000
+
+Utilisateur précise que « ça coupe » signifie NO REPLY. Capture tunée : à30,747 s
+contrôle DATA OLD/LINK après198 ms sans RX pendant attente batterieA6 ; à30,987 s
+maître NO REPLY. Aucun message35 KM/H LIMIT dans cette fenêtre, dernière vitesse
+diagnostic17 brut avant panne. Reprise des échanges ensuite n'efface pas le
+défaut du contrôle. Ce n'est pas un verrouillage de survitesse.
+
+Test ajouté : dépasser35→coast/ACTIVE sans fault, passer sous35 avec effort
+réel→commande positive/autorisation TX sans clic. Tests9/9 passent. Aucune
+modification firmware ni flash, pas de nouveau réarmement ou ouverture série.
+Le port n'est plus occupé lors du contrôle lsof de ce tour ; ancien fichier
+/tmp/bionx-v1-tuned.log s'arrête à~92 s. Ne pas le présenter comme capture live.
+
+Demande suivante précise logs CL1000 avec console d'origine. Analyse réelle de
+captures/0000235.TXT :1E/1F absents ;294 requêtesD3 et294D4 toutes Type8, vers
+batterie10 ;277 réponsesD3 et272D4 sur08.255 paires temporelles candidates
+(skew≤100 ms, une seule consommation HI) ; brut0051→0,173421 A,2BAE→23,940662 A
+avec facteur tiers0,002141. Valeurs variables, aucune calibration physique
+inférée. Requêtes attribuées au logger, pas automatiquement à la console.
+Outil tools/analyze_cl1000_current.py exécuté sur la capture, résultats vérifiés.
+Voir [analyse](LOG_ANALYSIS_0000235.md). Choix GG déjà implémenté mais pas encore
+sélectionné dans le firmware chargé. Capture CSV start&stop sans ces registres.

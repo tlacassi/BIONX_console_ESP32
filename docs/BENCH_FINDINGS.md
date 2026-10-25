@@ -184,3 +184,11 @@ V1 testée/compilée/flashée avec bande morte1, gain×2, cap12/64, montée25 ms
 queue≤800 ms et coupure d'assistance35 km/h estimés sans verrouillage.
 Pas de mesure physique de la nouvelle réponse ni de calibration de vitesse.
 Capture ouverte ; roue initialement encore mobile, attente zéro légitime.
+
+## Courant CL1000 retrouvé
+
+Capture0000235 : courant batterie gas gaugeD3/D4, pas1E/1F. Réponses variables,
+255 paires candidates ~0,17–23,94 A avec facteur documenté0,002141. Requêtes
+émises par CL1000(Type8), console présente. [Analyse](LOG_ANALYSIS_0000235.md).
+Cela justifie l'essai de la source GG déjà disponible, sans prétendre qu'elle
+est déjà sélectionnée/validée dans le firmware courant. NO REPLY surA6 distinct.

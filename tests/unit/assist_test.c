@@ -38,8 +38,14 @@ int main(void)
     i=input(t+4,15,31);assert(!bv_step(&c,&i,t+4) && c.state==BV_ACTIVE && c.speed_limited);
     assert(!bv_authorizes(&c,&i,12,t+4) && !c.pulse_peak);
     i=input(t+5,1,29);assert(!bv_step(&c,&i,t+5) && !c.speed_limited);
-    i=input(t+6,15,255);assert(!bv_step(&c,&i,t+6) && c.state==BV_ACTIVE);
-    i=input(t+7,15,256);assert(!bv_step(&c,&i,t+7) && c.state==BV_FAULT);
+    /* Returning below35 with real effort resumes automatically, no rearm. */
+    for(int n=1;n<=6;n++) {
+        i=input(t+5+n*25000,15,30);bv_step(&c,&i,t+5+n*25000);
+    }
+    assert(c.state==BV_ACTIVE && c.output>0 && !c.speed_limited);
+    assert(bv_authorizes(&c,&i,c.output,t+150005));
+    i=input(t+150006,15,255);assert(!bv_step(&c,&i,t+150006) && c.state==BV_ACTIVE);
+    i=input(t+150007,15,256);assert(!bv_step(&c,&i,t+150007) && c.state==BV_FAULT);
     i=input(t+3,1,0);assert(!bv_arm(&c,&i,t+3));
     t=ready(&c);i=input(t+1,4,1);bv_step(&c,&i,t+1);
     assert(!bv_authorizes(&c,&i,1,t+150001));

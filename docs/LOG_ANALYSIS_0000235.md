@@ -118,3 +118,41 @@ périodiques de la console et ne fait aucune écriture.
 La [confrontation avec BionXtool](BIONXTOOL_ANALYSIS.md) apporte les noms
 et échelles candidates des registres et renforce l’hypothèse d’arrêt en fin
 de capture (batterie 0x25=1). La trame 0x58/009C DLC 2 reste à identifier.
+
+
+## Vérification ciblée du courant — 25 octobre2026
+
+Demande utilisateur : retrouver le courant de la capture CL1000 prise avec
+console d'origine, et comparer aux registres actuels. **Ce n'étaient pas les
+mêmes registres** : le log utilise le gas gauge batterieD3/D4, pas1E/1F.
+
+| Registre batterie10 | Requêtes | Réponses08 | Octets différents |
+|---|---:|---:|---:|
+|1E|0|0|0|
+|1F|0|0|0|
+|D3|294|277|22|
+|D4|294|272|27|
+
+Toutes les requêtesD3/D4 sont Type8 (émission du CL1000). La console d'origine
+était présente, mais il ne faut pas lui attribuer les requêtes du logger.
+Réponses08 reçues(Type0), sans identifiant de transaction. Après tri temporel,
+255 paires candidates HI puis LO distinctes, skew≤100 ms. Facteur documenté
+0,002141 A/brut signé, échelle encore candidate :
+
+- brut0051, lignes231/235, skew8 ms →0,173421 A ;
+- brut2BAE, lignes3759/3760, skew8 ms →23,940662 A.
+
+Les octets varient, contrairement au FF/FF actuel. Cela démontre des réponses
+exploitables àD3/D4 dans cette capture, pas une calibration indépendante du
+courant ni l'absence d'ambiguïté de transaction. L'autre capture locale
+start&stop.csv ne contient aucune lecture/réponse de1E/1F/D3/D4.
+
+Reproduction, sans émission CAN :
+
+```sh
+python3 tools/analyze_cl1000_current.py
+```
+
+La V1 dispose déjà du choix gas gauge (`sdkconfig.current-gas`), mais l'image
+flashée lit encore1E/1F. Cette analyse ne flashe rien et ne réarme pas le vélo.
+Le NO REPLY observé surA6 est un autre problème que le choix du registre courant.

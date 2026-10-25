@@ -545,3 +545,14 @@ bloquée, mais libellé ambigu d'un arrêt mémorisé.
 - [x] Limiter assistance à35 km/h estimés sans verrouillage ; vider l'impulsion à la limite.
 - [x] Vérifier maître/filtre TX/UI et régressions, compiler et flasher le profil de banc.
   Tests9/9 et2/2 UI, build sans warning, flash/hash vérifiés ; réponse physique à valider.
+
+## Reprise sous35 et distinction perte batterie
+
+Dernière coupure rapportée : capture→mesures expirées puis NO REPLY batterieA6,
+pas de verrouillage par limite vitesse.
+- [x] Tester dépassement puis retour sous35 avec effort maintenu, reprise sans clic.
+- [x] Conserver capture et distinguer clairement défaut batterie réel et limite d'assistance.
+
+Courant CL1000 retrouvé :D3/D4 variables (1E/1F absents), voir analyse0000235.
+- [ ] Essai gas gauge sur le vélo ; source shunt reste sélectionnée actuellement.
+- [ ] Diagnostiquer les absences de réponseA6 indépendamment de la limite vitesse.

@@ -14,7 +14,24 @@ Lire [README](README.md), [procédure V1](docs/ASSIST_V1.md),
 Les procédures/analyses sont maintenant dans `docs/`, les captures originales
 inchangées dans `captures/`. Profils et entrypoints restent à la racine.
 
-## Dernier état — seuil1, plafond12, impulsion800 ms et limite35
+## Dernières vérifications — NO REPLY et source CL1000
+
+La dernière coupure rapportée est confirmée NO REPLY batterieA6, précédée de
+péremption des données ; pas de verrouillage de limite vitesse. Test explicite
+ajouté : dépassement35→zéro sans fault, retour sous35 avec effort→reprise
+positive sans clic,9/9 tests passent. Aucun firmware modifié/reflashé à ce tour.
+Le port série n'est plus occupé (lsof) ; le fichier tuned s'arrête à~92 s.
+Lire les anciens logs, ne pas prétendre qu'une capture tourne toujours.
+
+Courant d'origine retrouvé : `captures/0000235.TXT` contient D3/D4, jamais1E/1F.
+Requêtes logger Type8 (294/pair-byte), réponses variables277/272,255 paires
+candidates ~0,17–23,94 A avec facteur0,002141. Outil reproductible
+`tools/analyze_cl1000_current.py`, détails docs/LOG_ANALYSIS_0000235.md.
+Le firmware chargé reste source shunt1E/1F ; prochain essai utile = sélectionner
+GG, déjà codée, puis vérifier signe/cohérence sous impulsion. Ne pas confondre
+cette sélection avec une correction prouvée du NO REPLY surA6.
+
+## Historique — seuil1, plafond12, impulsion800 ms et limite35
 
 Demande utilisateur : sensibilité accrue, impulsion plus forte/longue et35 km/h.
 V1 active dans `bionx_assist.[ch]` ; ne pas modifier le max_speed du contrôleur
