@@ -192,3 +192,15 @@ Capture0000235 : courant batterie gas gaugeD3/D4, pas1E/1F. Réponses variables,
 émises par CL1000(Type8), console présente. [Analyse](LOG_ANALYSIS_0000235.md).
 Cela justifie l'essai de la source GG déjà disponible, sans prétendre qu'elle
 est déjà sélectionnée/validée dans le firmware courant. NO REPLY surA6 distinct.
+
+## Gas gauge sélectionnée — première lecture réelle
+
+Profil live CURRENT_GAS=y flashé/hash vérifié. BatterieD3/D4 répond au repos
+00/3D :~0,131 A/~5,1 W candidats vers39,1 V, source et UI validées côté logiciel.
+Paires fraîches/cohérentes, pas de commande moteur assistant. Variation sous
+charge, signe, filtrage et calibration physique encore à valider.
+
+Dans la même capture GG, nouveau NO REPLY batterie61 après~35 s au repos,
+aucune commande moteur positive ; vitesse périmée avant timeout applicatif.
+La coupure n'exige donc ni survitesse ni effort dans cet essai. Cause de
+communication encore à établir ; GG répondait correctement avant le défaut.

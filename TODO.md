@@ -556,3 +556,15 @@ pas de verrouillage par limite vitesse.
 Courant CL1000 retrouvé :D3/D4 variables (1E/1F absents), voir analyse0000235.
 - [ ] Essai gas gauge sur le vélo ; source shunt reste sélectionnée actuellement.
 - [ ] Diagnostiquer les absences de réponseA6 indépendamment de la limite vitesse.
+
+## Essai courant gas gaugeD3/D4 — autorisé
+
+Utilisateur : « ok vas y tu peux envoyer la request » après identification
+des registres dans CL1000.
+- [x] Sélectionner CURRENT_GAS, compiler/vérifier ESP32 et réglages conservés.
+- [x] Flasher puis lire D3/D4, conserver les octets et valeurs physiques candidates.
+- [x] Consigner les résultats réels, distinguer communication et calibration.
+  GG répond au repos :003D,0,130601 A/~5,1 W candidats ; calibration/variation sous charge à confirmer.
+
+- [ ] Diagnostiquer perte de réponses batterie61 après~35 s au repos avec GG active,
+  sans mouvement/TX positive ; ne pas attribuer cette coupure à la limite vitesse.

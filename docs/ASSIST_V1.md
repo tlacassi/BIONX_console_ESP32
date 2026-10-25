@@ -5,6 +5,25 @@ MCP2515 à deux SPI. C'est une V1 expérimentale pour essais supervisés roue
 levée. Le câblage reste celui de [HARDWARE.md](HARDWARE.md).
 Le profil jog précédemment chargé n'est pas remplacé sans flash explicite.
 
+## Source courant actuellement sélectionnée : gas gaugeD3/D4
+
+Depuis l'essai autorisé du25 octobre2026, l'image live utilise
+`CONFIG_BIONX_CURRENT_GAS=y`. Requêtes10:D3/D4 réelles et réponses reçues :
+00/3D au repos, soit0,130601 A avec facteur candidat0,002141, ~5,1 W vers39,1 V.
+Lecture shunt1E/1F remplacée, pas de mélange ni fallback. Vérifier évolution
+sous assistance, signe, délai de la jauge et calibration indépendante.
+Cela ne résout pas par preuve les précédents NO REPLY surA6.
+
+Commande du build actif (dans un build existant, CURRENT_GAS a été activé
+explicitement dans sdkconfig pour ne pas dépendre du comportement des defaults) :
+
+```sh
+idf.py -B build-assist-v1-live -D IDF_TARGET=esp32 -D SDKCONFIG=build-assist-v1-live/sdkconfig -D 'SDKCONFIG_DEFAULTS=sdkconfig.defaults;sdkconfig.master;sdkconfig.huzzah32;sdkconfig.components-dual-spi;sdkconfig.master-dual-spi;sdkconfig.assist-bench;sdkconfig.assist-v1;sdkconfig.assist-v1-bench-live;sdkconfig.current-gas' build
+```
+
+Les mentions plus bas de shunt sélectionné et GG non encore essayée sont
+historiques. Voir VALIDATION pour l'image chargée et les preuves.
+
 ## Réglage sensible, impulsion renforcée et35 km/h — 25 octobre2026
 
 Paramètres actifs dans `components/bionx_master/bionx_assist.h` (le contrôleur

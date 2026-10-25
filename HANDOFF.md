@@ -14,7 +14,31 @@ Lire [README](README.md), [procédure V1](docs/ASSIST_V1.md),
 Les procédures/analyses sont maintenant dans `docs/`, les captures originales
 inchangées dans `captures/`. Profils et entrypoints restent à la racine.
 
-## Dernières vérifications — NO REPLY et source CL1000
+## Dernier firmware — gas gaugeD3/D4 sélectionné et répondant
+
+Utilisateur autorise l'envoi des requêtes après analyse CL1000. Build et flash
+`build-assist-v1-live/sdkconfig` avec CURRENT_GAS=y, V1_TX=y, ESP32/HUZZAH32.
+Réglages conservés : seuil1/gain×2/cap12, impulsion≤800 ms, limite35 sans
+verrouillage, coupures immédiates et reprise au clic séparé.
+Image646848 octets, SHA256
+`3fd2c92d377cdb1157ce728dec186a2e3c07ce2bbd0d1071cf0efb8d36af0535`.
+Build sans warning, image_info checksum/hash valides, flash empreintes vérifiées.
+
+Lecture effective sur BAT_GG_D3D4 : octets00/3D, paires valides/fraîches,
+~0,130601 A et~5,106 W vers39,10 V au repos, UI ESP_OK. Zéro/armement auto
+aboutis, commande0, mesures8/8 fraîches et pas de perte/erreurTX pendant le
+relevé initial. Ce sont des unités candidates, pas une calibration physique.
+Source shunt1E/1F remplacée explicitement, pas de fallback automatique.
+Capture ouverte session exec96662, `/tmp/bionx-v1-gas.log`, script
+`/tmp/bionx-live-diagnostic.py`. Vérifier qu'elle tourne avant de prétendre lire
+le live ; ne pas rouvrir le port pendant un essai. Snapshot dans docs/logs.
+Après~35 s, à l'arrêt et sans aucune commande positive, données expirées
+puis NO REPLY batterie61 : défaut verrouillé, ne pas annoncer le contrôle
+encore prêt pour pédaler. GG était valide jusque-là (~5,106 W), aucune TX moteur
+positive dans la capture. Diagnostic de perte de réponses batterie à traiter
+séparément avant essai sous charge/signe/calibration.
+
+## Historique — NO REPLY et source CL1000
 
 La dernière coupure rapportée est confirmée NO REPLY batterieA6, précédée de
 péremption des données ; pas de verrouillage de limite vitesse. Test explicite

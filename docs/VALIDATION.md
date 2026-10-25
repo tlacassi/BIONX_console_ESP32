@@ -1544,3 +1544,39 @@ inférée. Requêtes attribuées au logger, pas automatiquement à la console.
 Outil tools/analyze_cl1000_current.py exécuté sur la capture, résultats vérifiés.
 Voir [analyse](LOG_ANALYSIS_0000235.md). Choix GG déjà implémenté mais pas encore
 sélectionné dans le firmware chargé. Capture CSV start&stop sans ces registres.
+
+
+## 2026-10-25 — Requête courantD3/D4 autorisée, réponses réelles obtenues
+
+Utilisateur « ok vas y tu peux envoyer la request » après comparaison CL1000.
+Sélection explicite CONFIG_BIONX_CURRENT_GAS=y dans sdkconfig actif, puis
+rebuild avec overlay sdkconfig.current-gas ajouté aux defaults exacts. Cible
+ESP32/HUZZAH32 et V1_TX=y vérifiés. Aucun réglage d'assistance modifié.
+Build complet sans warning, image_info checksum/hash valides. Image646848 octets,
+SHA256 `3fd2c92d377cdb1157ce728dec186a2e3c07ce2bbd0d1071cf0efb8d36af0535`.
+Flash115200 sur /dev/cu.usbserial-016138BC réussi, empreintes bootloader/
+application/partitions/ota_data vérifiées, reset esptool. Port libre avant flash.
+
+Capture ouverte sans commande d'effort ni reset volontaire ; boot/init puis
+calibration/armement auto aboutis. Requête attendue10/D3 visible dans les logs,
+source BAT_GG_D3D4. À4,901 s : Ivalid1/1, octets00/3D, âge23/12 ms,
+skew11 ms, U/I skew49 ms ; courant0,1306 A, watts5,106, UI ESP_OK,
+~39,10 V/35 C/SOC69, couple/vitesse/commande0,8/8 frais, pertes0 et
+TXerr/timeout0. La source fournit une lecture différente de FF/FF, mais signe,
+délai/filtrage et calibration indépendante restent à confirmer sous charge.
+[Snapshot lecture GG](logs/2026-10-25-v1-gas-first-read-snapshot.txt).
+Capture laissée ouverte : /tmp/bionx-v1-gas.log. Aucun effort/armement/commande
+positive de test envoyé par l'assistant ; essai de pédale laissé à l'utilisateur.
+Une réponse GG ne prouve pas la résolution des absences de réponse batterieA6.
+
+
+Suite de cette même capture GG : à35,234 s, contrôle DATA OLD/LINK après
+péremption vitesse (162 ms au diagnostic35,249 s), alors que GG reste valide
+et~5,106 W. À35,475 s, maître NO REPLY sur batterie61. Dernière réception
+35,079 s environ. Couple/vitesse/commande0, aucune drive_tx positive pendant
+la capture, aucune manipulation ni commande moteur de l'assistant.
+Pertes0/TXerr0/timeoutTX0 : l'attente de réponse applicative expire, pas un
+timeout de transmission MCP. Cela survient au repos, indépendamment de la
+limite35 et sans invalider les réponses GG reçues avant. Origine de l'absence
+de réponses encore inconnue ; pas de réarmement automatique ni masquage du défaut.
+Utilisateur informé que le contrôle est verrouillé avant son essai pédale.
