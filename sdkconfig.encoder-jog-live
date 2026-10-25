@@ -1,0 +1,8 @@
+# Apply after sdkconfig.encoder-jog ONLY for the explicitly authorized bench.
+# User confirms wheel raised + accessible independent high-voltage disconnect.
+# 30s zero-command fast-poll capture passed after the system was switched on.
+# Motor timeout on loss of CAN remains unmeasured; not for road use.
+CONFIG_BIONX_JOG_TX=y
+
+# User tire700x28C; provisional CatEye table circumference, not a measurement.
+CONFIG_BIONX_JOG_WHEEL_MM=2136

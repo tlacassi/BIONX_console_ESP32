@@ -1,0 +1,8 @@
+# Wheel-up encoder test, user explicitly requested motor operation and confirmed
+# accessible independent HV disconnect. CAN TX fault observed: keep TX=0.
+# Motor loss-of-CAN timeout NOT validated.
+# Apply after sdkconfig.assist-bench. Never use on road.
+CONFIG_BIONX_ENCODER_JOG=y
+# CONFIG_BIONX_JOG_TX is not set
+# CONFIG_BIONX_ASSIST_TX_VERIFIED is not set
+# CONFIG_BIONX_ASSIST_BRAKE is not set

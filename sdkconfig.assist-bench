@@ -1,0 +1,6 @@
+# After master + huzzah32 + components-dual-spi + master-dual-spi.
+# Code and proposed output can be tested without a connected brake.
+# Actual nonzero CAN output stays locked until hardware prerequisites verified.
+CONFIG_BIONX_ASSIST_BENCH=y
+# CONFIG_BIONX_ASSIST_TX_VERIFIED is not set
+# CONFIG_BIONX_ASSIST_BRAKE is not set

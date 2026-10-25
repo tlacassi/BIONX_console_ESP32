@@ -1,0 +1,9 @@
+# Overlay for the USB-only test with the currently attached SPI display.
+CONFIG_BIONX_USB_TEST_ONLY=y
+# CONFIG_BIONX_ACTIVE is not set
+# Work around the local v5.2 SDK startup using UART -1 with USB-only console.
+# UART0 TX uses GPIO21; USB Serial/JTAG remains available as secondary output.
+# CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG is not set
+CONFIG_ESP_CONSOLE_UART_DEFAULT=y
+# CONFIG_ESP_CONSOLE_SECONDARY_NONE is not set
+CONFIG_ESP_CONSOLE_SECONDARY_USB_SERIAL_JTAG=y

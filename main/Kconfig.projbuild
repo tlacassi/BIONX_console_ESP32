@@ -1,0 +1,252 @@
+menu "BionX console"
+config BIONX_BOARD_HUZZAH32
+    bool "Adafruit HUZZAH32 Feather (classic ESP32)"
+    depends on IDF_TARGET_ESP32
+    default n
+config BIONX_SCREEN_TEST
+    bool "HUZZAH32 screen-only color test"
+    depends on BIONX_BOARD_HUZZAH32 && BIONX_DASHBOARD_DEMO
+    default n
+config BIONX_COMPONENT_TEST
+    bool "HUZZAH32 screen/encoder/MCP passive component test"
+    depends on BIONX_BOARD_HUZZAH32 && BIONX_CAN_OBSERVE
+    default n
+config BIONX_TEST_MCP
+    bool "Include MCP2515 in component test"
+    depends on BIONX_COMPONENT_TEST
+    default y
+config BIONX_MCP_SERIAL_ONLY
+    bool "Isolate MCP test from LCD; diagnostics on serial only"
+    depends on BIONX_COMPONENT_TEST && BIONX_TEST_MCP
+    default n
+config BIONX_TEST_BUTTON_GPIO
+    int "Test button GPIO (-1=disabled, 22=internal pull-up)"
+    depends on BIONX_COMPONENT_TEST
+    range -1 22
+    default -1
+config BIONX_CAN_MASTER
+    bool "MCP2515 neutral bench master (external wake discovery)"
+    depends on !BIONX_USB_TEST_ONLY
+    default n
+    help
+        Emits startup, limit synchronization and zero assistance only.
+        Remove original console. Requires verified MCP hardware.
+        Sends a battery query every second at boot; a valid reply starts
+        neutral initialization. External electrical wake; no nonzero torque.
+if BIONX_CAN_MASTER
+config BIONX_ASSIST_BENCH
+    bool "Bench pedal control (dry-run by default, not for riding)"
+    depends on BIONX_BOARD_HUZZAH32 && BIONX_MASTER_ENCODER_BUTTON
+    default n
+config BIONX_ENCODER_JOG
+    bool "Wheel-up encoder low-speed bench jog (not pedal assist)"
+    depends on BIONX_ASSIST_BENCH
+    default n
+config BIONX_JOG_WHEEL_MM
+    int "Jog wheel circumference (mm; 0 inhibits drive)"
+    depends on BIONX_ENCODER_JOG
+    range 0 4000
+    default 0
+    help
+        Measure one full wheel revolution. A tire-table value is approximate.
+        Speed uses candidate motor scaling 9.091rpm/raw. Values below1000
+        inhibit drive; do not claim calibrated road speed until verified.
+config BIONX_JOG_TX
+    bool "Enable wheel-up jog TX: user confirmed accessible independent HV disconnect"
+    depends on BIONX_ENCODER_JOG
+    default n
+    help
+        Experimental low-speed bench test, no motor CAN-loss timeout proven.
+        Requires wheel raised, area clear, independent HV disconnect accessible.
+        Limits are raw command/speed units, not calibrated physical guarantees.
+config BIONX_ASSIST_TX_VERIFIED
+    bool "Enable bench nonzero TX: motor timeout and independent power cutoff verified"
+    depends on BIONX_ASSIST_BENCH
+    default n
+    help
+        Only after measured motor cutoff on loss of CAN, calibrated sensor,
+        wheel raised and independent physical power disconnect available.
+        This is not a speed/current/power-certified vehicle controller.
+config BIONX_ASSIST_BRAKE
+    bool "Use verified normally-closed brake on GPIO36 (external 3.3V pull-up)"
+    depends on BIONX_ASSIST_BENCH
+    default n
+    help
+        Closed to GND at rest, open when braking/broken wire. GPIO36 has no
+        internal pull-up. Bench without this uses hold-to-run encoder only.
+config BIONX_MASTER_ENCODER_BUTTON
+    bool "Encoder short press discovery / hold 2 seconds stop on GPIO22"
+    depends on BIONX_BOARD_HUZZAH32
+    default n
+config BIONX_MASTER_REPLY_MS
+    int "Candidate reply timeout ms (hypothesis)"
+    range 20 1000
+    default 200
+config BIONX_MASTER_WRITE_GAP_MS
+    int "Startup/shutdown spacing ms (hypothesis)"
+    range 1 200
+    default 20
+config BIONX_MASTER_CONTROL_MS
+    int "Neutral pair period ms (hypothesis)"
+    range 20 1000
+    default 50
+config BIONX_MASTER_BATTERY_MS
+    int "Battery power-enable period ms (hypothesis)"
+    range 100 2000
+    default 250
+endif
+config BIONX_CAN_OBSERVE
+    bool "MCP2515 passive observation with screen (no motor commands)"
+    depends on !BIONX_USB_TEST_ONLY && !BIONX_CAN_MASTER
+    default n
+    help
+        Shared SPI, timestamped capture, no CAN transmission or battery wake.
+        Requires explicit module verification and oscillator selection below.
+if BIONX_CAN_OBSERVE || BIONX_CAN_MASTER
+config BIONX_MCP_HARDWARE_VERIFIED
+    bool "I verified module supply, 3.3V logic, wiring and termination"
+    default n
+config BIONX_MCP_OSC_MHZ
+    int "MCP2515 oscillator MHz (0=unknown; supported: 8,16,20)"
+    range 0 20
+    default 0
+config BIONX_MCP_SPI_CLOCK_MHZ
+    int "MCP2515 SPI clock MHz (validate on hardware)"
+    range 1 2
+    default 1
+config BIONX_MCP_DEDICATED_SPI
+    bool "Put MCP2515 on separate SPI3 (requires rewiring)"
+    depends on BIONX_BOARD_HUZZAH32
+    default n
+    help
+        LCD stays on SPI2. MCP SI uses GPIO23 (SDA), SCK GPIO4 (A5)
+        by default. SO/CS/INT are unchanged. Do not enable before rewiring.
+config BIONX_MCP_MOSI
+    int "Dedicated MCP SI/MOSI GPIO"
+    depends on BIONX_MCP_DEDICATED_SPI
+    range 0 33
+    default 23
+config BIONX_MCP_SCLK
+    int "Dedicated MCP SCK GPIO"
+    depends on BIONX_MCP_DEDICATED_SPI
+    range 0 33
+    default 4
+config BIONX_MCP_MISO
+    int "MCP2515 SO/MISO GPIO"
+    default 19 if BIONX_BOARD_HUZZAH32
+    default 5
+config BIONX_MCP_CS
+    int "MCP2515 CS GPIO"
+    default 33 if BIONX_BOARD_HUZZAH32
+    default 6
+config BIONX_MCP_USE_INT
+    bool "Use wired MCP2515 INT in addition to polling fallback"
+    default n if BIONX_COMPONENT_TEST
+    default y
+config BIONX_MCP_INT
+    int "MCP2515 INT GPIO"
+    default 34 if BIONX_BOARD_HUZZAH32
+    default 7
+config BIONX_CAPTURE_LOG_RATE
+    int "Maximum raw CAN lines per second (0 disables raw logging)"
+    range 0 1000
+    default 100
+    help
+        Frames omitted from the serial log are counted separately from losses.
+        Serial logging is not a lossless recorder under sustained bus load.
+endif
+config BIONX_DASHBOARD_DEMO
+    bool "GC9A01 animated dashboard with simulated data (CAN disabled)"
+    depends on !BIONX_USB_TEST_ONLY && !BIONX_CAN_OBSERVE && !BIONX_CAN_MASTER
+    default n
+    help
+        Uses the attached SPI screen pinout, not the original CAN pin plan.
+        Values are simulated. No CAN, BMS or encoder drivers are started.
+if BIONX_DASHBOARD_DEMO || BIONX_CAN_OBSERVE || BIONX_CAN_MASTER
+config BIONX_LCD_RST
+    int "Screen reset GPIO"
+    default 27 if BIONX_BOARD_HUZZAH32
+    default 0
+config BIONX_LCD_CS
+    int "Screen CS GPIO"
+    default 14 if BIONX_BOARD_HUZZAH32
+    default 1
+config BIONX_LCD_DC
+    int "Screen DC GPIO"
+    default 32 if BIONX_BOARD_HUZZAH32
+    default 10
+config BIONX_LCD_MOSI
+    int "Screen MOSI GPIO"
+    default 18 if BIONX_BOARD_HUZZAH32
+    default 3
+config BIONX_LCD_SCLK
+    int "Screen SCLK GPIO"
+    default 5 if BIONX_BOARD_HUZZAH32
+    default 4
+config BIONX_LCD_CLOCK_MHZ
+    int "Screen SPI clock (MHz, validate on hardware)"
+    range 1 40
+    default 20
+config BIONX_LCD_INVERT
+    bool "Invert screen colors (usual GC9A01 setting)"
+    default y
+config BIONX_LCD_SWAP_XY
+    bool "Swap screen X/Y axes"
+    default n
+config BIONX_LCD_MIRROR_X
+    bool "Mirror screen X"
+    default n
+config BIONX_LCD_MIRROR_Y
+    bool "Mirror screen Y"
+    default n
+endif
+config BIONX_USB_TEST_ONLY
+    bool "USB boot test only (CAN and display disabled)"
+    default n
+    help
+        Skip board pin validation and CAN startup for an isolated USB test.
+        No display, encoder or BMS driver is started either.
+config BIONX_ACTIVE
+    bool "Enable diagnostic CAN requests (single master only)"
+    depends on !BIONX_USB_TEST_ONLY && !BIONX_DASHBOARD_DEMO && !BIONX_CAN_OBSERVE && !BIONX_CAN_MASTER
+    default n
+    help
+        Default is passive listen-only. This never enables motor commands.
+        Active reads require a transceiver and an awake CAN node that ACKs.
+config BIONX_TX
+    int "CAN TX GPIO"
+    range 0 21
+    default 4
+config BIONX_RX
+    int "CAN RX GPIO"
+    range 0 21
+    default 5
+config BIONX_I2C_SDA
+    int "Reserved display SDA GPIO"
+    range 0 21
+    default 0
+config BIONX_I2C_SCL
+    int "Reserved display SCL GPIO"
+    range 0 21
+    default 1
+config BIONX_BMS_TX
+    int "Reserved BMS UART TX GPIO"
+    range 0 21
+    default 21
+config BIONX_BMS_RX
+    int "Reserved BMS UART RX GPIO"
+    range 0 21
+    default 20
+config BIONX_ENCODER_A
+    int "Reserved encoder A GPIO"
+    range 0 21
+    default 6
+config BIONX_ENCODER_B
+    int "Reserved encoder B GPIO"
+    range 0 21
+    default 7
+config BIONX_ENCODER_BUTTON
+    int "Reserved encoder button GPIO"
+    range 0 21
+    default 10
+endmenu

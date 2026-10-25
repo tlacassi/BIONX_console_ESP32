@@ -1,0 +1,8 @@
+# Apply AFTER sdkconfig.master;sdkconfig.huzzah32;sdkconfig.components-dual-spi
+# Current bench module: 3.3V, 8MHz, two independent SPI buses.
+CONFIG_BIONX_MCP_HARDWARE_VERIFIED=y
+CONFIG_BIONX_MCP_OSC_MHZ=8
+CONFIG_BIONX_MCP_SPI_CLOCK_MHZ=2
+CONFIG_BIONX_MCP_USE_INT=y
+CONFIG_BIONX_MASTER_ENCODER_BUTTON=y
+# CONFIG_BIONX_COMPONENT_TEST is not set

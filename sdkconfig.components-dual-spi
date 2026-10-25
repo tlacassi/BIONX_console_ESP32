@@ -1,0 +1,5 @@
+# Apply after sdkconfig.components. Requires moving MCP SI and SCK.
+CONFIG_BIONX_MCP_DEDICATED_SPI=y
+CONFIG_BIONX_MCP_MOSI=23
+CONFIG_BIONX_MCP_SCLK=4
+# CONFIG_BIONX_MCP_SERIAL_ONLY is not set

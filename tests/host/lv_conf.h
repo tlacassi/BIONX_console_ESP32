@@ -1,0 +1,11 @@
+#ifndef LV_CONF_H
+#define LV_CONF_H
+#define LV_COLOR_DEPTH 16
+#define LV_MEM_SIZE (48 * 1024U)
+#define LV_DEF_REFR_PERIOD 33
+#define LV_FONT_MONTSERRAT_12 1
+#define LV_FONT_MONTSERRAT_16 1
+#define LV_FONT_MONTSERRAT_20 1
+#define LV_FONT_MONTSERRAT_48 1
+#define LV_USE_LOG 0
+#endif

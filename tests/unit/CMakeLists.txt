@@ -1,0 +1,42 @@
+cmake_minimum_required(VERSION 3.16)
+project(bionx_unit C)
+enable_testing()
+add_executable(protocol_test protocol_test.c ../../components/bionx_protocol/bionx_protocol.c)
+target_include_directories(protocol_test PRIVATE ../../components/bionx_protocol)
+target_compile_options(protocol_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+add_test(NAME protocol COMMAND protocol_test)
+add_executable(mcp2515_test mcp2515_test.c ../../components/mcp2515/mcp2515_core.c
+    ../../components/bionx_protocol/bionx_protocol.c)
+target_include_directories(mcp2515_test PRIVATE ../../components/mcp2515
+    ../../components/bionx_protocol ../host/stubs)
+target_compile_options(mcp2515_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+add_test(NAME mcp2515 COMMAND mcp2515_test)
+add_executable(master_test master_test.c ../../components/bionx_master/bionx_master.c
+    ../../components/bionx_master/bionx_control.c ../../components/bionx_protocol/bionx_protocol.c)
+target_include_directories(master_test PRIVATE ../../components/bionx_master ../../components/bionx_protocol)
+target_compile_options(master_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+add_test(NAME master_control COMMAND master_test)
+add_executable(button_test button_test.c)
+target_include_directories(button_test PRIVATE ../../components/bionx_master)
+target_compile_options(button_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+add_test(NAME master_button COMMAND button_test)
+add_executable(bench_test bench_test.c ../../components/bionx_master/bionx_bench.c
+    ../../components/bionx_master/bionx_master.c ../../components/bionx_protocol/bionx_protocol.c)
+target_include_directories(bench_test PRIVATE ../../components/bionx_master ../../components/bionx_protocol)
+target_compile_options(bench_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+add_test(NAME bench_safety COMMAND bench_test)
+add_executable(jog_test jog_test.c ../../components/bionx_master/bionx_jog.c
+    ../../components/bionx_master/bionx_master.c ../../components/bionx_protocol/bionx_protocol.c)
+target_include_directories(jog_test PRIVATE ../../components/bionx_master ../../components/bionx_protocol)
+target_compile_options(jog_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+add_test(NAME jog_safety COMMAND jog_test)
+add_executable(encoder_test encoder_test.c ../../components/bionx_master/bionx_jog.c
+    ../../components/bionx_master/bionx_master.c ../../components/bionx_protocol/bionx_protocol.c)
+target_include_directories(encoder_test PRIVATE ../../components/bionx_master ../../components/bionx_protocol)
+target_compile_options(encoder_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+add_test(NAME encoder_capture COMMAND encoder_test)
+
+add_executable(power_test power_test.c ../../components/bionx_master/bionx_master.c ../../components/bionx_protocol/bionx_protocol.c)
+target_include_directories(power_test PRIVATE ../../components/bionx_master ../../components/bionx_protocol)
+target_compile_options(power_test PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+add_test(NAME electrical_power COMMAND power_test)

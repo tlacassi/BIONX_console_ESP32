@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.16)
+# Set the initial target without requiring a command before first configure.
+if(NOT DEFINED IDF_TARGET)
+    set(IDF_TARGET "esp32c3" CACHE STRING "ESP-IDF target")
+endif()
+include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+project(bionx_c3_supermini)
+if(NOT IDF_TARGET STREQUAL "esp32c3" AND NOT (IDF_TARGET STREQUAL "esp32" AND CONFIG_BIONX_BOARD_HUZZAH32))
+    message(FATAL_ERROR "Use esp32c3 or esp32 with BIONX_BOARD_HUZZAH32 enabled")
+endif()
